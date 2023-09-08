@@ -1,0 +1,31 @@
+.header {
+    z-index: 999;
+    width: 100%;
+}
+
+.icon_avatar{
+    width: 30px;
+}
+
+.icon_avatar_link {
+    left:2px;;
+    margin-left: 415px;
+}
+
+.container_header {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Tắt tính năng đáp ứng cho toàn bộ React Bootstrap */
+/* Container */
+.container {
+  max-width: none !important;
+  width: auto !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+}

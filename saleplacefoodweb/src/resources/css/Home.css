@@ -1,0 +1,206 @@
+* {
+    margin-bottom:0;
+    /* padding:0; */
+    /* background-image: url(../img/background.jpg); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+
+}
+
+/* button:hover:before,button:hover:after{
+    width:100%;
+    transition:800ms ease all !important;
+} */
+
+.home{
+    display: flex !important;;   
+    width:100%;
+    margin:0;
+}
+
+.flex{
+    display: flex !important;;
+}
+
+#root {
+    background-image: url('../img/bakcground2.jpg');
+}
+
+.contain{
+    padding:0;
+    width:100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 600px;
+}
+
+.form_find_name{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+ /* card của fooditems */
+
+.description {
+    margin-left: auto;
+}
+
+.description p{
+    margin-left: 10px;
+}
+
+.card{
+    width: 100%;
+    overflow: hidden;
+}
+
+/* tìm kiếm*/
+.find {
+    /* position: fixed; */
+    width: 20%;
+    /* height: 800px; */
+}
+
+.f {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+
+/* giao diện thức ăn*/
+
+.fooditems{
+    width: 100%;
+}
+
+.btn-food{
+    margin-left: 5px;
+}
+
+.btn_all {
+    display: flex!important;
+}
+
+.btn_all *{
+    width: 150px !important;
+    height: 36px !important;
+    font-size: 10px;
+}
+
+.fooditems img {
+    max-width: 300px;
+    max-height: 150px;
+    /* height: auto;
+    -webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out; */
+}
+/* 
+.fooditems img:hover{
+    width: 350px;
+} */
+
+.carol_img {
+    max-width: 800px;
+    max-height: 450px;
+    margin: auto;
+
+}
+
+.caption_res{
+    margin-top: 50px;
+}
+
+.carosel_item{
+    width: 100%;
+}
+
+/* .carousel-control-next {
+    background-color:red;
+}
+
+.carousel-control-prev {
+    background-color:red;
+} */
+
+
+/* tìm kiếm*/
+
+.find_first{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.find_first input{
+    margin-top: 10px;
+    width: 100%;
+}
+
+.input1 {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.find_first input :focus {
+    border: none;
+}
+
+.form_find_all {
+    width: 200px;
+    margin-top: 25px !important;
+    margin-left: 80px !important;
+}
+
+/* .carousel_edit{
+    width: 80%;
+    margin-left: auto;
+
+} */
+
+/* .find_carousel{
+    display: flex;
+} */
+
+.col-auto {
+    flex: none;
+    width: none;
+}
+
+.carousel-control-prev-icon{
+    color:black;
+}
+
+.carousel-control-next-icon{
+    color:black;
+}
+
+.carousel_info_home {
+    color:white;
+    background-color:black;
+    width: 25%;
+    margin: auto;
+    border-radius: 5px 5px 5px 5px
+}
+
+.food_item {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: antiquewhite;
+}
+.food_item:hover {
+    box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+    transform: translateY(-0.25em);
+}
+
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+

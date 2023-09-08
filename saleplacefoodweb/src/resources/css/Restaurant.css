@@ -1,0 +1,6 @@
+.img_res {
+    max-width: 288px;
+    max-height: 140px;
+    overflow: hidden;
+    margin: auto;
+}

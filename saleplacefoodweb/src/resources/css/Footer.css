@@ -1,0 +1,9 @@
+footer {
+    background-color: black;
+    /* Đặt chiều cao tối thiểu tùy theo nhu cầu của bạn */
+}
+
+
+.div_footer {
+    margin-top: 0 !important;
+}

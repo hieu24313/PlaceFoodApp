@@ -1,0 +1,73 @@
+.img_restaurant{
+    width: 50px;
+    height: 50px;
+}
+
+
+.tieude_fooditem_detail {
+    margin-top: 0 !important;
+}
+
+/* avatar restaurant*/
+.info_restaurant{
+    display: flex;
+    margin-top: 10px;
+}
+
+.info_restaurant h3{
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+.info_restaurant img{
+    border: 1px solid red;
+}
+
+.img_fooditemdetail{
+    max-width: 530px;
+    max-height: 300px;
+}
+
+
+.img_comment {
+    max-width: 200px;
+    max-height: 150px; 
+}
+
+.name_avatar_comment {
+    display: flex;
+}
+
+.name_avatar_comment h5{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.name_avatar_comment img{
+    max-width: 80px;
+    max-height: 50px;
+    margin-top: 0px !important;
+}
+
+.name_avatar_comment > div > time{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comment_avatar {
+    margin-left: 50px;
+}
+
+.comment_avatar > div :first-child{
+    margin-bottom: 10px;
+}
+
+.comtain_comment{
+    margin-bottom: 12px !important;
+}
+
+
+.list-group-item {
+    
+}

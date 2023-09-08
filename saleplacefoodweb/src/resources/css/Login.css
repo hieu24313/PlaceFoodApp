@@ -1,0 +1,16 @@
+.login_form_last_child{
+    margin-bottom: 0 !important;
+}
+
+/* .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+    background-color: transparent !important;
+} */
+
+.mdb_login_form{
+    margin-top: 55px !important;
+    
+}
+
+.mdb_login_form > div {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+}

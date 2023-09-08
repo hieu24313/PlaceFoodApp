@@ -1,0 +1,9 @@
+.register_form {
+    margin: auto !important;
+    /* padding-top: 100px; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.fake_div{
+    margin-top: 100px;
+}
