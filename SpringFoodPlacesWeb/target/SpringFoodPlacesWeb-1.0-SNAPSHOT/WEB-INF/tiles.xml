@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="baseLayout"
+                template="/WEB-INF/layout/base.jsp">
+        
+        <put-attribute name="title" value="" />
+        
+        <put-attribute name="header"
+                       value="/WEB-INF/layout/header.jsp" />
+        
+        <put-attribute name="content" value="" />
+        
+        <put-attribute name="footer"
+                       value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+    
+    <definition name="index" extends="baseLayout">
+        <put-attribute name="title" value="Thì ra là z" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/index.jsp" />
+    </definition>
+    
+    <definition name="users" extends="baseLayout">
+        <put-attribute name="title" value="QUẢN LÝ USERS" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/admin/users.jsp" />
+    </definition>
+    
+    <definition name="register" extends="baseLayout">
+        <put-attribute name="title" value="ĐĂNG KÝ" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/register.jsp" />
+    </definition>
+    
+    <definition name="restaurants" extends="baseLayout">
+        <put-attribute name="title" value="QUẢN LÝ NHÀ HÀNG RESTAURANT_MANAGER" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/restaurants.jsp" />
+    </definition>
+    
+    <definition name="admin" extends="baseLayout">
+        <put-attribute name="title" value="ADMIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/admin/admin.jsp" />
+    </definition>
+    
+    <definition name="newRestaurant" extends="baseLayout">
+        <put-attribute name="title" value="ADMIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/newRestaurant.jsp" />
+    </definition>
+    <definition name="indexCategories" extends="baseLayout">
+        <put-attribute name="title" value="Category Food" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/categories.jsp" />
+    </definition>
+    <definition name="newCategory" extends="baseLayout">
+        <put-attribute name="title" value="Category Food" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/newCategory.jsp" />
+    </definition>
+    <definition name="shelfLife" extends="baseLayout">
+        <put-attribute name="title" value="Shelf Life Food" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/shelfLife.jsp" />
+    </definition>
+    <definition name="newShelfLife" extends="baseLayout">
+        <put-attribute name="title" value="Shelf Life Food" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/newShelfLife.jsp" />
+    </definition>
+    
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="title" value="LOGIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/login.jsp" />
+    </definition>
+    
+    <definition name="restaurantManager" extends="baseLayout">
+        <put-attribute name="title" value="ADMIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/restaurantManager.jsp" />
+    </definition>
+    
+    <definition name="indexFoodItems" extends="baseLayout">
+        <put-attribute name="title" value="Index Food Items" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/foodItems.jsp" />
+    </definition>
+    
+    <definition name="newFoodItems" extends="baseLayout">
+        <put-attribute name="title" value="Index Food Items" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/restaurantManager/newFoodItems.jsp" />
+      </definition>
+
+    <definition name="newUser" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý User" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/admin/newUser.jsp" />
+    </definition>
+    
+    <definition name="restaurants_admin" extends="baseLayout">
+        <put-attribute name="title" value="QUẢN LÝ NHÀ HÀNG ADMIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/admin/restaurants.jsp" />
+    </definition>
+    
+    <definition name="newRestaurant_admin" extends="baseLayout">
+        <put-attribute name="title" value="ADMIN" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/admin/newRestaurant.jsp" />
+    </definition>
+    
+</tiles-definitions>

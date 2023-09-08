@@ -1,0 +1,15 @@
+SpringFoodPlacesWeb
+JDK-19.0.2
+
+Settings:
+Server: Apache Tomcat or TomEE
+Java EE Version: Java EE 7 Web
+
+<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+</plugin>

@@ -1,0 +1,370 @@
+    /*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 24, 2023, 11:11:36 AM
+    Author     : Administrator
+*/
+
+ul#suggest {
+    list-style-type: none;
+    height: 100px;
+    overflow: auto;
+    display: none;
+}
+
+ul#suggest > li {
+    z-index: 999;
+}
+
+ul#suggest > li > a {
+    text-decoration: none;
+}
+
+#load_userId_js {
+    display: none;
+}
+
+div.body {
+    display: flex;
+    padding: 0 3em;
+}
+
+div.body.body__left {
+    width: 50%;
+}
+
+div.body.body__right {
+    width: 50%;
+
+}
+
+
+.drop-container {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #555;
+    color: #444;
+    cursor: pointer;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover,
+.drop-container.drag-active {
+    background: #eee;
+    border-color: #111;
+}
+
+.drop-container:hover .drop-title,
+.drop-container.drag-active .drop-title {
+    color: #222;
+}
+
+.drop-title {
+    color: #444;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    transition: color .2s ease-in-out;
+}
+
+input[type=file] {
+    width: 350px;
+    max-width: 100%;
+    color: #444;
+    padding: 5px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #555;
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #5a2c1e;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+    background: #0d45a5;
+}
+
+#googleMap > div  {
+    text-align: center;
+    margin: 1em 0;
+}
+
+#googleMap > div > label {
+    font-weight: bold;
+}
+
+div.infor {
+    width: 100%;
+    height: 45em;
+    background-image: url("../images/vegetables-set-left-black-slate.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+div.profile-cards {
+    padding: 2%;
+}
+
+div.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 70em;
+    height: 35em;
+    margin: 0 auto;
+
+    position: relative;
+
+    color: #2d2d2d;
+    background-color:  #fee1d4;
+    background-color:  transparent;
+    letter-spacing: 3px;
+
+
+    overflow: hidden;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
+}
+
+div.card-description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 40px;
+
+    width: auto;
+    height: 100%;
+}
+
+div.card-description h2, span {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: 18px;
+}
+
+div.card-description-title {
+    color: white;
+
+    font-size: 18px;
+}
+
+div.card-description-profession {
+    display: block;
+
+    font-size: 16px;
+}
+
+div.avatar-restaurant > img {
+
+    border-radius: 3%;
+    width: 45em;
+    height: 85%;
+
+    object-fit: cover;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 1);
+
+}
+
+div.food-home {
+
+}
+
+div.food-home__top {
+    text-align: center;
+}
+
+div.food-home__top > button {
+    margin: 1em ;
+}
+
+div.food-home__top > button > a {
+    text-decoration: none;
+    color: wheat;
+    font-weight: bold;
+}
+
+div.food-home__top > ul {
+    list-style-type: none;
+    width: 80%;
+    margin: 0 auto;
+    /*background: red;*/
+    display: flex;
+    justify-content: center;
+}
+
+div.food-home__top > ul > li{
+    margin: 1em;
+}
+
+div.food-home__top > ul > li > button > a{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    z-index: 100;
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+div.food-home__bottom > ul {
+    list-style-type: none;
+    width: 60%;
+    margin: 0 auto;
+    background: lightblue;
+    display: flex;
+    justify-content: center;
+}
+
+div.food-home__bottom > ul > li{
+    margin: 1em;
+}
+
+div.food-home__bottom > section > div > div.row {
+    justify-content: center;
+}
+
+div.food-home__bottom > section > div > div.row > div {
+    /*width: 20em;*/ 
+    
+    margin: 1em;
+    
+}
+
+div.my-img-link  {
+    overflow: hidden;
+    box-shadow: 5px 5px 7px 5px #666;
+    /*border: solid 1px;*/
+}
+
+div.my-img-link > a {
+    text-decoration: none;
+    color: black;
+}
+
+div.my-img-link > a > img {
+    transition: 0.3s;
+}
+
+div.my-img-link > a > img:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+div.my-img-link div.mask > div h5{
+    /*    background: #e6e6e6;
+        box-shadow: 10px 10px 30px rgba(0, 0, 0, 1);*/
+}
+/*nhu*/
+div.food-item{
+    position: relative;
+    margin: 0 1rem;
+    padding: 0;
+}
+div.mask {
+    position: absolute;
+    top:65%;
+    left:0;
+    right:0;
+    bottom:5%;
+    background-color: #e6e6e6;
+    /*background: transparent;*/
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5s;
+    box-shadow: 3px 3px 5px 0px #666;
+}
+div.mask>h5{
+    margin: 1rem auto;
+    text-align: center;
+    font-size: 25px;
+}
+div.food-item:hover div.mask{
+    opacity:0.8;
+    
+}
+
+#restaurant > div > div.food-home__bottom > section > div > div {
+    /*
+        27em = 1 card
+        27 * 3 = 81
+        Cho thÃªm tÃ­ luÃ´n lÃ  85
+    */
+    width: 90%;
+    margin: 0 auto;
+    max-height: 50em;
+    overflow: auto;
+}
+div.food-home__top >div.list-categories{
+    display: flex;
+    width:60%;
+    margin: 0 auto;
+    padding: 0;
+    justify-content: center;
+}
+div.food-home__top >div.list-categories>div{
+        margin: auto 10px;
+        
+}
+div.food-home__top >div.list-categories> div > a {
+    text-decoration: none;
+    color: #fee1d4;
+    font-weight: bold;
+}
+div.food-home__top >div.list-categories> div > a>h3{
+    background: black;
+    color: #fee1d4;
+    border: none;
+    position: relative;
+    height: 50px;
+    padding: 13px 2em;
+    cursor: pointer;
+    transition: 800ms ease all;
+    outline: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+
+}
+h3:before,h3:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #fee1d4;
+    transition:400ms ease all;
+}
+h3:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+h3:hover:before,h3:hover:after{
+    width:100%;
+    transition:800ms ease all;
+}

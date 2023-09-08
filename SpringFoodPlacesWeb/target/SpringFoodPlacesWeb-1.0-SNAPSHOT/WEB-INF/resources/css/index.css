@@ -1,0 +1,26 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 31, 2023, 11:04:24 PM
+    Author     : Administrator
+*/
+
+body{
+    background: url(../images/vegetables-set-left-black-slate.jpg)no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    padding:0;
+    margin:0;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 100%;
+}
+
+section.body {
+    height: 28em;
+}

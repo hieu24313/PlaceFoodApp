@@ -1,0 +1,81 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Sep 5, 2023, 4:07:50 PM
+    Author     : Administrator
+*/
+
+.flex {
+    display: flex;
+}
+
+.section-infor {
+    width: 50%;
+    margin: 10% auto;
+    padding: 50px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.section-infor .row {
+    margin: 30px;
+}
+
+.section-infor .form-control {
+    font-size: 18px;
+    border: none;
+    border-bottom: 2px solid #dee2e6;
+    border-radius: 0;
+}
+
+.img {
+
+    width: 30%;
+    margin: 0 auto;
+}
+
+.img>img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+button {
+    /*    font-size: 30px;
+        padding: 5px;
+        margin-left: 80%;*/
+}
+
+div.row>button.btn-infor {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 14px 24px;
+    border: none;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    background: linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%);
+    color: #fff;
+    width: auto;
+    margin-left: auto;
+    margin-right: 13px;
+}
+.float-label{
+    padding:10px 20px !important;
+}
+div.select-role{
+    height: 58px;
+}
+div.select-role>select{
+    height: 100%;
+}
+
+section.section-infor {
+    margin-top: 3%;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 1);
+
+}
