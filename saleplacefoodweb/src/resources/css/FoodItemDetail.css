@@ -1,4 +1,4 @@
-.img_restaurant{
+/* .img_restaurant{
     width: 50px;
     height: 50px;
 }
@@ -8,7 +8,7 @@
     margin-top: 0 !important;
 }
 
-/* avatar restaurant*/
+
 .info_restaurant{
     display: flex;
     margin-top: 10px;
@@ -70,4 +70,156 @@
 
 .list-group-item {
     
+} */
+/* .img_restaurant{
+    width: 50px;
+    height: 50px;
+}
+
+
+.tieude_fooditem_detail {
+    margin-top: 0 !important;
+} */
+
+/* avatar restaurant*/
+/* .info_restaurant{
+    display: flex;
+    margin-top: 10px;
+}
+
+.info_restaurant h3{
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+.info_restaurant img{
+    border: 1px solid red;
+}
+
+.img_fooditemdetail{
+    max-width: 530px;
+    max-height: 300px;
+}
+
+
+.img_comment {
+    max-width: 200px;
+    max-height: 150px; 
+}
+*/
+#detail-bottom {
+    width: 80%;
+    background-color: transparent;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19);
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+#detail-bottom div.list-group,
+div.list-group-item {
+    background: none !important;
+}
+
+.name_avatar_comment {
+    display: flex;
+    margin-left: 50px;
+}
+
+.name_avatar_comment h5 {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.name_avatar_comment img {
+    max-width: 80px;
+    max-height: 50px;
+    margin-top: 0px !important;
+}
+
+.name_avatar_comment>div>time {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comment_avatar {
+    margin-left: 50px;
+}
+
+.comment_avatar>div :first-child {
+    margin-bottom: 10px;
+}
+
+.comtain_comment {
+    margin-bottom: 12px !important;
+}
+
+.detailcontainer {
+    margin: 10% auto;
+
+}
+
+#detail-top {
+    margin: 0 auto;
+    width: 80%;
+}
+
+#detail-top div.detail-name {
+    width: 50%;
+
+}
+
+#detail-top div.detail-name>div {
+    margin: 0 0 3%;
+}
+
+#detail-top div.detail-name>div>h1 {
+    font-size: 45px;
+    font-weight: 500;
+}
+
+
+#detail-top div.detail-profile {
+    width: 40%;
+    margin: 3% auto;
+    font-size: 18px;
+}
+
+#detail-top div.detail-profile>div:not(:nth-child(2)) {
+    margin: 5% auto;
+    line-height: 2;
+
+}
+
+div.detail-profile button.btn-addCart {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color, border-color, color, box-shadow, filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    width: 100%;
+    height: 20%;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 17px 48px;
+    /* margin: 20px auto; */
+    color: #fff;
+    background-color: #1ED760;
+    height: 48px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+
+    &:hover {
+        transform: scale(1.04);
+        background-color: #21e065;
+    }
+
+
 }

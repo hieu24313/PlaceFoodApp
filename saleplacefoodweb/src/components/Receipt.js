@@ -7,6 +7,7 @@ import MySpinner from "../layout/MySpinner";
 import Moment from "react-moment";
 import { MDBBtn, MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBTypography } from "mdb-react-ui-kit";
 import ProfileComponents from "../layout/ProfileComponents";
+import { ToastContainer, toast } from "react-toastify";
 
 
 const Receipt = () => {
@@ -16,21 +17,24 @@ const Receipt = () => {
     const [activeKey, setActiveKey] = useState('0');
     const [receiptDetail, setReceiptDetail] = useState();
     const [loading, setloading] = useState(false);
+    const [acceptReceipt, setAcceptReceipt] = useState()
+    const notify = (x) => toast(x);
 
+
+    const loadReceipt = async () => {
+        try {
+            // let form = new FormData();
+            // form.append("userId", userId)
+            let e = `${endpoints["receipt"]}?userId=${user.userId}`
+            let res = await authApi().get(e);
+            setReceipt(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     useEffect(() => {
-
-        const loadReceipt = async () => {
-            try {
-                // let form = new FormData();
-                // form.append("userId", userId)
-                let e = `${endpoints["receipt"]}?userId=${user.userId}`
-                let res = await authApi().get(e);
-                setReceipt(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        }
+            
         loadReceipt();
     }, [user])
 
@@ -48,12 +52,51 @@ const Receipt = () => {
     }
 
     const handleAccordionClick = (eventKey) => {
-        if (activeKey === eventKey) {
-            setActiveKey(null); // Đóng phần body khi click lại vào cùng một Accordion.Header
-        } else {
-            setActiveKey(eventKey); // Mở phần body khi click vào Accordion.Header khác
-        }
+        
+            // if (activeKey === eventKey) {
+            //     setTimeout(() => {
+            //     setActiveKey(null); // Đóng phần body khi click lại vào cùng một Accordion.Header
+            // }, 5000)
+            // } else {
+            //     setActiveKey(eventKey); // Mở phần body khi click vào Accordion.Header khác
+            // }
+            if(activeKey === eventKey){
+                setActiveKey(null);
+            }
+            else{
+                setActiveKey(eventKey);
+            }
+
+        
     };
+
+    const disableAcceptbtn = (receiptId) => {
+        if(receiptId !== null){
+            setTimeout(() => {
+                let btn = document.getElementById(receiptId);
+                    if(btn !== null){
+                        btn.disabled = true;
+                    }
+            }, 1000)
+            
+        }
+        // console.log("id hoa don" + receiptId);
+    }
+
+    const acceipt = async (receiptId) => {
+        try{
+            let { data } = await authApi().post(endpoints['accept-receipt'](receiptId));
+            notify(data);
+            setReceiptDetail(null)
+            // setTimeout(() => {
+                loadReceipt();
+                loadReceiptDetail(receiptId);
+            // }, 1000)
+            // disableAcceptbtn(receiptId);
+        }catch(err){
+            console.log(err);
+        }
+    } 
 
     if (user === null)
         return <Alert className="alert-danger">Vui lòng đăng nhập</Alert>
@@ -68,15 +111,19 @@ const Receipt = () => {
             <h1 className="text-center text-primary">Trang Chi Tiết Hóa Đơn</h1>
 
             <div className="contain_info">
+
                 <ProfileComponents />
+                <ToastContainer />
                 <div className="contain_info_2">
-                    {receipt === null ? <Alert classname="alert-success" >Bạn chưa có hóa đơn nào!!</Alert> : <>
+                    {receipt === 0 ? <Alert classname="alert-success" >Bạn chưa có hóa đơn nào!!</Alert> : <>
                         {receipt == null ? <MySpinner /> : Object.values(receipt).map(r => {
                             let count = 0;
                             let amount = 0;
                             return <Accordion className="mt-2" activeKey={activeKey}>
-                                <Accordion.Item eventKey={r.receiptId} onClick={() => handleAccordionClick(r.receiptId)}>
-                                    <Accordion.Header onClick={() => loadReceiptDetail(r.receiptId)} >Hóa Đơn {r.receiptId} <Moment style={{ marginLeft: 'auto' }} format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment> </Accordion.Header>
+                                {/* <Accordion.Item eventKey={r.receiptId} onClick={() => handleAccordionClick(r.receiptId)}> */}
+                                <Accordion.Item eventKey={r.receiptId} >
+
+                                    <Accordion.Header onClick={() =>{loadReceiptDetail(r.receiptId); handleAccordionClick(r.receiptId)}} >Hóa Đơn {r.receiptId} <Moment style={{ marginLeft: 'auto' }} format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment> </Accordion.Header>
                                     {/* <Accordion.Body id="body_detail" onLoad={setTimeout(()=>{let c =document.getElementById('body_detail'); c.onclick = null} ,300)} > */}
                                     <Accordion.Body id="body_detail"  >
                                         {loading === true ? <MySpinner /> : <>
@@ -88,7 +135,7 @@ const Receipt = () => {
                                                                 <MDBRow className="d-flex align-items-baseline">
                                                                     <MDBCol xl="9">
                                                                         <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
-                                                                            Invoice &gt; &gt; <strong>ID: {r.receiptId}</strong>
+                                                                            <strong>Mã Hóa Đơn: {r.receiptId}</strong>
                                                                         </p>
                                                                     </MDBCol>
                                                                     <MDBCol xl="3" className="float-end">
@@ -119,6 +166,7 @@ const Receipt = () => {
                                                             </MDBContainer>
                                                             <MDBContainer>
                                                                 <MDBCol md="12" className="text-center">
+                                                                    <p className="pt-0"><h1>HÓA ĐƠN</h1></p>
                                                                     <MDBIcon
                                                                         fab
                                                                         icon="mdb"
@@ -126,39 +174,38 @@ const Receipt = () => {
                                                                         className="ms-0 "
                                                                         style={{ color: "#5d9fc5" }}
                                                                     />
-                                                                    <p className="pt-0">MDBootstrap.com</p>
+
                                                                 </MDBCol>
                                                             </MDBContainer>
                                                             <MDBRow>
                                                                 <MDBCol xl="8">
                                                                     <MDBTypography listUnStyled>
                                                                         <li className="text-muted">
-                                                                            To: <span style={{ color: "#5d9fc5" }}>John Lorem</span>
+                                                                            Tên Khách Hàng: <span style={{ color: "#5d9fc5" }}>{user.first} {user.lastname}</span>
                                                                         </li>
-                                                                        <li className="text-muted">Street, City</li>
-                                                                        <li className="text-muted">State, Country</li>
+                                                                        <li className="text-muted">{user.location}</li>
+                                                                        <li className="text-muted">{user.location}</li>
                                                                         <li className="text-muted">
-                                                                            <MDBIcon fas icon="phone-alt" /> 123-456-789
+                                                                            <MDBIcon fas icon="phone-alt" /> {user.phonenumber}
                                                                         </li>
                                                                     </MDBTypography>
                                                                 </MDBCol>
                                                                 <MDBCol xl="4">
-                                                                    <p className="text-muted">Invoice</p>
+                                                                    <p className="text-muted">Hóa Đơn</p>
                                                                     <MDBTypography listUnStyled>
                                                                         <li className="text-muted">
                                                                             <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
-                                                                            <span className="fw-bold ms-1">ID:</span>#123-456
+                                                                            <span className="fw-bold ms-1">Mã Hóa Đơn:</span>#{r.receiptId}
                                                                         </li>
                                                                         <li className="text-muted">
                                                                             <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
-                                                                            <span className="fw-bold ms-1">Creation Date: </span>Jun
-                                                                            23,2021
+                                                                            <span className="fw-bold ms-1">Ngày Tạo : </span> <Moment format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment>
                                                                         </li>
                                                                         <li className="text-muted">
                                                                             <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
-                                                                            <span className="fw-bold ms-1">Status:</span>
+                                                                            <span className="fw-bold ms-1">Trạng Thái: </span>
                                                                             <span className="badge bg-warning text-black fw-bold ms-1">
-                                                                                Unpaid
+                                                                                {r.statusReceiptId.statusReceipt}
                                                                             </span>
                                                                         </li>
                                                                     </MDBTypography>
@@ -198,35 +245,43 @@ const Receipt = () => {
                                                             <MDBRow>
                                                                 <MDBCol xl="8">
                                                                     <p className="ms-3">
-                                                                        Add additional notes and payment information
+                                                                        {/* Add additional notes and payment information */}
                                                                     </p>
                                                                 </MDBCol>
                                                                 <MDBCol xl="3">
                                                                     <MDBTypography listUnStyled>
                                                                         <li className="text-muted ms-3">
-                                                                            <span class="text-black me-4">Tổng</span>{amount} VNĐ
+                                                                            <span class="text-black me-4">Thuế: </span>(15%)
                                                                         </li>
                                                                         {/* <li className="text-muted ms-3 mt-2">
                                                                             <span class="text-black me-4">Tax(15%)</span>$111
                                                                         </li> */}
                                                                     </MDBTypography>
                                                                     <p className="text-black float-start">
-                                                                        <span className="text-black me-3"> Total Amount</span>
-                                                                        <span style={{ fontSize: "25px" }}>$1221</span>
+                                                                        <span className="text-black me-3"> Tổng: </span>
+                                                                        <span style={{ fontSize: "18px" }}>{amount} VNĐ</span>
                                                                     </p>
                                                                 </MDBCol>
                                                             </MDBRow>
                                                             <hr />
                                                             <MDBRow>
                                                                 <MDBCol xl="10">
-                                                                    <p>Thank you for your purchase</p>
+                                                                    <p>Cảm ơn bạn đã sử dụng dịch vụ!!!</p>
                                                                 </MDBCol>
                                                                 <MDBCol xl="2">
                                                                     <MDBBtn
+                                                                        id={r.receiptId}
+                                                                        onClick={() => acceipt(r.receiptId)}
                                                                         className="text-capitalize"
                                                                         style={{ backgroundColor: "#60bdf3" }}
                                                                     >
-                                                                        Pay Now
+                                                                        {r.statusReceiptId.statusReceiptId == 1 ? "Xác Nhận Đơn" :
+                                                                            <>
+                                                                                 Đã Xác Nhận
+                                                                                 {console.log(r.statusReceiptId)}
+                                                                                 {disableAcceptbtn(r.receiptId)}
+                                                                            </>
+                                                                        }
                                                                     </MDBBtn>
                                                                 </MDBCol>
                                                             </MDBRow>

@@ -4,6 +4,11 @@
 
 .info_res_body_res_detail {
     height: 360px !important;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 1) !important;
+}
+
+.box_infor_detail_res {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
 
 .py-5 {
@@ -18,9 +23,17 @@
     margin-top: 50px;
 }
 
+/* danh sach fooditem */
 .food_item_res_retail {
     margin-left: 200px;
+    /* max-width: 400px; */
+    max-height: 800px;
+    height: auto;
+    overflow: auto;
+    margin-top: 50px;
+
 }
+
 
 .body_fooditem_res_detai {
     display: flex !important;

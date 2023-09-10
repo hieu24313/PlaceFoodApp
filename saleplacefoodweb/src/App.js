@@ -20,6 +20,8 @@ import RestaurantDetail from './components/RestaurantDetail';
 import RegisterRestaurant from './components/RegisterRestaurant';
 import Receipt from './components/Receipt';
 import ChangePassword from './components/ChangePassword';
+import Tuan1 from './components/Tuan1';
+import Tuan2 from './components/Tuan2';
 
 
 export const MyUserContext = createContext();
@@ -54,7 +56,9 @@ function App() {
               <Route path="/restaurant_detail/:restaurantId" element={<RestaurantDetail />} />
               <Route path="/register_restaurant" element={<RegisterRestaurant />} />
               <Route path="/receipt" element={<Receipt />} />    
-              <Route path="/changepassword" element={<ChangePassword />} />    
+              <Route path="/changepassword" element={<ChangePassword />} />  
+              <Route path="/tuan1" element={<Tuan1 />} />
+              <Route path="/tuan2" element={<Tuan2 />} />  
               </Routes>
           </Container>
           <Footer />

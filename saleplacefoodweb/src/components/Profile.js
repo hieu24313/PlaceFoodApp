@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MyUserContext } from "../App";
 import ProfileComponents from "../layout/ProfileComponents";
 import { MDBBtn, MDBCardBody, MDBInput } from "mdb-react-ui-kit";
+import { ToastContainer, toast } from "react-toastify";
 
 const Profile = () => {
 
@@ -19,6 +20,7 @@ const Profile = () => {
 
     const avatar = useRef();
     const [current_avatar, setCurrent_avatar] = useState(current_user.avatar);
+    const notify = (x) => toast(x);
     const [user, setUser] = useState({
         "userId": current_user.userId,
         "firstname": "",
@@ -44,7 +46,7 @@ const Profile = () => {
         console.log(avatar[0]);
         setCurrent_avatar(avatar[0]);
     }
-    console.log(current_user)
+    // console.log(current_user)
 
     const reloadUser = async () => {
         try {
@@ -89,12 +91,18 @@ const Profile = () => {
                 if (res.status === 200) {
                     setLoading(true);
                     reloadUser();
-                    nav("/");
+                    setLoading(false);
+                    
+                    // nav("/");
+                    toast("Lưu Thành Công!!");
                 }
 
             } catch (err) {
-                console.log(err)
+                toast(err.request.responseText);
+                console.log(err);
+                setLoading(false);
             }
+
         }
         process();
 
@@ -108,6 +116,7 @@ const Profile = () => {
 
     return <>
         <Form onSubmit={updateUser}>
+        <ToastContainer />
             <h1 className="text-center text-info">Your Profile</h1>
             <div className="contain_info">
                 <ProfileComponents />
@@ -125,13 +134,13 @@ const Profile = () => {
         "phonenumber": "",
         "avatar": current_user.avatar */}
                     <MDBCardBody className='px-5'>
-                        <h2 className="text-uppercase text-center mb-5">Tạo Tài Khoản</h2>
+                        <h2 className="text-uppercase text-center mb-5"></h2>
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.firstname} required onChange={(e) => change(e, "firstname")} label='Họ' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.lastname} required onChange={(e) => change(e, "lastname")} label='Tên' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.username} readOnly required onChange={(e) => change(e, "username")} label='Tên Tài Khoản' size='lg' id='form3' type='text' />
-                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.location} readOnly required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
-                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.email} readOnly required onChange={(e) => change(e, "email")} label='Email' size='lg' id='form3' type='text' />
-                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.phonenumber} readOnly required onChange={(e) => change(e, "phonenumber")} label='Số Điện Thoại' size='lg' id='form3' type='text' />
+                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.location} required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
+                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.email} required onChange={(e) => change(e, "email")} label='Email' size='lg' id='form3' type='text' />
+                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.phonenumber} required onChange={(e) => change(e, "phonenumber")} label='Số Điện Thoại' size='lg' id='form3' type='text' />
 
                         {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Lưu</MDBBtn>}
                     </MDBCardBody>

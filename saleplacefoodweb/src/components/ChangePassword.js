@@ -7,12 +7,14 @@ import { authApi, endpoints } from "../configs/Apis";
 import '../resources/css/ChangePassword.css'
 import ProfileComponents from "../layout/ProfileComponents";
 import MySpinner from "../layout/MySpinner";
+import { ToastContainer, toast } from "react-toastify";
 
 const ChangePassword = () => {
 
     const [user,] = useContext(MyUserContext);
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
+    const notify = (x) => toast(x);
     const [newUserPassword, setNewUserPassword] = useState({
         "username": user.username,
         "password": "",
@@ -39,9 +41,11 @@ const ChangePassword = () => {
                 // let e = `${endpoints['changePassword']}`
                 let data = await authApi().post(endpoints['changePassword'], form);
                 console.log(data);
-                nav("/profile");
+                toast("Đổi mật khẩu thành công!!")
+                // nav("/profile");
             }catch(e){
                 console.error(e);
+                toast(e);
             }
         }
     }
@@ -50,6 +54,7 @@ const ChangePassword = () => {
     return <>
         <h1 className="text-center text-info">Đổi Mật Khẩu</h1>
         <div class="change_pass_page">
+        <ToastContainer />
             <div className="contain_info">
                 <ProfileComponents />
                 <div className="contain_info_2">

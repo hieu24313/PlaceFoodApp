@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { Alert, Button, Form, Table } from "react-bootstrap";
 import cookie from "react-cookies";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MyCartContext } from "../App";
 import { authApi, endpoints } from "../configs/Apis";
 import MySpinner from "../layout/MySpinner";
+import '../resources/css/Cart.css'
 
 const Cart = () => {
 
@@ -12,9 +13,10 @@ const Cart = () => {
     const [carts, setCarts] = useState(cookie.load("cart") || null);
     const [user,] = useState(cookie.load("user") || null);
     const [, cartDispatch] = useContext(MyCartContext);
+    const nav = useNavigate();
     // const [empty, setEmpty] = useState();
 
-
+    let tong = 0;
 
     const updateItem = () => {
         cookie.save("cart", carts);
@@ -80,12 +82,13 @@ const Cart = () => {
 
 
     if (carts.length === 0)
-        return <Alert variant="success" className="mt-2">Thanh toán thành công!</Alert>
+        nav("/receipt");
 
     return <>
-    <h1 className="text-center text-info">Giỏ Hàng</h1>
+    <h1 className="text-center text-success">Giỏ Hàng</h1>
+        <div className="cart_table_parent">
         <Table striped bordered hover className="cart_table">
-            <thead>
+            <thead className="table_header">
                 <tr>
                     <th>#</th>
                     <th>Tên sản phẩm</th>
@@ -93,10 +96,12 @@ const Cart = () => {
                     <th>Tổng</th>
                     <th>Số lượng</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {Object.values(carts).map(c => {
+                    tong += c.unitPrice * c.quantity;
                     return <tr>
                         <td>{c.foodId}</td>
                         <td>{c.foodName}</td>
@@ -108,7 +113,7 @@ const Cart = () => {
                                 onChange={(e) => setCarts({ ...carts, [c.foodId]: { ...carts[c.foodId], "quantity": parseInt(regex.test(e.target.value) === true ? e.target.value : 0)  } })} />
                         </td>
                         <td>
-                            <Button variant="danger" onClick={() => deleteItem(c)}>&times;</Button>
+                            <Button variant="danger" onClick={() => deleteItem(c)}>Xóa</Button>
                         </td>
                     </tr>
                 })}
@@ -116,13 +121,18 @@ const Cart = () => {
 
             </tbody>
         </Table>
-                {console.log(user)}
+        </div>
+        <div className="div_btn_pay">
+            <h3>Tổng Tiền: {tong}</h3>
+        </div>
+        <div className="div_btn_pay">
         {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán! </p> : 
             user.location !== null  ? 
             <>
-                {loading === true ? <MySpinner />: <Button variant="info" onClick={pay} className="mt-2 mb-2">Thanh toán</Button>} 
+                {loading === true ? <MySpinner />: <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>} 
             </>
             : <p>Vui lòng thêm <Link to="/profile">địa chỉ</Link> để thanh toán!</p>}
+        </div>
     </>
 }
 export default Cart;

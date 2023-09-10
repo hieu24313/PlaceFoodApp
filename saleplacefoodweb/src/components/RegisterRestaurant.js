@@ -8,12 +8,15 @@ import '../resources/css/RegisterRestaurant.css'
 import { MyUserContext } from "../App";
 import { MDBBtn, MDBCard, MDBCardBody, MDBInput } from "mdb-react-ui-kit";
 import ProfileComponents from "../layout/ProfileComponents";
+import { ToastContainer, toast } from "react-toastify";
+
 
 const RegisterRestaurant = () => {
 
     const [restaurant, setRestaurant] = useState([]);
     // const [q] = useSearchParams();
     const [user,] = useContext(MyUserContext);
+    const notify = (x) => toast(x);
 
 
     const loadRestaurant = async () => {
@@ -53,13 +56,18 @@ const RegisterRestaurant = () => {
 
 
 
-            form.append("avatar", avatar.current.files[0]);
+            if (avatar.current.files[0] !== undefined) {
+                form.append("avatar", avatar.current.files[0]);
+            } else {
+                form.append("avatar", new Blob());
+            }
             // console.log(form)
             let res = await authApi().post(endpoints['register-restaurant'], form);
 
             if (res.status === 201) {
-                loadRestaurant()
+                loadRestaurant();
                 setLoading(false);
+                notify("Gửi yêu cầu thành công!!!")
                 // nav("/");
             }
         }
@@ -83,18 +91,20 @@ const RegisterRestaurant = () => {
     return <>
         <h1 className="text-center text-info">Đăng Ký Nhà Hàng</h1>
         <div className="contain_info ">
-        <ProfileComponents />
+            <ProfileComponents />
             <div className="contain_info_2">
-
-                <MDBCard className='m-5 register_form' style={{ maxWidth: '600px' }}>
-                    <MDBCardBody className='px-5 register_form_child'>
-                        <h2 className="text-uppercase text-center mb-5">Form Đăng Ký Nhà Hàng</h2>
-                        <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "restaurantName")} label='Tên Nhà Hàng' size='lg' id='form1' type='text' />
-                        <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
-                        <MDBInput wrapperClass='mb-4' ref={avatar} size='lg' id='form4' type='file' />
-                        {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Gửi Yêu Cầu</MDBBtn>}
-                    </MDBCardBody>
-                </MDBCard>
+                <Form onSubmit={register_restaurant}>
+                <ToastContainer />
+                    <MDBCard className='m-5 register_form' style={{ maxWidth: '600px' }}>
+                        <MDBCardBody className='px-5 register_form_child'>
+                            <h2 className="text-uppercase text-center mb-5">Form Đăng Ký Nhà Hàng</h2>
+                            <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "restaurantName")} label='Tên Nhà Hàng' size='lg' id='form1' type='text' />
+                            <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
+                            <MDBInput wrapperClass='mb-4' ref={avatar} size='lg' id='form4' type='file' />
+                            {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Gửi Yêu Cầu</MDBBtn>}
+                        </MDBCardBody>
+                    </MDBCard>
+                </Form>
                 <hr />
 
                 <Col>
@@ -118,7 +128,7 @@ const RegisterRestaurant = () => {
                                     <td>{r.userId.userId}</td>
                                 </tr>
                             })}
-                            {restaurant.length === 0 ?<tr><Alert>Bạn chưa đăng ký nhà hàng nào!</Alert></tr> : null}
+                            {restaurant.length === 0 ? <tr><Alert>Bạn chưa đăng ký nhà hàng nào!</Alert></tr> : null}
                         </tbody>
                     </Table>
 

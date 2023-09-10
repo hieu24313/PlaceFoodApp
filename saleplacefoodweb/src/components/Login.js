@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { MyUserContext } from "../App";
 import { Alert, Button, Form } from "react-bootstrap";
 import Apis, { authApi, endpoints } from "../configs/Apis";
@@ -22,6 +22,7 @@ const Login = () => {
     const [q] = useSearchParams();
     const [err, setErr] = useState(null);
     const notify = (x) => toast(x);
+    const avatar = useRef();
 
     const login = (evt) => {
         evt.preventDefault();
@@ -31,7 +32,7 @@ const Login = () => {
                 setLoading(true);
                 //lấy token login
                 let res = await Apis.post(endpoints['login'], {
-                    "username": username,
+                    "username": username.trim() ,
                     "password": password
                 });
 
@@ -48,10 +49,8 @@ const Login = () => {
 
             } catch (ex) {
                 setLoading(false);
-                setErr(ex.request.responseText + "");
-                setTimeout(() => {
-                    notify(err);
-                }, 300)
+                notify(ex.request.responseText); 
+
 
             }
         }
@@ -59,7 +58,33 @@ const Login = () => {
 
     }
 
+    const loginGoogle = async (decoded) => {
+        let form = new FormData();
+        form.append("avatar", new Blob());
+        form.append("pathAvatarGoogle", decoded.avatar)
+        form.append("username", decoded.email);
+        form.append("firstname", decoded.family_name);
+        form.append("lastname", decoded.given_name);
+        form.append("phonenumber","");
+        form.append("location", "");
+        form.append("email", decoded.email);
 
+        try {
+            let res = await Apis.post(endpoints["login-google"], form);
+            cookie.save("token", res.data);    //lưu cái res.data kia bằng biến token vào cookie 
+
+            let { data } = await authApi().get(endpoints['current-user']);
+            cookie.save("user", data); //lưu cái data kia bằng biến user vào cookie 
+
+            dispatch({
+                "type": "login",
+                "payload": data
+            });
+        } catch (err) {
+            notify(err.request.responseText)
+        }
+
+    }
 
 
     if (user !== null) {
@@ -105,28 +130,16 @@ const Login = () => {
                                                     // console.log("Đăng nhập thành công", credentialResponse.credential);
                                                     var token = credentialResponse.credential;
                                                     var decoded = jwt_decode(token);
-                                                    console.log(decoded.email);
-
+                                                    console.log(decoded);
+                                                    loginGoogle(decoded);
 
                                                 }}
                                                 onFailure={(error) => {
-                                                    console.log("Đăng nhập không thành công", error);
+                                                    notify("Đăng nhập không thành công");
                                                 }}
                                                 redirectUri="http://localhost:3000"
                                             />
                                         </GoogleOAuthProvider>
-                                        {/* <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                  <MDBIcon fab icon='facebook-f' size="lg"/>
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                  <MDBIcon fab icon='twitter' size="lg"/>
-                </MDBBtn>
-
-                <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                    
-                  <MDBIcon fab icon='google' size="lg"/>
-                </MDBBtn> */}
                                     </div>
 
                                     <div>
@@ -143,39 +156,6 @@ const Login = () => {
             </div>
         </Form>
 
-        {/* <Form onSubmit={login} className="login_form">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Tên đăng nhập</Form.Label>
-                    <Form.Control value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Tên đăng nhập" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Mật khẩu</Form.Label>
-                    <Form.Control value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Mật khẩu" />
-                </Form.Group>
-                <Form.Group className="mb-3 login_form_last_child" controlId="exampleForm.ControlInput1">
-                    {loading === true ? <MySpinner /> : <>
-                        <Button variant="info" type="submit">Đăng nhập</Button> <span>Chưa có tài khoản? <Link to="/register">Đăng ký tại đây</Link> <Link to="/changPassword">Quên mật khẩu?</Link></span>
-                    </>}
-                </Form.Group>
-                {err !== null ? <Alert className="alert-danger">{err}</Alert> : ""}
-                <GoogleOAuthProvider clientId="589360561946-gt02gm1325ignk5brqcos0lgfj2m3836.apps.googleusercontent.com">
-                    <GoogleLogin
-                        clientId="589360561946-gt02gm1325ignk5brqcos0lgfj2m3836.apps.googleusercontent.com"
-                        onSuccess={(credentialResponse) => {
-                            // console.log("Đăng nhập thành công", credentialResponse.credential);
-                            var token = credentialResponse.credential;
-                            var decoded = jwt_decode(token);
-                            console.log(decoded.email);
-
-
-                        }}
-                        onFailure={(error) => {
-                            console.log("Đăng nhập không thành công", error);
-                        }}
-                        redirectUri="http://localhost:3000"
-                    />
-                </GoogleOAuthProvider>
-            </Form> */}
 
     </>
 }
