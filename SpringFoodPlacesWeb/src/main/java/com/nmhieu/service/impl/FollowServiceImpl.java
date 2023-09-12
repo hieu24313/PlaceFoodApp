@@ -11,6 +11,7 @@ import com.nmhieu.repository.FollowRepository;
 import com.nmhieu.repository.RestaurantsRepository;
 import com.nmhieu.repository.UsersRepository;
 import com.nmhieu.service.FollowService;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,22 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public Follow getFollowByUserIdAndRestaurantId(int userId, int restaurantId) {
         return this.followRepo.getFollowByUserIdAndRestaurantId(userId, restaurantId);
+    }
+
+    @Override
+    public Follow checkFollow(Map<String, String> params) {
+//        Follow follow = new Follow();
+        String userId = params.get("userId");
+        String restaurantId = params.get("restaurantId");
+        
+       
+
+        return this.followRepo.checkFollow( this.getFollowByUserIdAndRestaurantId(Integer.parseInt(userId), Integer.parseInt(restaurantId)));
+    }
+
+    @Override
+    public List<Follow> getFollowByRestaurantId(int restaurantId) {
+        return this.followRepo.getFollowByRestaurantId(restaurantId);
     }
 
 }

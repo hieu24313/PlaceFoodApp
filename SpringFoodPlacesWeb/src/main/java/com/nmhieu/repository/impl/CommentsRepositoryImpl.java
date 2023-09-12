@@ -5,7 +5,15 @@
 package com.nmhieu.repository.impl;
 
 import com.nmhieu.pojo.Comments;
+import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.ReceiptDetail;
+import com.nmhieu.pojo.Receipts;
+import com.nmhieu.pojo.Users;
 import com.nmhieu.repository.CommentsRepository;
+import com.nmhieu.repository.FoodItemsRepository;
+import com.nmhieu.repository.ReceiptDetailRepository;
+import com.nmhieu.repository.ReceiptRepository;
+import com.nmhieu.repository.UsersRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +49,18 @@ public class CommentsRepositoryImpl implements CommentsRepository {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private FoodItemsRepository foodItemsRepo;
+
+    @Autowired
+    private ReceiptDetailRepository receiptDetailRepo;
+
+    @Autowired
+    private ReceiptRepository receiptRepo;
+
+    @Autowired
+    private UsersRepository usersRepo;
 
     @Override
     public List<Comments> getComments(int foodId, Map<String, String> params) {
@@ -104,4 +126,17 @@ public class CommentsRepositoryImpl implements CommentsRepository {
         return session.createQuery(query).getSingleResult().intValue();
     }
 
+    @Override
+    public int checkComment(int foodId, int userId) {
+        Users user = this.usersRepo.getUserById(userId);
+        Fooditems food = this.foodItemsRepo.getFoodItemById(foodId);
+        List<ReceiptDetail> receiptDetail_list = this.receiptDetailRepo.getReceiptDetailsByFoodId(food.getFoodId());
+        for (ReceiptDetail rd : receiptDetail_list) {
+            Receipts receipt =  this.receiptRepo.getReceiptById(rd.getReceiptId().getReceiptId());
+            if (receipt.getUserId().getUserId().equals(user.getUserId())) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

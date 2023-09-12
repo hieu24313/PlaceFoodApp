@@ -16,4 +16,6 @@ import java.util.Map;
 public interface ReceiptRepository {
     boolean addReceipt(Map<String, Cart> carts);
     List<Receipts> getReceipts(Map<String, String> params);
+    Receipts getReceiptById(int id);
+    boolean updateAcceptReceipt(Receipts receipt);
 }

@@ -18,4 +18,5 @@ public interface ShelfLifeService {
     ShelfLife getShelfLifeById(int id);
     boolean delShelf(int id);
     List<ShelfLife> getShelfLifeByRestaurantId(int restaurantId);
+    List<ShelfLife> getAllShelfLife(Map<String, String> params);
 }

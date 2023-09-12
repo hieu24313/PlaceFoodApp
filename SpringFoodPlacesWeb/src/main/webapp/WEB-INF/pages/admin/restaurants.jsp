@@ -15,7 +15,7 @@
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -23,6 +23,7 @@
         </div>
     </div>
 </c:if>
+<h1 class="mt-5 mb-5" style="text-align: center; font-weight: bold">QUẢN TRỊ NHÀ HÀNG</h1>
 
 <section>
 
@@ -111,7 +112,7 @@
                     <div class="course_card">
                         <a class ="detail-restaurant" href="<c:url value="/admin/restaurants/${restaurant.restaurantId}" />">
                             <div class="course_card_img">
-                                <img ,="" alt="course" src="${restaurant.avatar}" />
+                                <img ,="" alt="Ảnh của ${restaurant.restaurantName}" src="${restaurant.avatar}" />
                             </div>
                             <div class="course_card_content">
                                 <h3 class="title">

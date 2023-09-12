@@ -12,7 +12,7 @@
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -37,7 +37,7 @@
 
         <div class="form-floating mb-3 mt-3">
             <form:input type="text" class="form-control" path="description" id="description" placeholder="Nhập loại... " name="description" />
-            <label for="description">Nhập loại...</label>
+            <label for="description">Nhập mô tả...</label>
         </div>
         <div class="form-floating mb-3 mt-3">
             <form:select class="form-select" id="shelfLife_list" name="shelfLife_list" path="shelflifeId">

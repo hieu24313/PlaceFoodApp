@@ -266,15 +266,34 @@ public class RestaurantsRepositoryImpl implements RestaurantsRepository {
 
     @Override
     public List<Restaurants> getRestaurantByUserId(int userId) {
+//        try {
+//            Session session = this.factory.getObject().getCurrentSession();
+//            Query query = session.createQuery("FROM Restaurants WHERE userId=:userId AND active = true");
+//            query.setParameter("userId", userId);
+//            return query.getResultList();
+//        } catch (NoResultException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
         try {
             Session session = this.factory.getObject().getCurrentSession();
-            Query query = session.createQuery("FROM Restaurants WHERE userId=:userId AND active = true");
-            query.setParameter("userId", userId);
-            return query.getResultList();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Restaurants> criteriaQuery = builder.createQuery(Restaurants.class);
+            Root<Restaurants> root = criteriaQuery.from(Restaurants.class);
+
+            Predicate idPredicate = builder.equal(root.get("userId"), userId);
+
+            Predicate otherCondition = builder.equal(root.get("active"), Boolean.TRUE);
+
+            Predicate finalPredicate = builder.and(idPredicate, otherCondition);
+
+            criteriaQuery.where(finalPredicate);
+            return session.createQuery(criteriaQuery).getResultList();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
         }
+
     }
 
     @Override

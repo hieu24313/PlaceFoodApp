@@ -9,11 +9,12 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link rel="stylesheet" href=" <c:url value="/css/foodItems.css" /> "/>
 <link rel="stylesheet" href=" <c:url value="/css/toastBug.css" /> "/>
+<link rel="stylesheet" href=" <c:url value="/css/background.css" /> "/>
 
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -25,31 +26,31 @@
     <div>
         <form:form method="post" action="${action}" modelAttribute="foodItem" enctype="multipart/form-data">
             <form:errors path="*" element="div" cssClass="alert alert-danger" />
-            <h1 class="heading">CẬP NHẬT MÓN ĂN MỚI</h1>
+            <h1 class="heading">CẬP NHẬT MÓN ĂN</h1>
                 
             <div class="form-floating mb-3 mt-3">
-                <form:input type="text" class="form-control" path="foodName" id="foodName" placeholder="Nhập tên món... " name="foodName" />
+                <form:input required="required" type="text" class="form-control" path="foodName" id="foodName" placeholder="Nhập tên món... " name="foodName" />
                 <label for="foodName">Nhập tên món...</label>
             </div>
 
             <div class="form-floating mb-3 mt-3">
-                <form:input type="text" class="form-control" path="price" id="price" placeholder="Nhập giá... " name="price" />
+                <form:input required="required" type="number" class="form-control" path="price" id="price" placeholder="Nhập giá... " name="price" />
                 <label for="price">Nhập giá...</label>
             </div>
 
             <div class="form-floating mb-3 mt-3">
-                <form:input type="text" class="form-control" path="description" id="description" placeholder="Nhập loại... " name="description" />
-                <label for="description">Nhập loại...</label>
+                <form:input required="required" type="text" class="form-control" path="description" id="description" placeholder="Nhập loại... " name="description" />
+                <label for="description">Nhập mô tả...</label>
             </div>
             <div class="form-floating mb-3 mt-3">
-                <form:select class="form-select" id="shelfLife_list" name="shelfLife_list" path="shelflifeId">
+                <form:select required="required" class="form-select" id="shelfLife_list" name="shelfLife_list" path="shelflifeId">
                     <c:forEach items="${shelfLife_list}" var="sL">
                         <c:choose>
                             <c:when test="${sL.shelflifeId == foodItem.shelflifeId.shelflifeId}">
-                                <option value="${sL.shelflifeId}" selected="${sL.shelflifeId}">${sL.shelflifeName}</option>
+                                <option value="${sL.shelflifeId}" selected="${sL.shelflifeId}">${sL.shelflifeName} (${sL.fromDate} - ${sL.toDate})</option>
                             </c:when>
                             <c:otherwise>
-                                <option value="${sL.shelflifeId}">${sL.shelflifeName}</option>
+                                <option value="${sL.shelflifeId}">${sL.shelflifeName} (${sL.fromDate} - ${sL.toDate})</option>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
@@ -59,7 +60,7 @@
             </div>
 
             <div class="form-floating mb-3 mt-3">
-                <form:select class="form-select" id="category_list" name="category_list" path="categoryfoodId">
+                <form:select required="required" class="form-select" id="category_list" name="category_list" path="categoryfoodId">
                     <c:forEach items="${category_list}" var="cate">
                         <c:choose>
                             <c:when test="${cate.categoryfoodId == foodItem.categoryfoodId.categoryfoodId}">
@@ -84,7 +85,7 @@
 
             <div class="form-floating mb-3 mt-3">
                 <button class="btn btn-info" type="submit">
-                    Thêm món ăn PROMAX
+                    Thêm món ăn
                 </button>
             </div>
         </form:form>
@@ -105,10 +106,8 @@
                 <th>Ảnh</th>
                 <th>Tên</th>
                 <th>Giá</th>
-                <th>Tình Trạng</th>
                 <th>mô tả</th>
-
-       
+                <th>Thời gian bán</th>
         </tr>
         </thead>
 
@@ -119,9 +118,9 @@
                     <td>${food.foodId}</td>
                     <td><img style="width:120px" src=${food.avatar} /></td>
                     <td>${food.foodName}</td>
-                    <td>${food.price}</td>
-                    <td>${food.available}</td>
+                    <td>${food.price} VNĐ</td>
                     <td>${food.description}</td>
+                    <td>${food.shelflifeId.shelflifeName} (${food.shelflifeId.fromDate} - ${food.shelflifeId.toDate})</td>
 
                     <td>
                         <c:url value="/restaurantManager/foodItems/${food.foodId}" var="addFoodItemAction">

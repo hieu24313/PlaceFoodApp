@@ -29,38 +29,37 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author HP
  */
-
 @RestController
 @RequestMapping("/api")
 
 public class ApiCommentsController {
-    
+
     @Autowired
     private CommentsService commentsService;
-    
+
     @Autowired
     private Environment environment;
-    
+
     @GetMapping(path = "/foodItems/{foodId}/comments/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<List<Comments>> listComments(@PathVariable(value = "foodId") int foodId, @RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.commentsService.getComments(foodId, params), HttpStatus.OK);
     }
-    
-    @GetMapping(path = "/foodItems/{foodId}/countFoodItems/", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping(path = "/foodItems/{foodId}/countComments/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<Map<String, String>> countFoodItems(@PathVariable(value = "foodId") int foodId) {
+    public ResponseEntity<Map<String, String>> countComments(@PathVariable(value = "foodId") int foodId) {
         Map<String, String> params = new HashMap<>();
         int pageSizeComments = Integer.parseInt(this.environment.getProperty("PAGE_SIZE_COMMENTS"));
         int countCommentsByFoodId = this.commentsService.countComments(foodId);
         params.put("page-size-comments", this.environment.getProperty("PAGE_SIZE_COMMENTS"));
         params.put("count-comments-by-foodId", String.valueOf(this.commentsService.countComments(foodId)));
         int pages = (int) Math.ceil((countCommentsByFoodId * 1.0) / pageSizeComments);
-        
+
         params.put("pages", String.valueOf(pages));
         return new ResponseEntity<>(params, HttpStatus.OK);
     }
-    
+
     @PostMapping(path = "/add-comment/",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -69,5 +68,12 @@ public class ApiCommentsController {
         Comments comment = this.commentsService.addComment(params, avatar);
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
-    
+
+    @GetMapping(path = "/foodItems/{foodId}/check-comment/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<Integer> checkComments(@PathVariable(value = "foodId") int foodId, @RequestParam Map<String, String> params) {
+        int check = this.commentsService.checkComment(foodId, params);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
 }

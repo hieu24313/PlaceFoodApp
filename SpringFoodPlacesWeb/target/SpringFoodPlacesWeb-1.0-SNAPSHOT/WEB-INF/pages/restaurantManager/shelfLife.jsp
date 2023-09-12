@@ -9,12 +9,12 @@
 <link rel="stylesheet" href=" <c:url value="/css/foodItems.css" /> "/>
 
 <c:url value="/restaurantManager/indexShelfLife" var = "action" />
-
+<link rel="stylesheet" href=" <c:url value="/css/background.css" /> "/>
 <link rel="stylesheet" href=" <c:url value="/css/toastBug.css" /> "/>
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -32,7 +32,7 @@
         <form:form method="post" modelAttribute="shelfLife">
         
         <div class="form-floating mb-3 mt-3">
-            <form:input type="text" class="form-control" path="shelflifeName" id="shelflifeName" placeholder="Nhập Tên... " name="shelflifeName" />
+            <form:input required="required" type="text" class="form-control" path="shelflifeName" id="shelflifeName" placeholder="Nhập Tên... " name="shelflifeName" />
             <label for="shelflifeName">Nhập Tên</label>
         </div>
         <div class="form-floating mb-3 mt-3">
@@ -46,7 +46,7 @@
 
         <div class="form-floating mb-3 mt-3">
             <button class="btn btn-info" type="submit">
-                Thêm thời gian bán PROMAX
+                Thêm thời gian bán
             </button>
         </div>
     </form:form>
@@ -58,14 +58,14 @@
     <table class="table-hover ">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>fromDate</th>
-            <th>toDate</th>
+            <th>Tên thời gian bán</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
 
     </tr>
     </thead>
 
-    <c:forEach items="${shelfLifes}" var="s">
+    <c:forEach items="${shelfLifes_All}" var="s">
         <tbody>
             <tr>
                 <td>${s.shelflifeName}</td>

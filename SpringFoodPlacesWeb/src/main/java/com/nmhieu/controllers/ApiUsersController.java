@@ -73,7 +73,6 @@ public class ApiUsersController {
 //        Users user = this.usersService.addUser(params, avatar);
 //        return new ResponseEntity<>(user, HttpStatus.CREATED);
 //    }
-
     @PostMapping(path = "/register/",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -161,14 +160,14 @@ public class ApiUsersController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping(path = "/change-password/",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @CrossOrigin
     public ResponseEntity<String> changePassword(@RequestParam Map<String, String> params) {
         int check = this.usersService.changePassword(params);
-         String message = "Có lỗi xảy ra!";
+        String message = "Có lỗi xảy ra!";
 
         if (check == 1) {
             return new ResponseEntity<>("Đổi mật khẩu thành công!", HttpStatus.OK);
@@ -176,6 +175,46 @@ public class ApiUsersController {
             message = "Không tìm thấy tài khoản để đổi mật khẩu!";
         } else if (check == 3) {
             message = "Mật khẩu cũ không chính xác!";
+        } else {
+            message = "Có lỗi xảy ra!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+//    @PostMapping("/login-google/")
+//    @CrossOrigin
+//    public ResponseEntity<String> loginGoogle(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+//        Users userRegister = this.usersService.registerUserGoogle(params, avatar);
+//        String message = "";
+//        if (userRegister != null) {
+//            message = "Đăng ký thành công!";
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+//        else {
+//            message = "Có lỗi xảy ra!";
+//        }
+//
+//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+//    }
+    @PostMapping("/login-google/")
+    @CrossOrigin
+    public ResponseEntity<String> loginGoogle(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+        Users userRegister = this.usersService.registerUserGoogle(params, avatar);
+        String message = "";
+        if (userRegister != null) {
+            // Đăng ký thành công!
+            int check = this.usersService.authUserLoginGoogle(userRegister.getUsername(), userRegister.getPassword());
+            if (check == 1) {
+                String token = this.jwtService.generateTokenLogin(userRegister.getUsername());
+                return new ResponseEntity<>(token, HttpStatus.OK);
+            } else if (check == 2) {
+                message = "Mật khẩu không chính xác!";
+            } else if (check == 3) {
+                message = "Tài khoản không chính xác!";
+            } else {
+                message = "Có lỗi xảy ra!";
+            }
         } else {
             message = "Có lỗi xảy ra!";
         }

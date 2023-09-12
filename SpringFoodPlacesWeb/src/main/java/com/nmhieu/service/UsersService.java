@@ -56,4 +56,8 @@ public interface UsersService extends UserDetailsService {
 
     int changePassword(Map<String, String> params);
 
+    Users registerUserGoogle(Map<String, String> params, MultipartFile avatar);
+
+    int authUserLoginGoogle(String username, String password);
+
 }

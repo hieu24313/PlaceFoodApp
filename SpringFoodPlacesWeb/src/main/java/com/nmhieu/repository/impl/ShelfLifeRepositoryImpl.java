@@ -9,6 +9,7 @@ import com.nmhieu.pojo.ShelfLife;
 import com.nmhieu.repository.ShelfLifeRepository;
 import com.nmhieu.service.FoodItemsService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.NoResultException;
@@ -71,6 +72,11 @@ public class ShelfLifeRepositoryImpl implements ShelfLifeRepository {
             }
 
         }
+
+        Date today = new Date();
+        predicates.add(criteriaBuilder.lessThanOrEqualTo(rootShelfLife.get("fromDate"), today));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootShelfLife.get("toDate"), today));
+
         predicates.add(
                 criteriaBuilder.equal(rootShelfLife.get("active"), Boolean.TRUE));
         query.where(predicates.toArray(Predicate[]::new));
@@ -175,6 +181,46 @@ public class ShelfLifeRepositoryImpl implements ShelfLifeRepository {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<ShelfLife> getAllShelfLife(Map<String, String> params) {
+        Session session = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<ShelfLife> query = criteriaBuilder.createQuery(ShelfLife.class);
+        Root rootShelfLife = query.from(ShelfLife.class);
+
+        query.select(rootShelfLife);
+        List<Predicate> predicates = new ArrayList<>();
+        if (params != null) {
+
+            String keyword = params.get("keyword");
+            if (keyword != null && !keyword.isEmpty()) {
+                predicates.add(
+                        criteriaBuilder.like(rootShelfLife.get("shelflifeName"), String.format("%%%s%%", keyword))
+                );
+            }
+
+            String restaurantId = params.get("restaurantId");
+            if (restaurantId != null && !restaurantId.isEmpty()) {
+                predicates.add(
+                        criteriaBuilder.equal(rootShelfLife.get("restaurantId"), Integer.valueOf(restaurantId))
+                );
+            }
+
+        }
+
+//        Date today = new Date();
+//        predicates.add(criteriaBuilder.lessThanOrEqualTo(rootShelfLife.get("fromDate"), today));
+//        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootShelfLife.get("toDate"), today));
+
+        predicates.add(
+                criteriaBuilder.equal(rootShelfLife.get("active"), Boolean.TRUE));
+        query.where(predicates.toArray(Predicate[]::new));
+        Query final_query = session.createQuery(query);
+
+       
+        return final_query.getResultList();
     }
 
 }

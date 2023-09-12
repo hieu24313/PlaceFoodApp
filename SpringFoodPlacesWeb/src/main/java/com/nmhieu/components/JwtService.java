@@ -17,10 +17,9 @@ import java.text.ParseException;
 import java.util.Date;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
- * @author Administrator
+ * @author HP
  */
 @Component
 public class JwtService {

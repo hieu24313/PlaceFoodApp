@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -37,20 +38,19 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author HP
  */
-
 @Transactional
 @Repository
 public class ReceiptRepositoryImpl implements ReceiptRepository {
 
     @Autowired
     private LocalSessionFactoryBean factory;
-    
+
     @Autowired
     private UsersRepository userRepo;
-    
+
     @Autowired
     private FoodItemsRepository foodItemsRepo;
-    
+
     @Autowired
     private Environment env;
 
@@ -63,15 +63,15 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Users user = this.userRepo.getUserByUsername_new(authentication.getName());
-            
+
             receipt.setUserId(user);
             receipt.setReceiptDate(new Date());
             receipt.setActive(Boolean.TRUE);
             receipt.setStatusReceiptId(new ReceiptStatus(1));
             session.save(user);
-            
+
             double totalAmount = 0;
-            
+
             for (Cart cart : carts.values()) {
                 ReceiptDetail receiptDetail = new ReceiptDetail();
                 receiptDetail.setFooditemId(this.foodItemsRepo.getFoodItemById(Integer.parseInt(cart.getFoodId().toString())));
@@ -84,7 +84,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
                 session.save(receiptDetail);
             }
             receipt.setTotalPayment(BigDecimal.valueOf(totalAmount));
-            
+
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();
@@ -94,7 +94,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
 
     @Override
     public List<Receipts> getReceipts(Map<String, String> params) {
-         Session session = this.factory.getObject().getCurrentSession();
+        Session session = this.factory.getObject().getCurrentSession();
 //        Query query = session.createQuery("From Fooditems");
         CriteriaBuilder b = session.getCriteriaBuilder();
         CriteriaQuery<Receipts> q = b.createQuery(Receipts.class);
@@ -149,4 +149,37 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         return query.getResultList();
     }
 
+    @Override
+    public Receipts getReceiptById(int id) {
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Receipts> criteriaQuery = builder.createQuery(Receipts.class);
+            Root<Receipts> root = criteriaQuery.from(Receipts.class);
+
+            Predicate idPredicate = builder.equal(root.get("receiptId"), id);
+
+            Predicate otherCondition = builder.equal(root.get("active"), Boolean.TRUE);
+
+            Predicate finalPredicate = builder.and(idPredicate, otherCondition);
+
+            criteriaQuery.where(finalPredicate);
+            return session.createQuery(criteriaQuery).getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean updateAcceptReceipt(Receipts receipt) {
+        Session session = this.factory.getObject().getCurrentSession();
+        try {
+            session.update(receipt);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

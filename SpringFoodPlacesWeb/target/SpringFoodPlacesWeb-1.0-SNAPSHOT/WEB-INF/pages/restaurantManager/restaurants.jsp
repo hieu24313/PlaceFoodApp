@@ -18,7 +18,7 @@
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -136,7 +136,7 @@
                 <div class="course_card">
                     <a class ="detail-restaurant" href="<c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" />">
                         <div class="course_card_img">
-                            <img ,="" alt="course" src="${restaurant.avatar}" />
+                            <img ,="" alt="Ảnh của ${restaurant.restaurantName}" src="${restaurant.avatar}" />
                         </div>
                         <div class="course_card_content">
                             <h3 class="title">

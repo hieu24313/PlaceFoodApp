@@ -17,6 +17,7 @@ export const endpoints = {
     "comments": (foodId) => `${SERVER_CONTEXT}/api/foodItems/${foodId}/comments/`,
     "add-comment": `${SERVER_CONTEXT}/api/add-comment/`,
     "restaurant": `${SERVER_CONTEXT}/api/restaurants/`,
+    "restaurant-profile": `${SERVER_CONTEXT}/api/restaurants/userProfile/`,
     "restaurant_detail": (restaurantId) => `${SERVER_CONTEXT}/api/restaurants/${restaurantId}/`,
     "register-restaurant": `${SERVER_CONTEXT}/api/register-restaurant/`,
     "receipt": `${SERVER_CONTEXT}/api/receipts/`,

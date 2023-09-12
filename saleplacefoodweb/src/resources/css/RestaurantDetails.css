@@ -118,3 +118,19 @@
     top: 0;
     width: 70%;
 }
+
+.form_googlemap {
+    margin-top: 30px;
+    display: flex;
+}
+.map {
+    width: 50%;
+    height: 70vh;
+}
+
+.text_map {
+    margin-left: 20px;
+    width: 50%;
+    height: 50vh;
+
+}

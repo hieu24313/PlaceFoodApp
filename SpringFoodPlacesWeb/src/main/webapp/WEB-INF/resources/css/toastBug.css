@@ -4,7 +4,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 */
 /* 
     Created on : Sep 5, 2023, 1:42:18 PM
-    Author     : Administrator
+    Author     : HP
 */
  .toast.show {
     position: fixed;
@@ -13,12 +13,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     left: 40%;
     width: 400px;
     /*background-color: rgba(255,255,255,1);*/
-      background-color: rgb(241, 174, 181);
+      background-color: lightblue;
 
-    box-shadow: 0 19px 38px rgba(241, 174, 181,0.70);
+    box-shadow: 0 19px 38px lightblue;
  }
   .toast-header{
-  background-color: rgb(241, 174, 181);}
+  background-color: lightblue;}
  .toast-header>h1{
      /*text-align: center;*/
      /*margin: 0 auto;*/

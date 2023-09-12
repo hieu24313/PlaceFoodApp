@@ -4,12 +4,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 */
 /* 
     Created on : Sep 8, 2023, 4:32:40 PM
-    Author     : Administrator
+    Author     : HP
 */
 
 div.res-manager{
     margin: 0 auto;
-    width: 60%;
+    width: 80%;
     display: flex;
 }
 .heading>h1{
@@ -18,7 +18,7 @@ div.res-manager{
     color:black;
 }
 div.res-manager>div.res-item{
-    width: 44%;
+    width: 33%;
     height: 350px;
     border-width: 2px;
     border-style: outset;

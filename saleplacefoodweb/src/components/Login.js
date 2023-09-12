@@ -11,6 +11,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { MDBBtn, MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBIcon, MDBInput, MDBRow } from "mdb-react-ui-kit";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 const Login = () => {
@@ -18,55 +19,66 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [user, dispatch] = useContext(MyUserContext);
     const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [password, setPassword] = useState("");
     const [q] = useSearchParams();
     const [err, setErr] = useState(null);
     const notify = (x) => toast(x);
     const avatar = useRef();
+    const [kt, setKt] = useState(false);
 
     const login = (evt) => {
         evt.preventDefault();
         setLoading(true);
-        const process = async () => {
-            try {
-                setLoading(true);
-                //lấy token login
-                let res = await Apis.post(endpoints['login'], {
-                    "username": username.trim() ,
-                    "password": password
-                });
+        if (kt === true) {
+            const process = async () => {
+                try {
+                    setLoading(true);
+                    //lấy token login
+                    let res = await Apis.post(endpoints['login'], {
+                        "username": username.trim(),
+                        "password": password
+                    });
 
-                //cookie khác của thầy, xem lại nếu lỗi.....:)))))) -------------đã fix
-                cookie.save("token", res.data);    //lưu cái res.data kia bằng biến token vào cookie 
+                    //cookie khác của thầy, xem lại nếu lỗi.....:)))))) -------------đã fix
+                    cookie.save("token", res.data);    //lưu cái res.data kia bằng biến token vào cookie 
 
-                let { data } = await authApi().get(endpoints['current-user']);
-                cookie.save("user", data); //lưu cái data kia bằng biến user vào cookie 
+                    let { data } = await authApi().get(endpoints['current-user']);
+                    cookie.save("user", data); //lưu cái data kia bằng biến user vào cookie 
 
-                dispatch({
-                    "type": "login",
-                    "payload": data
-                });
+                    dispatch({
+                        "type": "login",
+                        "payload": data
+                    });
 
-            } catch (ex) {
-                setLoading(false);
-                notify(ex.request.responseText); 
+                } catch (ex) {
+                    setLoading(false);
+                    notify(ex.request.responseText);
 
 
+                }
             }
+
+            process();
         }
-        process();
+        else {
+            notify("Vui lòng xác minh bạn là con người!");
+            setLoading(false);
+        }
+
 
     }
 
     const loginGoogle = async (decoded) => {
-        let form = new FormData();
+        if(kt === true){
+            console.log(decoded)
+            let form = new FormData();
         form.append("avatar", new Blob());
-        form.append("pathAvatarGoogle", decoded.avatar)
+        form.append("pathAvatarGoogle", decoded.picture);
         form.append("username", decoded.email);
         form.append("firstname", decoded.family_name);
         form.append("lastname", decoded.given_name);
-        form.append("phonenumber","");
-        form.append("location", "");
+        // form.append("phonenumber","");
+        // form.append("location", "");
         form.append("email", decoded.email);
 
         try {
@@ -83,7 +95,14 @@ const Login = () => {
         } catch (err) {
             notify(err.request.responseText)
         }
+        }else{
+            notify("Vui lòng xác minh bạn là con người!");
+        }
 
+    }
+
+    const checkRecaptcha = () => {
+        setKt(true);
     }
 
 
@@ -116,6 +135,10 @@ const Login = () => {
                                     <MDBInput wrapperClass='mb-4 mx-5 w-100' value={username} onChange={e => setUsername(e.target.value)} labelClass='text-white' label='Tài Khoản' id='formControlLg' type='text' size="lg" />
                                     <MDBInput wrapperClass='mb-4 mx-5 w-100' value={password} onChange={e => setPassword(e.target.value)} labelClass='text-white' label='Mật Khẩu' id='formControlLg' type='password' size="lg" />
 
+                                    <ReCAPTCHA
+                                        sitekey="6LfIq_MkAAAAAAkqaKZUFwqhKnBZ44wfanxQfFQk"
+                                        onChange={checkRecaptcha}
+                                    />
                                     <p className="small mb-3 pb-lg-2"><Link class="text-white-50" to="/changPassword">Quên mật khẩu?</Link></p>
 
                                     {loading === true ? <MySpinner /> : <MDBBtn outline className='mx-2 px-5' type="submit" color='white' size='lg'>Đăng Nhập</MDBBtn>}

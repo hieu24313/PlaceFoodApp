@@ -8,8 +8,44 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link rel="stylesheet" href=" <c:url value="/css/newRestaurant.css" /> "/>
+<link rel="stylesheet" href=" <c:url value="/css/stats.css" /> "/>
 <script src="<c:url value="/js/restaurants.js" />"></script>
+<script src="<c:url value="/js/mychart.js" />"></script>
 
+<script>
+    let labels = [];
+    let data = [];
+
+    <c:forEach var="s" items="${statsFood}">
+    labels.push('${s[1]}');
+    data.push(${s[2]});
+    </c:forEach>
+
+    let labels_1 = [];
+    let data_1 = [];
+
+    <c:forEach var="s" items="${statsFoodByCate}">
+    labels_1.push('${s[1]}');
+    data_1.push(${s[2]});
+    </c:forEach>
+    window.onload = function () {
+        drawRevenueChart(labels, data);
+        drawRevenueChartByCate(labels_1, data_1);
+    }
+
+</script>
+
+<c:if test="${not empty param.msg}">
+    <div class="toast show">
+        <div class="toast-header">
+            <h1>THÔNG BÁO!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            ${param.msg}
+        </div>
+    </div>
+</c:if>
 <form:form modelAttribute="restaurant">
     <c:choose>
         <c:when test="${restaurant.restaurantId != null && restaurant.confirmationStatus == true}">
@@ -21,6 +57,7 @@
 
                             <span style="text-transform: uppercase;" class="card-description-profession">CHỦ NHÀ HÀNG: ${restaurant.userId.firstname} ${restaurant.userId.lastname}</span>
                             <span style="text-transform: uppercase;" class="card-description-profession">Địa chỉ: ${restaurant.userId.location}</span>
+                            <span style="text-transform: uppercase;" class="card-description-profession">Followers: ${followers}</span>
                         </div>
 
                         <div class="avatar-restaurant">
@@ -36,24 +73,167 @@
 </form:form>
 
 
+
 <form:form modelAttribute="restaurant" action="${actionCategoryFood}" method="get">
     <c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" var="actionCategoryFood"/>
     <c:choose>
         <c:when test="${restaurant.restaurantId != null && restaurant.confirmationStatus == true}">
+            <h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 1.5em">THỐNG KÊ</h1>
+            <hr>
+            <section class="search container mt-5">
+                <c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" var="statsAction_date" />
+                <!--Có ai hiểu tại sao bỏ cái form sida này ra là nó bị mất cái form bọc lại lúc render không?-->
+                <form class="d-flex">
+
+                </form>
+
+                <form class = "d-flex" action="${statsAction_date}">
+                    <input required="" class="form-control me-2" type="date" name="fromDate" >
+                    <input required class="form-control me-2" type="date" name="toDate">
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </form>
+
+                <c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" var="statsAction_quarter" />
+                <form class="d-flex" action="${statsAction_quarter}">
+                    <input required type="number" min="1" max="4" step="1" placeholder="Quý" id="quarter-input" name="quarter">
+                    <input required type="number" min="2000" max="3000" step="1" placeholder="Năm" id="quarter-year" name="quarter-year">
+                    <button class="btn btn-primary" type="submit">Tìm theo quý</button>
+                </form >
+            </section>
+            <section class="my-stats">
+                <div class="stats">
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <section>
+                        <!--<h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em">THỐNG KÊ</h1>-->
+                        <section class="container newfood-container">
+
+
+                            <table class="table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Tên món</th>
+                                        <th>SL bán</th>
+                                        <th>Doanh thu</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <c:forEach items="${statsFood}" var="statsFood">
+
+                                        <tr>
+                                            <!--<td></td>-->
+                                            <td>${statsFood[0]}</td>
+                                            <td>${statsFood[1]}</td>
+                                            <td>${statsFood[3]}</td>
+                                            <td>${statsFood[2]}</td>
+
+                                        </tr>
+
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+
+                        </section>
+                        <div class="draw-chart container">
+
+                            <canvas id="RevenueChart">
+
+                            </canvas>
+                            <h3 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em" class="text-center">Sơ đồ thống kê theo doanh thu từng món ăn</h3>
+                        </div>
+
+                    </section>
+
+                    <hr class="container mt-5 mb-5">
+
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+
+
+                    <section>
+                        <!--<h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em">THỐNG KÊ</h1>-->
+                        <section class="container newfood-container">
+                            <table class="table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Doanh thu</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <c:forEach items="${statsFoodByCate}" var="statsFoodByCate">
+
+                                        <tr>
+                                            <!--<td></td>-->
+                                            <td>${statsFoodByCate[0]}</td>
+                                            <td>${statsFoodByCate[1]}</td>
+                                            <td>${statsFoodByCate[2]}</td>
+                                        </tr>
+
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+
+                        </section>
+                        <div class="container">
+                            <!--
+                            <c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" var="statsByCateAction_date" />
+                            <form class="d-flex" action="${statsByCateAction_date}">
+                                <input required="" class="form-control me-2" type="date" name="fromDate" >
+                                <input required class="form-control me-2" type="date" name="toDate">
+                                <button class="btn btn-primary" type="submit">Tìm</button>
+        
+                            </form>
+        
+                            <c:url value="/restaurantManager/restaurants/${restaurant.restaurantId}" var="statsByCateAction_quarter" />
+                            <form class="d-flex" action="${statsByCateAction_quarter}">
+                                <input required type="number" min="1" max="4" step="1" placeholder="Quý" id="quarter-input" name="quarter">
+                                <input required type="number" min="2000" max="3000" step="1" placeholder="Năm" id="quarter-year" name="quarter-year">
+                                <button class="btn btn-primary" type="submit">Tìm theo quý</button>
+                            </form >-->
+
+                            <div class="draw-chart container">
+                                <canvas id="RevenueChartFoodByCate">
+
+                                </canvas>
+                            </div>
+
+                            <h3 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em" class="text-center">Sơ đồ thống kê theo doanh thu từng danh mục</h3>
+                        </div>
+
+                    </section>
+
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                    <!--=============================================================================================-->
+                </div>
+            </section>
+
+
+
             <h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em">CÁC MÓN ĂN</h1>
             <hr class="container">
 
             <div class="food-home">
                 <div class="food-home__top">
-                    
-<!--                    <div>
-                        <c:url value="/restaurantManager/categoriesFood" var="editCategoriesFoodAction">
-                            <c:param name="restaurantId" value="${restaurant.restaurantId}"></c:param>
-                        </c:url>
-                        <a href="${editCategoriesFoodAction}">
-                                Quản lý danh mục                                
-                        </a>
-                    </div>-->
+
+                    <!--                    <div>
+                    <c:url value="/restaurantManager/categoriesFood" var="editCategoriesFoodAction">
+                        <c:param name="restaurantId" value="${restaurant.restaurantId}"></c:param>
+                    </c:url>
+                    <a href="${editCategoriesFoodAction}">
+                            Quản lý danh mục                                
+                    </a>
+                </div>-->
                     <div class="list-categories">
                         <div>
                             <c:url value="/restaurantManager/categoriesFood" var="editCategoriesFoodAction">
@@ -127,7 +307,8 @@
 
                     <section style="background-color: #eee;">
                         <div class="container py-5">
-                            <h4 class="text-center mb-5"><strong>Product listing</strong></h4>
+                            <!--nhu-->
+                            <h4 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em"><strong>Product listing</strong></h4>
 
                             <div class="row">
                                 <c:forEach items="${food_list}" var="food">
@@ -138,24 +319,24 @@
                                             </c:url>
                                             <a href="${addFoodItemAction}" />
                                             <!--<a href="<c:url value="/restaurantManager/foodItems/${food.foodId}" />">-->
-                                            
-                                                <img src="${food.avatar}"
+
+                                            <img src="${food.avatar}"
                                                  class="w-100" />
 
                                             <div class="mask" >
-                                                
-                                                    <h5>Tên món: ${food.foodName}</h5>
-                                                    <!--nhu-->
-<!--                                                    <h5>Giá: ${food.price}</h5>
-                                                    <h5>Danh mục món: ${food.categoryfoodId.categoryname}</h5>
-                                                    <h5>Mô tả: ${food.description}</h5>
-                                                    <h5>Nhà hàng: ${food.restaurantId.restaurantName} - ${food.restaurantId.restaurantId}</h5>-->
-                                            </div>
-                                                
+
+                                                <h5>Tên món: ${food.foodName}</h5>
                                                 <!--nhu-->
-<!--                                            <div class="hover-overlay">
-                                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                                            </div>-->
+                                                <h5 class="text-danger"><strong>Giá: ${food.price}</strong></h5><!--
+                                                <h5>Danh mục món: ${food.categoryfoodId.categoryname}</h5>
+                                                <h5>Mô tả: ${food.description}</h5>
+                                                <h5>Nhà hàng: ${food.restaurantId.restaurantName} - ${food.restaurantId.restaurantId}</h5>-->
+                                            </div>
+
+                                            <!--nhu-->
+                                            <!--                                            <div class="hover-overlay">
+                                                                                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                                                                        </div>-->
                                             </a>
                                         </div>
                                     </div>
@@ -163,23 +344,62 @@
                             </div>
                         </div>
                     </section>
+                    <hr class="container">
+                    <!--nhu-->
+                    <h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em">CÁC ĐƠN HÀNG</h1>
 
-                    <ul class="food-list">
-                        <c:forEach items="${food_list}" var="food">
-                            <li>
-                                ${ food.foodName}
-                            </li>
-                        </c:forEach>
-                    </ul>
-                    
+
+                    <section class="container newfood-container">
+                        <table class="table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Tên món</th>
+                                    <th>Giá 1 món</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá tổng</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Địa chỉ giao</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <c:forEach items="${receiptDetailPerfect_list}" var="receipts">
+
+                                    <tr>
+                                        <!--<td></td>-->
+                                        <td>${receipts.receiptId}</td>
+                                        <td>${receipts.foodName}</td>
+                                        <td>${receipts.price}</td>
+                                        <td>${receipts.quantity}</td>
+                                        <td>${receipts.amount}</td>
+                                        <td>${receipts.createdDate}</td>
+                                        <td>${receipts.location}</td>
+                                        
+                                        <c:choose >
+                                            <c:when test="${receipts.statusReceipt eq 'Chưa xác nhận'}">
+                                                <td class="text-danger">${receipts.statusReceipt}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td class="text-success">${receipts.statusReceipt}</td>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </tr>
+
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </section>
+
                 </div>
             </div>
         </c:when>
     </c:choose>
 </form:form>
+<hr class="container">
 
 <h1 style="text-align: center; color: #5a2c1e; font-weight: bold; margin: 0.5em">ĐĂNG KÝ NHÀ HÀNG MỚI</h1>
-<hr class="container">
 <div class="body">
     <div class="body body__left">
         <div class="container">
@@ -197,10 +417,10 @@
                     <label for="location">Nhập địa chỉ nhà hàng...</label>
                 </div>
 
-                <div class="form-floating mb-3 mt-3">
-                    <form:input type="text" class="form-control" path="mapLink" id="mapLink" placeholder="Nhập tên nhà hàng... " name="mapLink" />
-                    <label for="restaurantName">Cái maplink này nhập đại đi chứ đách xử lý đc...</label>
-                </div>
+                <!--                <div class="form-floating mb-3 mt-3">
+                <form:input type="text" class="form-control" path="mapLink" id="mapLink" placeholder="Nhập tên nhà hàng... " name="mapLink" />
+                <label for="restaurantName">Cái maplink này nhập đại đi chứ đách xử lý đc...</label>
+            </div>-->
 
                 <label for="file" class="drop-container" id="dropcontainer">
                     <span class="drop-title">Drop your avatar here</span>
@@ -241,6 +461,7 @@
                 <form:hidden path="avatar" />
                 <form:hidden path="confirmationStatus" />
                 <form:hidden path="active" />
+                <form:hidden path="mapLink" />
             </form:form>
         </div>
     </div>
@@ -248,7 +469,7 @@
     <div id="googleMap" class="body body__right">
         <div class="map-container">
             <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1693067788859!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <label for="googleMap">Bản đồ này để cho đẹp thôi chứ đách phải API Google Map đâu :)</label>
+            <label for="googleMap">Bản đồ vị trí nhà hàng</label>
         </div>
     </div>
 

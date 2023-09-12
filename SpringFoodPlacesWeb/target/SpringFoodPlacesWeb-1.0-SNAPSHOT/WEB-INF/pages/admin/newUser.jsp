@@ -1,7 +1,7 @@
 <%-- 
     Document   : newUser
     Created on : Aug 19, 2023, 6:47:32 PM
-    Author     : Administrator
+    Author     : HP
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,7 +14,7 @@
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -26,7 +26,7 @@
 <c:if test="${not empty msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -43,31 +43,31 @@
         <div class="row flex ">
             <div class="col form-floating">
 
-                <form:input type="text" class="form-control" path="firstname" id="firstname" placeholder="Nhập họ... " name="firstname" />
+                <form:input required="required" type="text" class="form-control" path="firstname" id="firstname" placeholder="Nhập họ... " name="firstname" />
                 <label class="float-label" for="firstname">Nhập họ...</label>
             </div>
             <div class="col form-floating">
-                <form:input type="text" class="form-control" path="lastname" id="lastname" placeholder="Nhập tên... " name="lastname" />
+                <form:input required="required" type="text" class="form-control" path="lastname" id="lastname" placeholder="Nhập tên... " name="lastname" />
                 <label class="float-label" for="lastname">Nhập tên...</label>
             </div>
         </div>
         <div class="row">
             <div class="col form-floating">
-                <form:input type="text" class="form-control" path="phonenumber" id="phonenumber" placeholder="Nhập số điện thoại... " name="phonenumber" />
+                <form:input required="required" type="number" class="form-control" path="phonenumber" id="phonenumber" placeholder="Nhập số điện thoại... " name="phonenumber" />
                 <label class="float-label" for="phonenumber">Nhập số điện thoại...</label>
             </div>
         </div>
 
         <div class="row">
             <div class="col form-floating">
-                <form:input type="text" class="form-control" path="email" id="email" placeholder="Nhập email... " name="email" />
+                <form:input required="required" type="email" class="form-control" path="email" id="email" placeholder="Nhập email... " name="email" />
                 <label class="float-label" for="email">Nhập email...</label>
             </div>
         </div>
 
         <div class="row">
             <div class="col form-floating">
-                <form:input type="text" class="form-control" path="location" id="location" placeholder="Nhập số địa chỉ... " name="location" />
+                <form:input required="required" type="text" class="form-control" path="location" id="location" placeholder="Nhập số địa chỉ... " name="location" />
                 <label class="float-label" for="phonenumber">Nhập địa chỉ...</label>
             </div>
         </div>
@@ -76,21 +76,21 @@
             <c:when test="${user.userId == null}">
                 <div class="row">
                     <div class="col form-floating">
-                        <form:input type="text" class="form-control" path="username" id="username" placeholder="Nhập tên đăng nhập... " name="username" />
+                        <form:input required="required" type="text" class="form-control" path="username" id="username" placeholder="Nhập tên đăng nhập... " name="username" />
                         <label class="float-label" for="username">Nhập tên đăng nhập...</label>
                     </div>
                 </div> 
 
                 <div class="row">
                     <div class="col form-floating">
-                        <form:input type="password" class="form-control" path="password" id="password" placeholder="Nhập mật khẩu... " name="password" />
+                        <form:input required="required" type="password" class="form-control" path="password" id="password" placeholder="Nhập mật khẩu... " name="password" />
                         <label class="float-label" for="password">Nhập mật khẩu... </label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col form-floating">
-                        <form:input type="password" class="form-control" path="confirmPassword" id="confirmPassword" placeholder="Nhập lại mật khẩu... " name="confirmPassword" />
+                        <form:input required="required" type="password" class="form-control" path="confirmPassword" id="confirmPassword" placeholder="Nhập lại mật khẩu... " name="confirmPassword" />
                         <label class="float-label" for="confirmPassword">Nhập lại mật khẩu... </label>
                     </div>
                 </div>

@@ -18,4 +18,5 @@ public interface CommentsService {
     List<Comments> getComments(int foodId, Map<String, String> params);
     Comments addComment(Map<String, String> params, MultipartFile avatar);
     int countComments(int foodId);
+    int checkComment(int foodId, Map<String, String> params);
 }

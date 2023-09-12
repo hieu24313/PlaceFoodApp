@@ -63,13 +63,14 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/api/**");
         http.authorizeRequests().antMatchers("/api/server/**").permitAll();
         http.authorizeRequests().antMatchers("/api/login/").permitAll();
+        http.authorizeRequests().antMatchers("/api/login-google/").permitAll();
         http.authorizeRequests().antMatchers("/api/register/").permitAll();
         http.authorizeRequests().antMatchers("/api/current-user/").permitAll();
         http.authorizeRequests().antMatchers("/api/categories/").permitAll();
         http.authorizeRequests().antMatchers("/api/foodItems/").permitAll();
-        http.authorizeRequests().antMatchers("/api/foodItems/**").permitAll();
+//        http.authorizeRequests().antMatchers("/api/foodItems/**").permitAll();
         http.authorizeRequests().antMatchers("/api/restaurants/").permitAll();
-        http.authorizeRequests().antMatchers("/api/restaurants/**").permitAll();
+//        http.authorizeRequests().antMatchers("/api/restaurants/**").permitAll();
         http.authorizeRequests().antMatchers("/api/**/comments/").permitAll();
 //        http.authorizeRequests().antMatchers("/api/admin/restaurants/**").permitAll();
 

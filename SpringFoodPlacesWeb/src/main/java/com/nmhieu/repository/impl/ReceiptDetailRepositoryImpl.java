@@ -59,4 +59,26 @@ public class ReceiptDetailRepositoryImpl implements ReceiptDetailRepository {
         }
     }
 
+    @Override
+    public List<ReceiptDetail> getReceiptDetailsByFoodId(int foodId) {
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<ReceiptDetail> query = criteriaBuilder.createQuery(ReceiptDetail.class);
+            Root<ReceiptDetail> rootReceiptDetail = query.from(ReceiptDetail.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.equal(rootReceiptDetail.get("fooditemId"), foodId));
+
+            query.where(predicates.toArray(new Predicate[0]));
+
+            TypedQuery<ReceiptDetail> finalQuery = session.createQuery(query);
+
+            return finalQuery.getResultList();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

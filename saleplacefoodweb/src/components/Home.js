@@ -14,7 +14,7 @@ const Home = () => {
     const [foodItems, setFoodItems] = useState(null);
     const [, cartDispatch] = useContext(MyCartContext);
     const [q] = useSearchParams();
-    const [restaurant, setRestaurant] = useState([]);
+    const [restaurant, setRestaurant] = useState();
 
     // const currentPage = useLocation();
     const [kw, setKw] = useState("");

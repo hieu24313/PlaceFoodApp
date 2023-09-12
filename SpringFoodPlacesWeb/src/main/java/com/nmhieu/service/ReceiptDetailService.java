@@ -12,5 +12,8 @@ import java.util.List;
  * @author HP
  */
 public interface ReceiptDetailService {
+
     List<ReceiptDetail> getReceiptDetails(int receiptId);
+
+    List<ReceiptDetail> getReceiptDetailsByFoodId(int foodId);
 }

@@ -11,7 +11,7 @@ function delCate(path, id) {
             if (res.status === 204)
                 location.reload();
             else
-                alert("Something wrong!!!");
+                alert("Có lỗi xảy ra!");
         });
     }
 }

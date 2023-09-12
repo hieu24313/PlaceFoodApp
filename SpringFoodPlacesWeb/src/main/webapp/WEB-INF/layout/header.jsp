@@ -52,9 +52,9 @@
                 <div>
                     <a href="<c:url value="/login" />"><button>Đăng nhập</button></a>
                 </div>
-                <div >
+<!--                <div >
                     <a href="<c:url value="/register" />"><button>Đăng ký</button></a>
-                </div>
+                </div>-->
             </c:otherwise>
         </c:choose>
 
@@ -66,11 +66,11 @@
                 <div class="avatar">
                     <a href="<c:url value="/" />">
                         <c:choose>
-                            <c:when test="${current_user.avatar != null}">
-                                <img src="${current_user.avatar}" alt="alt"/>
+                            <c:when test="${current_user.avatar != null and not empty current_user.avatar}">
+                                <img src="${current_user.avatar}" alt="avatar của ${current_user.lastname}"/>
                             </c:when>
                             <c:otherwise>
-                                 <img src="<c:url value="/images/usernull.png" />" alt="alt"/>
+                                 <img src="<c:url value="/images/usernull.png" />" alt="avatar của ${current_user.lastname}"/>
                             </c:otherwise>
                         </c:choose>
                     </a>

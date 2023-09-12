@@ -90,6 +90,7 @@ public class ShelfLifeController {
                     List<ShelfLife> listShelfLife = this.shelfLifeSer.getShelfLife(params);
                     model.addAttribute("shelfLife", new ShelfLife());
                     model.addAttribute("shelfLifes", listShelfLife);
+                    model.addAttribute("shelfLifes_All", this.shelfLifeSer.getAllShelfLife(params));
                 } else {
                     msg = "Bạn không sở hữu nhà hàng này!";
                     model.addAttribute("msg", msg);

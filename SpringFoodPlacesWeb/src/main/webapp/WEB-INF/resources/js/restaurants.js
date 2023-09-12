@@ -12,7 +12,7 @@ function deleteRestaurant(path, id) {
             if (res.status === 204) {
                 location.reload();
             } else {
-                alert("Bug rồi ba");
+                alert("Có lỗi xảy ra!");
             }
         });
     }
@@ -116,7 +116,6 @@ function delayScrollToClickedPosition(event) {
         const scrollX = window.scrollX + clickedX; // Tính toán tọa độ X cần cuộn tới
         const scrollY = window.scrollY + clickedY; // Tính toán tọa độ Y cần cuộn tới
         window.scrollTo(scrollX, scrollY); // Cuộn trang đến vị trí tương ứng
-        console.log("TẠI SAO?");
     }, 1000);
 }
 

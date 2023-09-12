@@ -12,7 +12,7 @@
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -42,6 +42,13 @@
                     <br>Quản lý nhà hàng
                 </h3></a>
 
+        </div>
+        <div class="res-item">
+            <a href="<c:url value="/admin/stats" />" class="btn btn-info">
+                <h3>
+                    <i class="fa-solid fa-bowl-food fa-bounce"></i>
+                    <br>Thống kê
+                </h3></a>
         </div>
     </div>
 </div>

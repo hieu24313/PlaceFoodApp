@@ -35,7 +35,7 @@
 <div class="header">
 
     <div class="header-main">
-        <h1>ĐĂNG KÝ</h1>
+        <h1>ĐĂNG KÝ LẸ :)</h1>
         <div class="header-bottom">
             <div class="header-right w3agile">
 
@@ -66,19 +66,19 @@
 
                         <input type="submit" value="Register">
                     </form:form>
-<!--                    <div class="header-left-top">
+                    <div class="header-left-top">
                         <div class="sign-up">
                             <h2>or</h2>
                         </div>
 
-                    </div>-->
-<!--                    <div class="header-social wthree login-gg">
+                    </div>
+                    <div class="header-social wthree login-gg">
 
                         <a href="#" class="face">
                             <img src="images/gg.png" class="imggg">
                             <h5>google</h5>
                         </a>
-                    </div>-->
+                    </div>
 
                 </div>
             </div>

@@ -6,9 +6,9 @@ package com.nmhieu.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.nmhieu.components.PasswordGeneratorService;
 import com.nmhieu.pojo.Roles;
 import com.nmhieu.pojo.Users;
-import com.nmhieu.repository.RolesRepository;
 import com.nmhieu.repository.UsersRepository;
 import com.nmhieu.service.UsersService;
 import java.io.IOException;
@@ -19,8 +19,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +41,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private PasswordGeneratorService passwordGeneratorService;
 
     @Autowired
     private Cloudinary cloudinary;
@@ -432,18 +437,67 @@ public class UsersServiceImpl implements UsersService {
 
             String oldPassword = params.get("password");
             String newPassword = params.get("newPassword");
-            
+
 //            String oldPassword_encode = this.bCryptPasswordEncoder.encode(oldPassword);
 //            String currentPassword_encode = user.getPassword();
-            
             if (this.bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
                 user.setPassword(this.bCryptPasswordEncoder.encode(newPassword));
-            }
-            else {
+            } else {
                 return 3; // Sai mật khẩu cũ
             }
-            
+
             return this.usersRepo.updateUser(user);
         }
+    }
+
+    @Override
+    public Users registerUserGoogle(Map<String, String> params, MultipartFile avatar) {
+        boolean isUsernameExists = this.usersRepo.isUsernameExists(params.get("username"));
+
+        if (isUsernameExists == true) {
+            Users user = this.usersRepo.getUserByUsername_new(params.get("username"));
+            if (user != null) {
+                this.usersRepo.registerUserGoogle(user);
+                return user;
+            } else {
+                return null;
+            }
+
+        } else {
+            Users user = new Users();
+            user.setFirstname(params.get("firstname"));
+            user.setLastname(params.get("lastname"));
+            user.setPhonenumber(params.get("phonenumber"));
+            user.setLocation(params.get("location"));
+            user.setEmail(params.get("email"));
+
+            user.setUsername(params.get("username")); //tài khoản google ở đây
+            String randomPassword = this.passwordGeneratorService.generateRandomPassword(this.passwordGeneratorService.LENGTH_PASSWORD);
+            user.setPassword(this.bCryptPasswordEncoder.encode(randomPassword));
+
+            user.setRoleId(new Roles(3));
+            
+            String pathAvatarGoogle = params.get("pathAvatarGoogle");
+            if (pathAvatarGoogle != null && !pathAvatarGoogle.isEmpty()) {
+                user.setAvatar(pathAvatarGoogle);
+            }
+            
+            if (!avatar.isEmpty()) {
+                try {
+                    Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                            ObjectUtils.asMap("resource_type", "auto"));
+                    user.setAvatar(res.get("secure_url").toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            this.usersRepo.registerUserGoogle(user);
+            return user;
+        }
+    }
+
+    @Override
+    public int authUserLoginGoogle(String username, String password) {
+        return this.usersRepo.authUserLoginGoogle(username, password);
     }
 }

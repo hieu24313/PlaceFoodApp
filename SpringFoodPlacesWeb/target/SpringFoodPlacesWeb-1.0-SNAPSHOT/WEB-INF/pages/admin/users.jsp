@@ -11,14 +11,14 @@
 <link rel="stylesheet" href=" <c:url value="/css/background.css" /> "/>
 <link rel="stylesheet" href=" <c:url value="/css/user.css" /> "/>
 
-<h1 style="text-align: center">QUẢN LÝ USERS</h1>
+<h1 class="mt-5 mb-5" style="text-align: center; font-weight: bold">QUẢN TRỊ TÀI KHOẢN</h1>
 
 <c:url value="/admin/users" var = "action" />
 <link rel="stylesheet" href=" <c:url value="/css/toastBug.css" /> "/>
 <c:if test="${not empty param.msg}">
     <div class="toast show">
         <div class="toast-header">
-            <h1>ERROR!</h1>
+            <h1>THÔNG BÁO!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
         <div class="toast-body">
@@ -30,7 +30,7 @@
 <c:if test="${param.accessDenied != null}">
     <div class="alert alert-danger alert-dismissible fade show">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>Danger!</strong> DÔ ĐÂY CHI :) BIẾT GÌ MÀ DÔ
+        <strong>Danger!</strong> BẠN KHÔNG CÓ QUYỀN Ở ĐÂY!
     </div>
 </c:if>
 
@@ -131,7 +131,7 @@
                 <div class="course_card">
                     <a class ="detail-restaurant" href="<c:url value="/admin/users/${user.userId}" />">
                         <div class="course_card_img">
-                            <img ,="" alt="course" src="${user.avatar}" />
+                            <img ,="" alt="avatar của ${user.firstname} ${user.lastname}" src="${user.avatar}" />
                         </div>
                         <div class="course_card_content">
                             <h3 class="title">
@@ -166,7 +166,7 @@
 
 </section>
 
-<table class="table table-hover container">
+<!--<table class="table table-hover container">
     <thead>
         <tr>
             <th>Avatar</th>
@@ -190,10 +190,10 @@
                 <td>${user.phonenumber}</td>
                 <td>${user.location}</td>
 
-                <!--                    <td>
+                                    <td>
                                         <a href="<c:url value="/admin/users/${user.userId}" />" class = "btn btn-success">Cập nhật</a>
                                         <button class = "btn btn-danger">Xóa nà</button>
-                                    </td>-->
+                                    </td>
 
                 <td>
                     <c:url value="/api/server/admin/users/${user.userId}" var="userPathAPI"/>
@@ -203,4 +203,4 @@
             </tr>
         </c:forEach>
     </tbody>
-</table>
+</table>-->

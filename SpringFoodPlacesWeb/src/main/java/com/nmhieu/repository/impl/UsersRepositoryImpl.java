@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -206,11 +208,19 @@ public class UsersRepositoryImpl implements UsersRepository {
         Users user = this.getUserById(id);
         try {
             if (user != null) {
+
+//                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//                Users u = this.getUserByUsername_new(authentication.getName());
+//
+//                if (u.getUserId().equals(user.getUserId())) {
+//                    return false;
+//                }
+
                 if (user.getActive().equals(Boolean.TRUE)) {
                     user.setActive(Boolean.FALSE);
                     session.update(user);
                     List<Restaurants> restaurant_list = this.restaurantsService.getRestaurantByUserId(id);
-                    
+
                     if (!restaurant_list.isEmpty()) {
                         for (Restaurants restaurant : restaurant_list) {
                             this.restaurantsService.deleteRestaurants(restaurant.getRestaurantId());
@@ -219,8 +229,7 @@ public class UsersRepositoryImpl implements UsersRepository {
                 } else {
                     session.delete(user);
                 }
-            }
-            else {
+            } else {
                 return false;
             }
             return true;
@@ -358,6 +367,16 @@ public class UsersRepositoryImpl implements UsersRepository {
     public int updateUser_server(Users user) {
         Session session = this.factory.getObject().getCurrentSession();
         try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Users u = this.getUserByUsername_new(authentication.getName());
+
+            if (u.getUserId().equals(user.getUserId())) {
+                if (u.getRoleId().getRoleId() == 1 && !user.getRoleId().getRoleId().equals(u.getRoleId().getRoleId())) {
+                    return 5;
+                }
+            }
+
             session.update(user);
             return 1;
         } catch (HibernateException ex) {
@@ -401,6 +420,38 @@ public class UsersRepositoryImpl implements UsersRepository {
         } catch (HibernateException ex) {
             ex.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public Users registerUserGoogle(Users user) {
+        Session session = this.factory.getObject().getCurrentSession();
+        try {
+
+            if (user != null && user.getUserId() == null) {
+                user.setActive(Boolean.TRUE);
+                session.save(user);
+            }
+
+            return user;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int authUserLoginGoogle(String username, String password) {
+        Users user = this.getUserByUsername_new(username);
+        if (user != null) {
+            // 2 cái password bây giờ đều băm tung tóe hết rồi nên so sánh vầy
+            if (user.getPassword().equals(password)) {
+                return 1; // true
+            } else {
+                return 2; // sai mật khẩu
+            }
+        } else {
+            return 3; // sai tài khoản
         }
     }
 

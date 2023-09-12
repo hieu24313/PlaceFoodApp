@@ -9,22 +9,22 @@
     <class>com.tuantran.pojo.Roles_1</class>
     <class>com.tuantran.pojo.Users_1</class>
     <class>com.tuantran.pojo.ReceiptStatus_1</class>
-    <class>com.nmhieu.pojo.CategoriesfoodFooditems</class>
-    <class>com.nmhieu.pojo.Follow</class>
-    <class>com.nmhieu.pojo.Roles</class>
     <class>com.nmhieu.pojo.ReceiptDetail</class>
-    <class>com.nmhieu.pojo.Fooditems</class>
-    <class>com.nmhieu.pojo.Receipts</class>
-    <class>com.nmhieu.pojo.ShelflifeFooditems</class>
-    <class>com.nmhieu.pojo.Chatmessages</class>
+    <class>com.nmhieu.pojo.Users</class>
+    <class>com.nmhieu.pojo.CategoriesFood</class>
+    <class>com.nmhieu.pojo.Roles</class>
+    <class>com.nmhieu.pojo.Comments</class>
+    <class>com.nmhieu.pojo.ReceiptStatus</class>
     <class>com.nmhieu.pojo.Notifications</class>
     <class>com.nmhieu.pojo.RestaurantStatus</class>
-    <class>com.nmhieu.pojo.Comments</class>
-    <class>com.nmhieu.pojo.Users</class>
+    <class>com.nmhieu.pojo.CategoriesfoodFooditems</class>
+    <class>com.nmhieu.pojo.ShelflifeFooditems</class>
+    <class>com.nmhieu.pojo.Chatmessages</class>
     <class>com.nmhieu.pojo.Restaurants</class>
-    <class>com.nmhieu.pojo.ReceiptStatus</class>
     <class>com.nmhieu.pojo.ShelfLife</class>
-    <class>com.nmhieu.pojo.CategoriesFood</class>
+    <class>com.nmhieu.pojo.Receipts</class>
+    <class>com.nmhieu.pojo.Fooditems</class>
+    <class>com.nmhieu.pojo.Follow</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/springfoodplacesweb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

@@ -136,7 +136,7 @@ public class UsersController {
                 if (user.getPassword().equals(user.getConfirmPassword())) {
                     int check = this.usersService.addUser_server(user);
                     if (check == 1) {
-                        msg = "Thêm thành công tài khoản!";
+                        msg = "Add user successful!";
                         model.addAttribute("msg", msg);
                         return "redirect:/admin/users";
                     }
@@ -171,10 +171,13 @@ public class UsersController {
                 if (check == 4) {
                     msg = "Không tìm thấy tài khoản này!";
                 }
+                if (check == 5) {
+                    msg = "Bạn không có quyền hạ vai trò của bạn!";
+                }
             }
 
         }
         model.addAttribute("msg", msg);
-        return "newUser";
+        return "redirect:/admin/users/" + user.getUserId();
     }
 }

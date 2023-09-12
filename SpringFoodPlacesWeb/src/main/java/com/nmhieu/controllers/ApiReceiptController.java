@@ -5,15 +5,18 @@
 package com.nmhieu.controllers;
 
 import com.nmhieu.pojo.Cart;
+import com.nmhieu.pojo.ReceiptDetail;
 import com.nmhieu.pojo.Receipts;
 import com.nmhieu.service.ReceiptService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +57,22 @@ public class ApiReceiptController {
     @CrossOrigin
     public ResponseEntity<List<Receipts>> listReceipt(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.receiptService.getReceipts(params), HttpStatus.OK);
+    }
+    
+    @PostMapping(path = "/receipt/{receiptId}/acceiptReceipt/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<String> acceptReceipt(@PathVariable(value = "receiptId") int receiptId) {
+        String message = "Có lỗi xảy ra!";
+        Boolean check = this.receiptService.updateAcceptReceipt(receiptId);
+        
+        if (check == true) {
+            message = "Xác nhận đã nhận hàng thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        else {
+            message = "Có lỗi xảy ra!";
+        }
+        
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

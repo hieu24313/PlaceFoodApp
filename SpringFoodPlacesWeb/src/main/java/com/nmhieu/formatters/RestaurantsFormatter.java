@@ -11,7 +11,7 @@ import org.springframework.format.Formatter;
 
 /**
  *
- * @author Administrator
+ * @author HP
  */
 public class RestaurantsFormatter implements Formatter<Restaurants> {
 

@@ -4,18 +4,29 @@
  */
 package com.nmhieu.controllers;
 
+import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.ReceiptDetail;
+import com.nmhieu.pojo.ReceiptDetailAndReceipt;
+import com.nmhieu.pojo.Receipts;
 import com.nmhieu.pojo.Restaurants;
 import com.nmhieu.pojo.Roles;
 import com.nmhieu.pojo.Users;
 import com.nmhieu.service.CategoriesFoodService;
+import com.nmhieu.service.FollowService;
 import com.nmhieu.service.FoodItemsService;
+import com.nmhieu.service.ReceiptDetailService;
+import com.nmhieu.service.ReceiptService;
 import com.nmhieu.service.RestaurantStatusService;
 import com.nmhieu.service.RestaurantsService;
+import com.nmhieu.service.StatsService;
 import com.nmhieu.service.UsersService;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -55,6 +66,18 @@ public class RestaurantsController {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private ReceiptDetailService receiptDetailService;
+
+    @Autowired
+    private ReceiptService receiptService;
+    
+    @Autowired
+    private StatsService statsService;
+    
+    @Autowired
+    private FollowService followService;
 
     @ModelAttribute
     public void commonAttr(Model model) {
@@ -133,30 +156,43 @@ public class RestaurantsController {
                         model.addAttribute("restaurant", this.restaurantsService.getRestaurantById(restaurantId));
                         model.addAttribute("category_list", this.categoryFoodService.getCategoriesFoodByRestaurantId(restaurantId));
                         params.put("restaurantId", String.valueOf(restaurantId));
-                        model.addAttribute("food_list", this.foodItemsService.getFoodItems(params));
+                        List<Fooditems> food_list = this.foodItemsService.getFoodItems(params);
+                        model.addAttribute("food_list", food_list);
 
-                        // FOOD
-//                        int pageSize = Integer.parseInt(this.environment.getProperty("PAGE_SIZE"));
-//                        int countFoodItems = this.foodItemsService.countFoodItems(params);
-//                        model.addAttribute("counter", Math.ceil(countFoodItems * 1.0 / pageSize));
-//
-//                        String pageStr = params.get("page");
-//                        String pageAllStr = params.get("pageAll");
-////                        String cateFoodId = params.get("cateFoodId");
-//
-//                        if (pageStr == null) {
-//                            if (pageAllStr == null) {
-//                                params.put("page", "1");
-//                                model.addAttribute("food_list", this.foodItemsService.getFoodItems(params));
-//                            } else {
-//                                model.addAttribute("food_list", this.foodItemsService.getFoodItems(params));
-//                            }
-//
-//                        } else {
-//                            model.addAttribute("food_list", this.foodItemsService.getFoodItems(params));
-//                        }
-                        
-                        // END FOOD
+                        List<ReceiptDetail> receiptDetails_list = new ArrayList<>();
+                        for (Fooditems food : food_list) {
+                            receiptDetails_list.addAll(this.receiptDetailService.getReceiptDetailsByFoodId(food.getFoodId()));
+                        }
+
+                        List<Receipts> receipts_List = new ArrayList<>();
+
+                        for (ReceiptDetail receiptDetail : receiptDetails_list) {
+                            int receiptId = receiptDetail.getReceiptId().getReceiptId();
+                            Receipts receipt = this.receiptService.getReceiptById(receiptId);
+                            receipts_List.add(receipt);
+                        }
+
+                        List<ReceiptDetailAndReceipt> receiptDetailPerfect = new ArrayList<>();
+                        for (int i = 0; i < receiptDetails_list.size(); i++) {
+                            ReceiptDetailAndReceipt rdp = new ReceiptDetailAndReceipt();
+                            rdp.setReceiptId(receipts_List.get(i).getReceiptId());
+                            rdp.setFoodName(receiptDetails_list.get(i).getFooditemId().getFoodName());
+                            rdp.setPrice(receiptDetails_list.get(i).getUnitPrice());
+                            rdp.setQuantity(receiptDetails_list.get(i).getQuantity());
+                            rdp.setAmount(receiptDetails_list.get(i).getAmount());
+                            rdp.setCreatedDate(receipts_List.get(i).getReceiptDate());
+                            rdp.setStatusReceiptId(receipts_List.get(i).getStatusReceiptId().getStatusReceiptId());
+                            rdp.setStatusReceipt(receipts_List.get(i).getStatusReceiptId().getStatusReceipt());
+                            rdp.setLocation(receipts_List.get(i).getUserId().getLocation());
+                            receiptDetailPerfect.add(rdp);
+                        }
+
+                        model.addAttribute("statsFood", this.statsService.statsRevenue(params));
+                        model.addAttribute("statsFoodByCate", this.statsService.statsRevenueByCate(params));
+                        model.addAttribute("receiptDetails_list", receiptDetails_list);
+                        model.addAttribute("receipts_List", receipts_List);
+                        model.addAttribute("receiptDetailPerfect_list", receiptDetailPerfect);
+                        model.addAttribute("followers", this.followService.getFollowByRestaurantId(restaurantId).size());
 
                     } else {
                         msg = "You are not the owner of this restaurant!";

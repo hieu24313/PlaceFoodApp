@@ -5,6 +5,8 @@
 package com.nmhieu.repository;
 
 import com.nmhieu.pojo.Follow;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +15,6 @@ import com.nmhieu.pojo.Follow;
 public interface FollowRepository {
     int addFollow (Follow follow);
     Follow getFollowByUserIdAndRestaurantId (int userId, int restaurantId);
+    Follow checkFollow (Follow follow);
+    List<Follow> getFollowByRestaurantId (int restaurantId);
 }

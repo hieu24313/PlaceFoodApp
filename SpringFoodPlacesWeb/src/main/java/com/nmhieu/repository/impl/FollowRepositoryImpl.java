@@ -7,6 +7,8 @@ package com.nmhieu.repository.impl;
 import com.nmhieu.pojo.Follow;
 import com.nmhieu.repository.FollowRepository;
 import com.nmhieu.service.FollowService;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -77,6 +79,39 @@ public class FollowRepositoryImpl implements FollowRepository {
 
             criteriaQuery.where(finalPredicate);
             return session.createQuery(criteriaQuery).getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Follow checkFollow(Follow follow) {
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            session.update(follow);
+            return follow;
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Follow> getFollowByRestaurantId(int restaurantId) {
+       try {
+            Session session = this.factory.getObject().getCurrentSession();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Follow> criteriaQuery = builder.createQuery(Follow.class);
+            Root<Follow> root = criteriaQuery.from(Follow.class);
+
+            Predicate idPredicate = builder.equal(root.get("restaurantIdIndex"), restaurantId);
+
+
+            Predicate finalPredicate = builder.and(idPredicate);
+
+            criteriaQuery.where(finalPredicate);
+            return session.createQuery(criteriaQuery).getResultList();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;

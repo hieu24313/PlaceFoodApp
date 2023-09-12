@@ -21,7 +21,7 @@ const RegisterRestaurant = () => {
 
     const loadRestaurant = async () => {
         try {
-            let e = `${endpoints['restaurant']}?current_user_UserId=${user.userId}`;
+            let e = `${endpoints['restaurant-profile']}?current_user_UserId=${user.userId}`;
 
             let res = await Apis.get(e);
 

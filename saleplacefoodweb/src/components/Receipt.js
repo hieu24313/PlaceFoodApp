@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Receipt = () => {
 
-    const [receipt, setReceipt] = useState();
+    const [receipt, setReceipt] = useState([]);
     const [user,] = useContext(MyUserContext);
     const [activeKey, setActiveKey] = useState('0');
     const [receiptDetail, setReceiptDetail] = useState();
@@ -101,7 +101,7 @@ const Receipt = () => {
     if (user === null)
         return <Alert className="alert-danger">Vui lòng đăng nhập</Alert>
 
-    // if (receipt === null)
+    // if (receipt.length === 0)
     //     return <Alert classname="alert-success" >Bạn chưa có hóa đơn nào!!</Alert>
 
 
@@ -114,7 +114,9 @@ const Receipt = () => {
 
                 <ProfileComponents />
                 <ToastContainer />
+                
                 <div className="contain_info_2">
+                {receipt.length === 0 ? <Alert classname="alert-info" >Bạn chưa có hóa đơn nào!!</Alert> : ""}
                     {receipt === 0 ? <Alert classname="alert-success" >Bạn chưa có hóa đơn nào!!</Alert> : <>
                         {receipt == null ? <MySpinner /> : Object.values(receipt).map(r => {
                             let count = 0;

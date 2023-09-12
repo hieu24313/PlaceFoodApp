@@ -71,9 +71,16 @@ public class ApiRestaurantsController {
     @GetMapping("/restaurants/")
     @CrossOrigin
     public ResponseEntity<List<Restaurants>> listRestaurant(@RequestParam Map<String, String> params) {
+        params.put("confirm", "true");
         return new ResponseEntity<>(this.restaurantsService.getRestaurants(params), HttpStatus.OK);
     }
-    
+
+    @GetMapping("/restaurants/userProfile/")
+    @CrossOrigin
+    public ResponseEntity<List<Restaurants>> listRestaurant_forUserProfile(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.restaurantsService.getRestaurants(params), HttpStatus.OK);
+    }
+
     @GetMapping("/restaurants/{restaurantId}/")
     @CrossOrigin
     public ResponseEntity<Restaurants> listRestaurant1(@PathVariable(value = "restaurantId") int restaurantId) {

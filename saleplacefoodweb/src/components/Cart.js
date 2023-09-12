@@ -127,11 +127,11 @@ const Cart = () => {
         </div>
         <div className="div_btn_pay">
         {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán! </p> : 
-            user.location !== null  ? 
+            user.location === null ? <p>Vui lòng thêm <Link to="/profile">địa chỉ</Link> để thanh toán!</p> : 
             <>
                 {loading === true ? <MySpinner />: <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>} 
             </>
-            : <p>Vui lòng thêm <Link to="/profile">địa chỉ</Link> để thanh toán!</p>}
+            }
         </div>
     </>
 }

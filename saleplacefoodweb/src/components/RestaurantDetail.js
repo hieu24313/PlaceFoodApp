@@ -177,7 +177,7 @@ const RestaurantDetail = () => {
     return <>
 
         <section style={{ backgroundColor: '#eee' }}>
-        <ToastContainer />
+            <ToastContainer />
             <MDBContainer className="py-5">
                 <MDBRow>
                     <MDBCol>
@@ -323,10 +323,11 @@ const RestaurantDetail = () => {
                 </Row>
                 <div>
                     <div>
-
                     </div>
-                    <div>
-                        <div style={{ height: '100vh', width: '100%' }}>
+                    <hr />
+                    <div className="form_googlemap">
+
+                        <div className="map">
                             <GoogleMapReact
                                 bootstrapURLKeys={{ key: "AIzaSyDWTx7bREpM5B6JKdbzOvMW-RRlhkukmVE" }}
                                 defaultCenter={defaultProps.center}
@@ -339,6 +340,10 @@ const RestaurantDetail = () => {
                                 />
                             </GoogleMapReact>
                         </div>
+                        <div className="text_map">
+                            <span>Nhà hàng của chúng tôi là một nơi tuyệt vời để thưởng thức ẩm thực đặc biệt. Với không gian hiện đại và tinh tế, vị trí tiện lợi tại trung tâm thành phố, cùng với thực đơn đa dạng và đội ngũ đầu bếp tài năng, chúng tôi đảm bảo mang đến cho bạn một trải nghiệm ẩm thực không thể quên. Hãy đến và tham gia cùng chúng tôi để tận hưởng những khoảnh khắc đáng nhớ bên gia đình và bạn bè.</span>
+                        </div>
+
                         {/* <GoogleMapReact
                         
                             bootstrapURLKeys={{ key: "AIzaSyDc7PnOq3Hxzq6dxeUVaY8WGLHIePl0swY"}}

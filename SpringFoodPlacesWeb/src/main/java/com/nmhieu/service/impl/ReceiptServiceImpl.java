@@ -5,6 +5,7 @@
 package com.nmhieu.service.impl;
 
 import com.nmhieu.pojo.Cart;
+import com.nmhieu.pojo.ReceiptStatus;
 import com.nmhieu.pojo.Receipts;
 import com.nmhieu.repository.ReceiptRepository;
 import com.nmhieu.service.ReceiptService;
@@ -32,5 +33,20 @@ public class ReceiptServiceImpl implements ReceiptService{
     public List<Receipts> getReceipts(Map<String, String> params) {
         return this.receiptRepo.getReceipts(params);
     }
-    
+
+    @Override
+    public Receipts getReceiptById(int id) {
+        return this.receiptRepo.getReceiptById(id);
+    }
+
+    @Override
+    public boolean updateAcceptReceipt(int receiptId) {
+        Receipts receipt = this.receiptRepo.getReceiptById(receiptId);
+        
+        if (receipt != null) {
+            receipt.setStatusReceiptId(new ReceiptStatus(2));
+        }
+        
+        return this.receiptRepo.updateAcceptReceipt(receipt);
+    }
 }

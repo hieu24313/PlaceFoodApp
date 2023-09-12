@@ -12,7 +12,7 @@ function deleteUser(path, id) {
             if (res.status === 204) {
                 location.reload();
             } else {
-                alert("Bug rồi ba");
+                alert("Có lỗi xảy ra!");
             }
         });
     }

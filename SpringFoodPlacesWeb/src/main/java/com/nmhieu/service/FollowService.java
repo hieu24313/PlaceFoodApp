@@ -5,6 +5,7 @@
 package com.nmhieu.service;
 
 import com.nmhieu.pojo.Follow;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,4 +15,6 @@ import java.util.Map;
 public interface FollowService {
     int addFollow (Map<String, String> params);
     Follow getFollowByUserIdAndRestaurantId (int userId, int restaurantId);
+    Follow checkFollow (Map<String, String> params);
+    List<Follow> getFollowByRestaurantId (int restaurantId);
 }

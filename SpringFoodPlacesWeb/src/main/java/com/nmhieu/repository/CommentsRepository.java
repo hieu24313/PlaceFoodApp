@@ -16,4 +16,5 @@ public interface CommentsRepository {
     List<Comments> getComments(int foodId, Map<String, String> params);
     Comments addComment(Comments comment);
     int countComments(int foodId);
+    int checkComment(int foodId, int userId);
 }

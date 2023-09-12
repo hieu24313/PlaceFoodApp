@@ -47,4 +47,9 @@ public class ShelfLifeServiceImpl implements ShelfLifeService{
         return this.ShelfLifeRepo.getShelfLifeByRestaurantId(restaurantId);
     }
 
+    @Override
+    public List<ShelfLife> getAllShelfLife(Map<String, String> params) {
+        return this.ShelfLifeRepo.getAllShelfLife(params);
+    }
+
 }

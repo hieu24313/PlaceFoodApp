@@ -4,11 +4,13 @@ com\nmhieu\repository\impl\ReceiptDetailRepositoryImpl.class
 com\nmhieu\filters\JwtAuthenticationTokenFilter.class
 com\nmhieu\pojo\ShelflifeFooditems_.class
 com\nmhieu\formatters\ShelfLifeFormatter.class
+com\nmhieu\pojo\ReceiptDetailAndReceipt.class
 com\nmhieu\pojo\Comments_.class
 com\nmhieu\service\impl\UsersServiceImpl.class
 com\nmhieu\controllers\RegisterController.class
 com\nmhieu\controllers\RestaurantsController.class
 com\nmhieu\pojo\CategoriesfoodFooditems.class
+com\nmhieu\service\impl\StatsServiceImpl.class
 com\nmhieu\pojo\Users_.class
 com\nmhieu\service\impl\FoodItemsServiceImpl.class
 com\nmhieu\pojo\ShelfLife.class
@@ -59,8 +61,10 @@ com\nmhieu\pojo\Users.class
 com\nmhieu\repository\ReceiptDetailRepository.class
 com\nmhieu\repository\impl\FoodItemsRepositoryImpl.class
 com\nmhieu\pojo\Restaurants_.class
+com\nmhieu\service\StatsService.class
 com\nmhieu\repository\ShelfLifeRepository.class
 com\nmhieu\formatters\RolesFormatter.class
+com\nmhieu\repository\impl\StatsRepositoryImpl.class
 com\nmhieu\repository\impl\RolesRepositoryImpl.class
 com\nmhieu\service\impl\CategoriesFoodServiceImpl.class
 com\nmhieu\pojo\ReceiptDetail.class
@@ -99,9 +103,11 @@ com\nmhieu\service\CommentsService.class
 com\nmhieu\service\impl\ReceiptDetailServiceImpl.class
 com\nmhieu\pojo\Chatmessages_.class
 com\nmhieu\components\JwtService.class
+com\nmhieu\repository\StatsRepository.class
 com\nmhieu\service\impl\ShelfLifeServiceImpl.class
 com\nmhieu\pojo\ShelfLife_.class
 com\nmhieu\repository\FoodItemsRepository.class
+com\nmhieu\components\PasswordGeneratorService.class
 com\nmhieu\pojo\Roles.class
 com\nmhieu\pojo\Follow_.class
 com\nmhieu\pojo\Cart.class

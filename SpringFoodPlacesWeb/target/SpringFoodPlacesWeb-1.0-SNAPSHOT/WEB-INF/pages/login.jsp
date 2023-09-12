@@ -12,7 +12,7 @@
 
 <c:if test="${param.accessDenied != null}">
     <div>
-        Không có quyền
+        Không có quyền nha bé
     </div>
 </c:if>
 
@@ -45,7 +45,7 @@
 <div class="header">
 
     <div class="header-main">
-        <h1>ĐĂNG NHẬP</h1>
+        <h1>ĐĂNG NHẬP QUẢN TRỊ</h1>
         <div class="header-bottom">
             <div class="header-right w3agile">
 
@@ -53,9 +53,9 @@
 
                     <form method="post" action="${action}">
                         <input type="text" class="form-control" id="username" placeholder="Nhập username" name="username">
-                        <input type="text" class="form-control" id="password" placeholder="Nhập password" name="password">
+                        <input type="password" class="form-control" id="password" placeholder="Nhập password" name="password">
 
-                        <div class="remember">
+<!--                        <div class="remember">
                             <span class="checkbox1">
                                 <label class="checkbox"><input type="checkbox" name="" checked=""><i> </i>Remember
                                     me</label>
@@ -64,9 +64,9 @@
                                 <h6><a href="#">Forgot Password?</a></h6>
                             </div>
                             <div class="clear"> </div>
-                        </div>
+                        </div>-->
 
-                        <input type="submit" value="Register">
+                        <input type="submit" value="ĐĂNG NHẬP">
                     </form>
 <!--                    <div class="header-left-top">
                         <div class="sign-up">
