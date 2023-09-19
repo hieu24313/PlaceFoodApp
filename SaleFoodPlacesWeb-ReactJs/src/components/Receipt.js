@@ -124,8 +124,8 @@ const Receipt = () => {
                             return <Accordion className="mt-2" activeKey={activeKey}>
                                 {/* <Accordion.Item eventKey={r.receiptId} onClick={() => handleAccordionClick(r.receiptId)}> */}
                                 <Accordion.Item eventKey={r.receiptId} >
-
-                                    <Accordion.Header onClick={() =>{loadReceiptDetail(r.receiptId); handleAccordionClick(r.receiptId)}} >Hóa Đơn {r.receiptId} <Moment style={{ marginLeft: 'auto' }} format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment> </Accordion.Header>
+                            {console.log(r)}
+                                    <Accordion.Header onClick={() =>{loadReceiptDetail(r.receiptId); handleAccordionClick(r.receiptId)}} >Hóa Đơn {r.receiptId} - {r.statusReceiptId.statusReceipt} <Moment style={{ marginLeft: 'auto' }} format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment> </Accordion.Header>
                                     {/* <Accordion.Body id="body_detail" onLoad={setTimeout(()=>{let c =document.getElementById('body_detail'); c.onclick = null} ,300)} > */}
                                     <Accordion.Body id="body_detail"  >
                                         {loading === true ? <MySpinner /> : <>
