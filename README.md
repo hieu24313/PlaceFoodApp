@@ -1,5 +1,7 @@
 # PlaceFoodApp
 Đồ án nghành.
+Công nghệ sử dụng: Java Spring MVC, ReactJs.
+Database: Mysql
 
 ĐỀ TÀI: ĐỊA ĐIỂM ĂN UỐNG
 - Đăng nhập (các vai trò người quản trị, người dùng cá nhân và quản lý nhà hàng).
