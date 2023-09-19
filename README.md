@@ -2,7 +2,7 @@
 Đồ án nghành.
 
 ĐỀ TÀI: ĐỊA ĐIỂM ĂN UỐNG
-- Đăng nhập (các vai trò người quản trị, người dùng cá nhân hoặc người dùng cửa hàng).
+- Đăng nhập (các vai trò người quản trị, người dùng cá nhân và quản lý nhà hàng).
 - Đăng ký vai trò người dùng cá nhân hoặc cửa hàng ăn uống (có avatar). Đăng ký 
 người dùng là một cửa hàng cần được xác nhận của người quản trị thì tài khoản mới 
 được kích hoạt.
