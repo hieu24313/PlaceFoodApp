@@ -44,14 +44,15 @@ public class TwillioService {
         }
     }
     
-    public String auth_OTP(String OTP){
+    public String auth_OTP(String OTP, String phoneNumber){
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         String auth = "";
         try{
             //xác minh code đúng hay không
 //            String code = "650113"; // code người dùng nhập vào
             VerificationCheck verificationCheck = VerificationCheck.creator(
                 VERYFICATION_SID_SERVICE)
-            .setTo("+84359505026")
+            .setTo(phoneNumber)
             .setCode(OTP)
             .create();
             auth = verificationCheck.getStatus();
