@@ -4,6 +4,7 @@
  */
 package com.nmhieu.configs;
 
+//import com.nmhieu.twillio.TwilioConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -19,6 +20,7 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
             TilesConfigs.class,
             SpringSecurityConfig.class,
             JwtSecurityConfig.class
+//            TwilioConfig.class
         };
     }
 

@@ -6,6 +6,7 @@ package com.nmhieu.configs;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+//import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.nmhieu.formatters.CategoryFormatter;
 import com.nmhieu.formatters.RestaurantsFormatter;
 import com.nmhieu.formatters.RestaurantsStatusFormatter;
@@ -13,6 +14,7 @@ import com.nmhieu.formatters.RolesFormatter;
 import com.nmhieu.formatters.ShelfLifeFormatter;
 import com.nmhieu.formatters.UsersFormatter;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -29,12 +31,17 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import org.springframework.web.servlet.view.xml.MappingJackson2XmlView;
 
 /**
  *
@@ -106,7 +113,7 @@ public class WebAppContextConfig implements WebMvcConfigurer {
                         "secure", true));
         return cloudinary;
     }
-
+    
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver
@@ -136,4 +143,22 @@ public class WebAppContextConfig implements WebMvcConfigurer {
     public Validator getValidator() {
         return validator();
     }
+    
+//    @Bean
+//    public XmlMapper xmlMapper() {
+//        return new XmlMapper();
+//    }
+    
+//    @Bean
+//    public ViewResolver contentNegotiatingViewResolver() {
+//        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+//        resolver.setDefaultViews(Collections.singletonList(new MappingJackson2JsonView()));
+//        resolver.setDefaultViews(Collections.singletonList(new MappingJackson2XmlView()));
+//        return resolver;
+//    }
+//
+//    @Bean
+//    public ViewResolver beanNameViewResolver() {
+//        return new BeanNameViewResolver();
+//    }
 }

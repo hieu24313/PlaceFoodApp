@@ -7,6 +7,7 @@ package com.nmhieu.controllers;
 import com.nmhieu.pojo.Users;
 import com.nmhieu.service.RolesService;
 import com.nmhieu.service.UsersService;
+//import com.nmhieu.twillio.TwillioService;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class IndexController {
     @Autowired
     private Environment environment;
 
+//    @Autowired
+//    private TwillioService tws;
+    
     @ModelAttribute
     public void commonAttr(Model model,@RequestParam Map<String, String> params, Authentication authentication) {
         model.addAttribute("roles", this.rolesService.getRoles());
@@ -66,7 +70,7 @@ public class IndexController {
             UserDetails user = (UserDetails) principal;
             String username = user.getUsername();
             params.put("username", username);
-
+//            tws.send_OTP("+84359505026");
             Users user_auth = this.userService.getUserByUsername_new(username);
 
             if (user_auth != null) {
