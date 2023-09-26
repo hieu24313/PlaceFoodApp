@@ -59,7 +59,6 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
     public boolean addReceipt(Map<String, Cart> carts) {
         Session session = this.factory.getObject().getCurrentSession();
         Receipts receipt = new Receipts();
-
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Users user = this.userRepo.getUserByUsername_new(authentication.getName());
@@ -176,6 +175,40 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         Session session = this.factory.getObject().getCurrentSession();
         try {
             session.update(receipt);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean addReceiptNoUser(Map<String, Cart> carts) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Receipts receipt = new Receipts();
+        try {
+
+            receipt.setUserId(null);
+            receipt.setReceiptDate(new Date());
+            receipt.setActive(Boolean.TRUE);
+            receipt.setStatusReceiptId(new ReceiptStatus(1));
+            session.save(receipt);
+
+            double totalAmount = 0;
+
+            for (Cart cart : carts.values()) {
+                ReceiptDetail receiptDetail = new ReceiptDetail();
+                receiptDetail.setFooditemId(this.foodItemsRepo.getFoodItemById(Integer.parseInt(cart.getFoodId().toString())));
+                receiptDetail.setReceiptId(receipt);
+                receiptDetail.setQuantity(cart.getQuantity());
+                receiptDetail.setUnitPrice(BigDecimal.valueOf(cart.getUnitPrice()));
+                double amount = cart.getQuantity() * cart.getUnitPrice();
+                receiptDetail.setAmount(BigDecimal.valueOf(amount));
+                totalAmount += amount;
+                session.save(receiptDetail);
+            }
+            receipt.setTotalPayment(BigDecimal.valueOf(totalAmount));
+
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();

@@ -49,4 +49,9 @@ public class ReceiptServiceImpl implements ReceiptService{
         
         return this.receiptRepo.updateAcceptReceipt(receipt);
     }
+
+    @Override
+    public boolean addReceiptNoUser(Map<String, Cart> carts) {
+        return this.receiptRepo.addReceiptNoUser(carts);
+    }
 }

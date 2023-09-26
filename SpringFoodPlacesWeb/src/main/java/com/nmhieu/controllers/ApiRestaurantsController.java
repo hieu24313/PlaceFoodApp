@@ -9,6 +9,7 @@ import com.nmhieu.service.RestaurantsService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class ApiRestaurantsController {
 
     @Autowired
     private RestaurantsService restaurantsService;
+    
+    @Autowired
+    private Environment environment;
 
     @DeleteMapping("/restaurantManager/restaurants/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -85,5 +89,50 @@ public class ApiRestaurantsController {
     @CrossOrigin
     public ResponseEntity<Restaurants> listRestaurant1(@PathVariable(value = "restaurantId") int restaurantId) {
         return new ResponseEntity<>(this.restaurantsService.getRestaurantById(restaurantId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/countRestaurant/")
+    @CrossOrigin
+    public ResponseEntity<String> countRestaurant(@RequestParam Map<String, String> params){
+        int pageSize = Integer.parseInt(this.environment.getProperty("PAGE_SIZE"));
+        //current_user_UserId
+        
+        int countRestaurant = this.restaurantsService.countRestaurants(params);
+//        model.addAttribute("counter", Math.ceil(countRestaurant * 1.0 / pageSize));
+
+//        String pageStr = params.get("page");
+//        String pageAllStr = params.get("pageAll");
+        
+        String count = String.valueOf(Math.ceil(countRestaurant * 1.0 / pageSize));
+        
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+    
+    @GetMapping("/restaurantManagerForClient/")
+    @CrossOrigin
+    public ResponseEntity<List<Restaurants>> restaurantManager(@RequestParam Map<String, String> params){
+        int pageSize = Integer.parseInt(this.environment.getProperty("PAGE_SIZE"));
+        //current_user_UserId
+        
+        int countRestaurant = this.restaurantsService.countRestaurants(params);
+        String pageStr = params.get("page");
+        String pageAllStr = params.get("pageAll");
+
+        if (pageStr == null) {
+            if (pageAllStr == null) {
+                params.put("page", "1");
+                return new ResponseEntity<>(this.restaurantsService.getRestaurants(params), HttpStatus.OK);
+
+//                model.addAttribute("restaurant_list", this.restaurantsService.getRestaurants(params));
+            } else {
+                return new ResponseEntity<>(this.restaurantsService.getRestaurants(params), HttpStatus.OK);
+//                model.addAttribute("restaurant_list", this.restaurantsService.getRestaurants(params));
+            }
+
+        } else {
+            return new ResponseEntity<>(this.restaurantsService.getRestaurants(params), HttpStatus.OK);
+//            model.addAttribute("restaurant_list", this.restaurantsService.getRestaurants(params));
+        }
+        
     }
 }

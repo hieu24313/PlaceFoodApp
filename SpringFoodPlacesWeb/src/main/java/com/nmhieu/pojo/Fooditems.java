@@ -44,6 +44,13 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "Fooditems.findByActive", query = "SELECT f FROM Fooditems f WHERE f.active = :active")})
 public class Fooditems implements Serializable {
 
+    @OneToMany(mappedBy = "foodId")
+    @JsonIgnore
+    private Set<ComboFooditems> comboFooditemsSet;
+    @OneToMany(mappedBy = "foodId")
+    @JsonIgnore
+    private Set<PromotionFooditems> promotionFooditemsSet;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -227,6 +234,24 @@ public class Fooditems implements Serializable {
     @Override
     public String toString() {
         return "com.tuantran.pojo.Fooditems[ foodId=" + foodId + " ]";
+    }
+
+    @XmlTransient
+    public Set<ComboFooditems> getComboFooditemsSet() {
+        return comboFooditemsSet;
+    }
+
+    public void setComboFooditemsSet(Set<ComboFooditems> comboFooditemsSet) {
+        this.comboFooditemsSet = comboFooditemsSet;
+    }
+
+    @XmlTransient
+    public Set<PromotionFooditems> getPromotionFooditemsSet() {
+        return promotionFooditemsSet;
+    }
+
+    public void setPromotionFooditemsSet(Set<PromotionFooditems> promotionFooditemsSet) {
+        this.promotionFooditemsSet = promotionFooditemsSet;
     }
 
 }

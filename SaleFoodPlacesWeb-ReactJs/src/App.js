@@ -20,6 +20,7 @@ import RestaurantDetail from './components/RestaurantDetail';
 import RegisterRestaurant from './components/RegisterRestaurant';
 import Receipt from './components/Receipt';
 import ChangePassword from './components/ChangePassword';
+import RestaurantManager from './components/RestaurantManager';
 
 
 export const MyUserContext = createContext();
@@ -55,6 +56,7 @@ function App() {
               <Route path="/register_restaurant" element={<RegisterRestaurant />} />
               <Route path="/receipt" element={<Receipt />} />    
               <Route path="/changepassword" element={<ChangePassword />} />  
+              <Route path="/restaurantmanager" element={<RestaurantManager />} />
               </Routes>
           </Container>
           <Footer />

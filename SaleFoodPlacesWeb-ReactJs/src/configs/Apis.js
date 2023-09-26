@@ -13,6 +13,7 @@ export const endpoints = {
     "login-google": `${SERVER_CONTEXT}/api/login-google/`,
     "current-user": `${SERVER_CONTEXT}/api/current-user/`, //lấy user hiện đang login
     "pay": `${SERVER_CONTEXT}/api/pay/`,
+    "payNoUser": `${SERVER_CONTEXT}/api/payNoUser/`,
     "detail": (foodId) => `${SERVER_CONTEXT}/api/foodItems/${foodId}/`,
     "comments": (foodId) => `${SERVER_CONTEXT}/api/foodItems/${foodId}/comments/`,
     "add-comment": `${SERVER_CONTEXT}/api/add-comment/`,
@@ -26,7 +27,11 @@ export const endpoints = {
     "follow": `${SERVER_CONTEXT}/api/follow/`,
     "check-follow": `${SERVER_CONTEXT}/api/check-follow/`,
     "check-comment": (foodId) => `${SERVER_CONTEXT}/api/foodItems/${foodId}/check-comment/`,
-    "accept-receipt": (receiptId) => `${SERVER_CONTEXT}/api/receipt/${receiptId}/acceiptReceipt/`
+    "accept-receipt": (receiptId) => `${SERVER_CONTEXT}/api/receipt/${receiptId}/acceiptReceipt/`,
+    "get-login-google-key": `${SERVER_CONTEXT}/api/loginGoogleKey/`,
+    "get-recaptcha-key": `${SERVER_CONTEXT}/api/recaptchaKey/`,
+    "count-restaurant": `${SERVER_CONTEXT}/api/countRestaurant/`,
+    "restaurant-manager": `${SERVER_CONTEXT}/api/restaurantManagerForClient/`
 
 
 

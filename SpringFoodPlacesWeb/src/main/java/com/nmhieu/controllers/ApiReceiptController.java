@@ -53,6 +53,24 @@ public class ApiReceiptController {
         }
     }
     
+    @PostMapping("/payNoUser/")
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin
+    public void addReceiptNoUser(@RequestBody Map<String, Cart> carts) {
+        try {
+            if (carts != null && !carts.isEmpty()) {
+                // Xử lý dữ liệu carts ở đây
+                this.receiptService.addReceiptNoUser(carts);
+            } else {
+                // In thông báo nếu carts là null hoặc rỗng
+                System.out.println("Không có dữ liệu carts được gửi lên.");
+            }
+        } catch (Exception e) {
+            // In thông báo nếu có lỗi xảy ra trong quá trình xử lý carts
+            System.out.println("Đã xảy ra lỗi khi xử lý dữ liệu carts: " + e.getMessage());
+        }
+    }
+    
     @GetMapping("/receipts/")
     @CrossOrigin
     public ResponseEntity<List<Receipts>> listReceipt(@RequestParam Map<String, String> params) {

@@ -25,6 +25,11 @@
     <class>com.nmhieu.pojo.Receipts</class>
     <class>com.nmhieu.pojo.Fooditems</class>
     <class>com.nmhieu.pojo.Follow</class>
+    <class>com.nmhieu.pojo.PromotionType</class>
+    <class>com.nmhieu.pojo.Combo</class>
+    <class>com.nmhieu.pojo.Promotion</class>
+    <class>com.nmhieu.pojo.PromotionFooditems</class>
+    <class>com.nmhieu.pojo.ComboFooditems</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/springfoodplacesweb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

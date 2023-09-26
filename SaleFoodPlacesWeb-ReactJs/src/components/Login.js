@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MyUserContext } from "../App";
 import { Alert, Button, Form } from "react-bootstrap";
 import Apis, { authApi, endpoints } from "../configs/Apis";
@@ -25,6 +25,26 @@ const Login = () => {
     const notify = (x) => toast(x);
     const avatar = useRef();
     const [kt, setKt] = useState(false);
+    const [apiLoginGooleKey, setApiLoginGooleKey] = useState(null)
+    const [apiRecaptchaKey, setApiRecaptchaKey] = useState(null);
+
+    useEffect(() => {
+        const getKey = async () => {
+            try {
+                let { data } = await Apis.get(endpoints['get-login-google-key']);
+                setApiLoginGooleKey(data);
+                console.log(data);
+
+                let res = await Apis.get(endpoints['get-recaptcha-key']);
+                setApiRecaptchaKey(res.data);
+                console.log(res.data);
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+        getKey();
+    }, [])
 
     const login = (evt) => {
         evt.preventDefault();
@@ -69,33 +89,33 @@ const Login = () => {
     }
 
     const loginGoogle = async (decoded) => {
-        if(kt === true){
+        if (kt === true) {
             console.log(decoded)
             let form = new FormData();
-        form.append("avatar", new Blob());
-        form.append("pathAvatarGoogle", decoded.picture);
-        form.append("username", decoded.email);
-        form.append("firstname", decoded.family_name);
-        form.append("lastname", decoded.given_name);
-        // form.append("phonenumber","");
-        // form.append("location", "");
-        form.append("email", decoded.email);
+            form.append("avatar", new Blob());
+            form.append("pathAvatarGoogle", decoded.picture);
+            form.append("username", decoded.email);
+            form.append("firstname", decoded.family_name);
+            form.append("lastname", decoded.given_name);
+            // form.append("phonenumber","");
+            // form.append("location", "");
+            form.append("email", decoded.email);
 
-        try {
-            let res = await Apis.post(endpoints["login-google"], form);
-            cookie.save("token", res.data);    //lưu cái res.data kia bằng biến token vào cookie 
+            try {
+                let res = await Apis.post(endpoints["login-google"], form);
+                cookie.save("token", res.data);    //lưu cái res.data kia bằng biến token vào cookie 
 
-            let { data } = await authApi().get(endpoints['current-user']);
-            cookie.save("user", data); //lưu cái data kia bằng biến user vào cookie 
+                let { data } = await authApi().get(endpoints['current-user']);
+                cookie.save("user", data); //lưu cái data kia bằng biến user vào cookie 
 
-            dispatch({
-                "type": "login",
-                "payload": data
-            });
-        } catch (err) {
-            notify(err.request.responseText)
-        }
-        }else{
+                dispatch({
+                    "type": "login",
+                    "payload": data
+                });
+            } catch (err) {
+                notify(err.request.responseText)
+            }
+        } else {
             notify("Vui lòng xác minh bạn là con người!");
         }
 
@@ -134,35 +154,40 @@ const Login = () => {
 
                                     <MDBInput wrapperClass='mb-4 mx-5 w-100' value={username} onChange={e => setUsername(e.target.value)} labelClass='text-white' label='Tài Khoản' id='formControlLg' type='text' size="lg" />
                                     <MDBInput wrapperClass='mb-4 mx-5 w-100' value={password} onChange={e => setPassword(e.target.value)} labelClass='text-white' label='Mật Khẩu' id='formControlLg' type='password' size="lg" />
-
-                                    <ReCAPTCHA
-                                        sitekey="6LfIq_MkAAAAAAkqaKZUFwqhKnBZ44wfanxQfFQk"
+                                    {apiRecaptchaKey === null ? <MySpinner /> : <ReCAPTCHA
+                                        sitekey={apiRecaptchaKey}
                                         onChange={checkRecaptcha}
-                                    />
+                                    />}
+
                                     <p className="small mb-3 pb-lg-2"><Link class="text-white-50" to="/changPassword">Quên mật khẩu?</Link></p>
 
                                     {loading === true ? <MySpinner /> : <MDBBtn outline className='mx-2 px-5' type="submit" color='white' size='lg'>Đăng Nhập</MDBBtn>}
                                     <ToastContainer />
 
                                     <div className='d-flex flex-row mt-3 mb-5'>
-                                        <GoogleOAuthProvider clientId="589360561946-gt02gm1325ignk5brqcos0lgfj2m3836.apps.googleusercontent.com">
-                                            <GoogleLogin
-                                                className="login_google"
-                                                clientId="589360561946-gt02gm1325ignk5brqcos0lgfj2m3836.apps.googleusercontent.com"
-                                                onSuccess={(credentialResponse) => {
-                                                    // console.log("Đăng nhập thành công", credentialResponse.credential);
-                                                    var token = credentialResponse.credential;
-                                                    var decoded = jwt_decode(token);
-                                                    console.log(decoded);
-                                                    loginGoogle(decoded);
+                                        {apiLoginGooleKey === null ? "" :
+                                            <>
+                                                <GoogleOAuthProvider clientId={apiLoginGooleKey}>
+                                                    <GoogleLogin
+                                                        className="login_google"
+                                                        clientId={apiLoginGooleKey}
+                                                        onSuccess={(credentialResponse) => {
+                                                            // console.log("Đăng nhập thành công", credentialResponse.credential);
+                                                            var token = credentialResponse.credential;
+                                                            var decoded = jwt_decode(token);
+                                                            console.log(decoded);
+                                                            loginGoogle(decoded);
 
-                                                }}
-                                                onFailure={(error) => {
-                                                    notify("Đăng nhập không thành công");
-                                                }}
-                                                redirectUri="http://localhost:3000"
-                                            />
-                                        </GoogleOAuthProvider>
+                                                        }}
+                                                        onFailure={(error) => {
+                                                            notify("Đăng nhập không thành công");
+                                                        }}
+                                                        redirectUri="http://localhost:3000"
+                                                    />
+                                                </GoogleOAuthProvider>
+                                            </>
+                                        }
+
                                     </div>
 
                                     <div>

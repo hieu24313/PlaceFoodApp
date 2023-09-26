@@ -88,8 +88,11 @@
                 </form>
 
                 <form class = "d-flex" action="${statsAction_date}">
+                    <label for="fromDate" class="text-danger">Từ ngày</label>
                     <input required="" class="form-control me-2" type="date" name="fromDate" >
+                    <label for="toDate" class="text-danger">Đến ngày</label>
                     <input required class="form-control me-2" type="date" name="toDate">
+                    
                     <button class="btn btn-primary" type="submit">Tìm</button>
                 </form>
 

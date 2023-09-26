@@ -3,7 +3,7 @@ import { Alert, Button, Form, Table } from "react-bootstrap";
 import cookie from "react-cookies";
 import { Link, useNavigate } from "react-router-dom";
 import { MyCartContext } from "../App";
-import { authApi, endpoints } from "../configs/Apis";
+import Apis, { authApi, endpoints } from "../configs/Apis";
 import MySpinner from "../layout/MySpinner";
 import '../resources/css/Cart.css'
 
@@ -46,21 +46,49 @@ const Cart = () => {
     const pay = () => {
         const process = async () => {
             setLoading(true);
-            let res = await authApi().post(endpoints['pay'], carts);
-            if (res.status === 200) {
-                console.log(carts);
-                cookie.remove("cart");
+            try{
+                if (user == null) {
 
-                cartDispatch({
-                    "type": "update",
-                    "payload": 0
-                });
+                    let res = await Apis.post(endpoints['payNoUser'], carts);
+                    if (res.status === 200) {
+                        console.log(carts);
+                        cookie.remove("cart");
+    
+                        cartDispatch({
+                            "type": "update",
+                            "payload": 0
+                        });
+    
+                        setCarts([]);
+                        setLoading(false);
+                        nav("/")
+                    }
+                    else {
+                        alert("thanh toán thất bại!!!");
+                    }
+                } else {
+                    let res = await authApi().post(endpoints['pay'], carts);
+                    if (res.status === 200) {
+                        console.log(carts);
+                        cookie.remove("cart");
+    
+                        cartDispatch({
+                            "type": "update",
+                            "payload": 0
+                        });
+    
+                        setCarts([]);
+                        nav("/receipt");
+                    }else {
+                        alert("thanh toán thất bại!!!");
+                    }
+                }
+            }catch(e){
+                setLoading(false);
+                console.log(e);
+            }
 
-                setCarts([]);
-            }
-            else{
-                alert("thanh toán thất bại!!!")
-            }
+
         }
 
         process();
@@ -71,67 +99,71 @@ const Cart = () => {
     //         setCarts({ ...carts, [id]: { ...carts[id], "quantity": 0 } })
     //     }
     //     else {
-            
+
     //     }
     // }
 
     let regex = /^\d+$/;
-    
+
     if (carts === null)
         return <Alert variant="info" className="mt-2">Không có sản phẩm trong giỏ!</Alert>
 
 
-    if (carts.length === 0)
-        nav("/receipt");
+    // if (carts.length === 0)
+    //     nav("/receipt");
 
     return <>
-    <h1 className="text-center text-success">Giỏ Hàng</h1>
+        <h1 className="text-center text-success">Giỏ Hàng</h1>
         <div className="cart_table_parent">
-        <Table striped bordered hover className="cart_table">
-            <thead className="table_header">
-                <tr>
-                    <th>#</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Đơn giá</th>
-                    <th>Tổng</th>
-                    <th>Số lượng</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {Object.values(carts).map(c => {
-                    tong += c.unitPrice * c.quantity;
-                    return <tr>
-                        <td>{c.foodId}</td>
-                        <td>{c.foodName}</td>
-                        <td>{c.unitPrice}</td>
-                        <td>{c.unitPrice * c.quantity} VNĐ</td>
-                        <td>{c.quantity} </td>
-                        <td>
-                            <Form.Control type="number" value={carts[c.foodId]["quantity"]} onBlur={updateItem}
-                                onChange={(e) => setCarts({ ...carts, [c.foodId]: { ...carts[c.foodId], "quantity": parseInt(regex.test(e.target.value) === true ? e.target.value : 0)  } })} />
-                        </td>
-                        <td>
-                            <Button variant="danger" onClick={() => deleteItem(c)}>Xóa</Button>
-                        </td>
+            <Table striped bordered hover className="cart_table">
+                <thead className="table_header">
+                    <tr>
+                        <th>#</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Tổng</th>
+                        <th>Số lượng</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                })}
+                </thead>
+                <tbody>
+                    {Object.values(carts).map(c => {
+                        tong += c.unitPrice * c.quantity;
+                        return <tr>
+                            <td>{c.foodId}</td>
+                            <td>{c.foodName}</td>
+                            <td>{c.unitPrice}</td>
+                            <td>{c.unitPrice * c.quantity} VNĐ</td>
+                            <td>{c.quantity} </td>
+                            <td>
+                                <Form.Control type="number" value={carts[c.foodId]["quantity"]} onBlur={updateItem}
+                                    onChange={(e) => setCarts({ ...carts, [c.foodId]: { ...carts[c.foodId], "quantity": parseInt(regex.test(e.target.value) === true ? e.target.value : 0) } })} />
+                            </td>
+                            <td>
+                                <Button variant="danger" onClick={() => deleteItem(c)}>Xóa</Button>
+                            </td>
+                        </tr>
+                    })}
 
 
-            </tbody>
-        </Table>
+                </tbody>
+            </Table>
         </div>
         <div className="div_btn_pay">
             <h3>Tổng Tiền: {tong}</h3>
         </div>
         <div className="div_btn_pay">
-        {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán! </p> : 
+            {/* <div>
+                Vui lòng nhập địa chỉ và số điện thoại.
+            </div> */}
+            {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>}
+
+            {/* {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán! </p> : 
             user.location === null ? <p>Vui lòng thêm <Link to="/profile">địa chỉ</Link> để thanh toán!</p> : 
             <>
-                {loading === true ? <MySpinner />: <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>} 
             </>
-            }
+            } */}
         </div>
     </>
 }
