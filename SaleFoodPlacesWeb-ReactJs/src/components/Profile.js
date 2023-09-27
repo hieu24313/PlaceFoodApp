@@ -34,6 +34,7 @@ const Profile = () => {
     });
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
+    const regex = /^0\d{9,10}$/;
 
     const change = (evt, field) => {
         // setUser({...user, [field]: evt.target.value})
@@ -43,7 +44,7 @@ const Profile = () => {
     }
 
     const updateAvatar = (avatar) => {
-        console.log(avatar[0]);
+        // console.log(avatar[0]);
         setCurrent_avatar(avatar[0]);
     }
     // console.log(current_user)
@@ -107,7 +108,6 @@ const Profile = () => {
         process();
 
     }
-
     if (current_user === null) {
         return <>
             <h1>Vui lòng đăng nhập</h1>
@@ -134,13 +134,16 @@ const Profile = () => {
         "phonenumber": "",
         "avatar": current_user.avatar */}
                     <MDBCardBody className='px-5'>
-                        <h2 className="text-uppercase text-center mb-5"></h2>
+                        <h2 className="text-uppercase text-center mb-5"> </h2>
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.firstname} required onChange={(e) => change(e, "firstname")} label='Họ' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.lastname} required onChange={(e) => change(e, "lastname")} label='Tên' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.username} readOnly required onChange={(e) => change(e, "username")} label='Tên Tài Khoản' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.location} required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
                         <MDBInput wrapperClass='mb-4' defaultValue={current_user.email} required onChange={(e) => change(e, "email")} label='Email' size='lg' id='form3' type='text' />
-                        <MDBInput wrapperClass='mb-4' defaultValue={current_user.phonenumber} required onChange={(e) => change(e, "phonenumber")} label='Số Điện Thoại' size='lg' id='form3' type='text' />
+                        <div className="auth-btn-otp">
+                            <MDBInput wrapperClass='mb-4' defaultValue={current_user.phonenumber} required onChange={(e) => change(e, "phonenumber")} label='Số Điện Thoại' size='lg' id='form3' type='text' />
+                            {current_user.otp === "0" ? <Link to="/authPhoneNumber" className="btn btnotp">Xác thực</Link> : null}
+                        </div>
 
                         {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Lưu</MDBBtn>}
                     </MDBCardBody>

@@ -53,7 +53,8 @@ import org.springframework.web.servlet.view.xml.MappingJackson2XmlView;
 @ComponentScan(basePackages = {
     "com.nmhieu.controllers",
     "com.nmhieu.repository",
-    "com.nmhieu.service"
+    "com.nmhieu.service",
+    "com.nmhieu.twillio"
 })
 
 @PropertySource("classpath:configs.properties")

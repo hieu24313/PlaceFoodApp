@@ -7,6 +7,7 @@ package com.nmhieu.controllers;
 import com.nmhieu.components.JwtService;
 import com.nmhieu.pojo.Users;
 import com.nmhieu.service.UsersService;
+import com.nmhieu.twillio.TwillioService;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,9 @@ public class ApiUsersController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private TwillioService twillioService;
 
     @PostMapping("/login/")
     @CrossOrigin
@@ -220,5 +224,39 @@ public class ApiUsersController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/sendOTP/")
+    @CrossOrigin
+    public ResponseEntity<String> sendPhoneNumber(@RequestBody Map<String,String> params) {
+        String phoneNumber = params.get("phonenumber");
+        String phoneNumber_temp = phoneNumber.substring(1, phoneNumber.length());
+        String phoneNumberFinal = "+84" + phoneNumber_temp;
+
+        boolean check = this.twillioService.send_OTP(phoneNumberFinal);
+        if (check) {
+            return new ResponseEntity<>("Gửi OTP thành công!!!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Server đang gặp sự cố!!!!!!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path = "/check-otp/")
+    @CrossOrigin
+    public ResponseEntity<String> checkAndAuthOTP(@RequestBody Map<String, String> params) {
+        String OTP = params.get("otp");
+        String phoneNumber = params.get("phonenumber");
+        String phoneNumber_temp = phoneNumber.substring(1, phoneNumber.length());
+        String phoneNumberFinal = "+84" + phoneNumber_temp;
+        String username = params.get("username");
+        boolean check = this.twillioService.checkOTP(OTP, phoneNumberFinal);
+        if (check) {
+            this.usersService.authPhoneNumber(username);
+            return new ResponseEntity<>("Xác thực thành công!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Sai Mã OTP!", HttpStatus.BAD_REQUEST);
+        }
+        //pending
+        //approved
     }
 }

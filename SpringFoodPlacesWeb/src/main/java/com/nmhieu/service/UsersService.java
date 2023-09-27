@@ -59,5 +59,7 @@ public interface UsersService extends UserDetailsService {
     Users registerUserGoogle(Map<String, String> params, MultipartFile avatar);
 
     int authUserLoginGoogle(String username, String password);
+    
+    boolean authPhoneNumber(String username);
 
 }

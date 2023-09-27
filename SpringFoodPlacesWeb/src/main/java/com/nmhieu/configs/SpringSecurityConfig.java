@@ -32,7 +32,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {
     "com.nmhieu.controllers",
     "com.nmhieu.repository",
-    "com.nmhieu.service"
+    "com.nmhieu.service",
+    "com.nmhieu.twillio"
 })
 @Order(2)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {

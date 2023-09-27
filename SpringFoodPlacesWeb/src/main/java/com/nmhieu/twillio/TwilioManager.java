@@ -23,13 +23,15 @@ public class TwilioManager {
     @Autowired
     private Environment env;
     
-    public final String VERYFICATION_SID_SERVICE = env.getProperty("twillio.VERYFICATION_SERVICE_SID");
-    
     @Autowired
     public TwilioManager() {
     }
     
     public boolean sendMessage(String phoneNumber) {
+        String ACCOUNT_SID = env.getProperty("twillio.ACCOUNT_SID");
+        String AUTH_TOKEN = env.getProperty("twillio.AUTH_TOKEN");
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        String VERYFICATION_SID_SERVICE = env.getProperty("twillio.VERYFICATION_SERVICE_SID");
         try{
             //gửi code
             Verification very = Verification.creator(
@@ -43,23 +45,29 @@ public class TwilioManager {
         }
     }
     
-//    public String auth_OTP(String OTP, String phoneNumber){
-//        String auth = null;
-//        try{
-//            //xác minh code đúng hay không
-////            String code = "650113"; // code người dùng nhập vào
-//            VerificationCheck verificationCheck = VerificationCheck.creator(
-//                VERYFICATION_SID_SERVICE)
-//            .setTo(phoneNumber)
-//            .setCode(OTP)
-//            .create();
-//            auth = verificationCheck.getStatus();
-//        }catch(ApiException e){
-//            e.printStackTrace();
-//        }
-//        return auth;
-//    }
-//    
+    public boolean auth_OTP(String OTP, String phoneNumber){
+        String ACCOUNT_SID = env.getProperty("twillio.ACCOUNT_SID");
+        String AUTH_TOKEN = env.getProperty("twillio.AUTH_TOKEN");
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        String VERYFICATION_SID_SERVICE = env.getProperty("twillio.VERYFICATION_SERVICE_SID");
+        boolean auth = false;
+        try{
+            //xác minh code đúng hay không
+//            String code = "650113"; // code người dùng nhập vào
+            VerificationCheck verificationCheck = VerificationCheck.creator(
+                VERYFICATION_SID_SERVICE)
+            .setTo(phoneNumber)
+            .setCode(OTP)
+            .create();
+            auth = verificationCheck.getValid();
+            return auth = true;
+        }catch(ApiException e){
+            e.printStackTrace();
+            return auth = false;
+            
+        }
+    }
+    
 
 
 }

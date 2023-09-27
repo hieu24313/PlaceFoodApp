@@ -94,14 +94,21 @@ const RegisterRestaurant = () => {
             <ProfileComponents />
             <div className="contain_info_2">
                 <Form onSubmit={register_restaurant}>
-                <ToastContainer />
+                    <ToastContainer />
                     <MDBCard className='m-5 register_form' style={{ maxWidth: '600px' }}>
                         <MDBCardBody className='px-5 register_form_child'>
                             <h2 className="text-uppercase text-center mb-5">Form Đăng Ký Nhà Hàng</h2>
                             <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "restaurantName")} label='Tên Nhà Hàng' size='lg' id='form1' type='text' />
                             <MDBInput wrapperClass='mb-4' required onChange={(e) => change(e, "location")} label='Địa Chỉ' size='lg' id='form3' type='text' />
                             <MDBInput wrapperClass='mb-4' ref={avatar} size='lg' id='form4' type='file' />
-                            {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Gửi Yêu Cầu</MDBBtn>}
+                            {user.otp === "1" ? <>
+                                {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Gửi Yêu Cầu</MDBBtn>}
+                            </> :
+                                <>
+                                    <MDBBtn disabled className='mb-4 w-100 gradient-custom-4' size='lg'>Gửi Yêu Cầu</MDBBtn>
+                                    <label className="text-danger">Vui lòng xác thực số điện thoại <Link to="/authPhoneNumber">Tại đây</Link> để đăng ký nhà hàng! </label>
+                                </>}
+
                         </MDBCardBody>
                     </MDBCard>
                 </Form>

@@ -1,0 +1,9 @@
+.div_send_otp {
+    display: flex;
+}
+
+.div_send_otp button {
+    height: 45px;
+    width: 120px;
+    margin-left: 8px;
+}

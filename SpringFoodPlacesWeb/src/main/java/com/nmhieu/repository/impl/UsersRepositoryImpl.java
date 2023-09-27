@@ -266,6 +266,7 @@ public class UsersRepositoryImpl implements UsersRepository {
         Session session = this.factory.getObject().getCurrentSession();
         try {
             user.setActive(Boolean.TRUE);
+            user.setOtp("0");
             session.save(user);
             return user;
         } catch (HibernateException ex) {
@@ -355,6 +356,7 @@ public class UsersRepositoryImpl implements UsersRepository {
         Session session = this.factory.getObject().getCurrentSession();
         try {
             user.setActive(Boolean.TRUE);
+            user.setOtp("0");
             session.save(user);
             return 1;
         } catch (HibernateException ex) {
@@ -452,6 +454,20 @@ public class UsersRepositoryImpl implements UsersRepository {
             }
         } else {
             return 3; // sai tài khoản
+        }
+    }
+
+    @Override
+    public boolean authPhoneNumber(String username) {
+        Session session = this.factory.getObject().getCurrentSession();
+        try{
+            Users u = this.getUserByUsername_new(username);
+            u.setOtp("1");
+            session.save(u);
+            return true;
+        }catch(HibernateException e){
+            e.printStackTrace();
+            return false;
         }
     }
 

@@ -31,7 +31,9 @@ export const endpoints = {
     "get-login-google-key": `${SERVER_CONTEXT}/api/loginGoogleKey/`,
     "get-recaptcha-key": `${SERVER_CONTEXT}/api/recaptchaKey/`,
     "count-restaurant": `${SERVER_CONTEXT}/api/countRestaurant/`,
-    "restaurant-manager": `${SERVER_CONTEXT}/api/restaurantManagerForClient/`
+    "restaurant-manager": `${SERVER_CONTEXT}/api/restaurantManagerForClient/`,
+    "send-otp": `${SERVER_CONTEXT}/api/sendOTP/`,
+    "check-otp": `${SERVER_CONTEXT}/api/check-otp/`
 
 
 

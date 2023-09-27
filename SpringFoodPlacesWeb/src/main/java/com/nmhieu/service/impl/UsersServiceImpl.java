@@ -500,4 +500,9 @@ public class UsersServiceImpl implements UsersService {
     public int authUserLoginGoogle(String username, String password) {
         return this.usersRepo.authUserLoginGoogle(username, password);
     }
+
+    @Override
+    public boolean authPhoneNumber(String username) {
+        return this.usersRepo.authPhoneNumber(username);
+    }
 }

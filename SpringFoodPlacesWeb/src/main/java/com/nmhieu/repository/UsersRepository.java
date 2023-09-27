@@ -39,4 +39,6 @@ public interface UsersRepository {
     Users registerUserGoogle(Users user);
     int authUserLoginGoogle(String username, String password);
     
+    boolean authPhoneNumber (String username);
+    
 }

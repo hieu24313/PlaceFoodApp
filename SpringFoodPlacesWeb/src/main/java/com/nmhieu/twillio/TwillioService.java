@@ -4,7 +4,10 @@
  */
 package com.nmhieu.twillio;
 
+import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,10 +16,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TwillioService {
+    
     private final TwilioManager twilioManager;
+    
+    
 
     @Autowired
     public TwillioService(TwilioManager twilioManager) {
+        
         this.twilioManager = twilioManager;
     }
     
@@ -24,7 +31,7 @@ public class TwillioService {
         return twilioManager.sendMessage(phoneNumber);
     }
     
-//    public String send_OTP(String OTP, String phoneNumber){
-//        return twilioManager.auth_OTP(OTP, phoneNumber);
-//    }
+    public boolean checkOTP(String OTP, String phoneNumber){
+        return twilioManager.auth_OTP(OTP, phoneNumber);
+    }
 }

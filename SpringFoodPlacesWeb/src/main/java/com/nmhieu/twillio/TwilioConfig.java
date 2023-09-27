@@ -22,11 +22,14 @@ public class TwilioConfig {
     @Autowired
     private Environment env;
     
-    public final String ACCOUNT_SID = env.getProperty("twillio.ACCOUNT_SID");
-    public final String AUTH_TOKEN = env.getProperty("twillio.AUTH_TOKEN");
+//    public final String ACCOUNT_SID = env.getProperty("twillio.ACCOUNT_SID");
+//    public final String AUTH_TOKEN = env.getProperty("twillio.AUTH_TOKEN");
 
     @Bean
     public TwilioManager twilioManager() {
+        String ACCOUNT_SID = env.getProperty("twillio.ACCOUNT_SID");
+        String AUTH_TOKEN = env.getProperty("twillio.AUTH_TOKEN");
+        
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         return new TwilioManager();
     }

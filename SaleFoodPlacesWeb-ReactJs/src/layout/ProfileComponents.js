@@ -6,7 +6,6 @@ import { useContext } from "react";
 const ProfileComponents = () => {
 
     const [user,] = useContext(MyUserContext);
-    console.log(user)
     return <>
         <div className="contain_info_1">
             <Nav variant="tabs" defaultActiveKey="/home">
@@ -23,6 +22,12 @@ const ProfileComponents = () => {
                 <Nav.Item className="nav-link text-success choose">
                     <Link to="/changepassword" >Đổi Mật Khẩu</Link>
                 </Nav.Item>
+
+                {user.otp === "0" ? <>
+                <Nav.Item className="nav-link text-success choose">
+                    <Link to="/authPhoneNumber" >Xác Thực Số Điện Thoại</Link>
+                </Nav.Item>
+                </> : <></>}
 
                 {user.roleId.roleId === 2 ? <>
                     <Nav.Item className="nav-link text-success choose">

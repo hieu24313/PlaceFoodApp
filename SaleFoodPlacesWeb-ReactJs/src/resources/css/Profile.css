@@ -22,7 +22,7 @@
 
 .contain_info_1 {
     width: 30%;
-    margin-left: 1%;
+    margin-left: 4%;
    
 }
 
@@ -45,4 +45,27 @@
     background: transparent !important;
     color: initial !important;
 }
+
+.auth-btn-otp {
+    display: flex;
+}
+
+.auth-btn-otp input {
+    position: relative;
+}
+
+.auth-btn-otp a {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    height: 44px;
+    text-align: center !important;
+    display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+/* .btnotp {
+    height: 50px;
+} */
 
