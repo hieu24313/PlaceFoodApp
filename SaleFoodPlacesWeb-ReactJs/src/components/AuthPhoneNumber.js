@@ -120,8 +120,8 @@ const AuthPhoneNumber = () => {
                                     {user.otp === "1" ? <><Button disabled id="send_otp_btn" >Đã Xác Thực</Button></> : <>{loading === true ? <MySpinner /> : <Button id="send_otp_btn" onClick={sendOTP}>Gửi OTP</Button>}</>}
                                 </div>
                                 <MDBInput wrapperClass='mb-4' onChange={(e) => setOTP(e.target.value)}  required label='Nhập Mã OTP' size='lg' id='form3' type='text' />
-                                {user.otp === "1" ? <><Button className='mb-4 w-100 gradient-custom-4' size='lg' disabled id="send_otp_btn" >Đã Xác Thực</Button></> : <>{loading === true ? <MySpinner /> : <Button id="send_otp_btn" onClick={sendOTP}>Gửi OTP</Button>}</>}
-                                {/* {loading1 === true ? <MySpinner /> : <MDBBtn onClick={authOTP} type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Xác nhận</MDBBtn>} */}
+                                {user.otp === "1" ? <><Button className='mb-4 w-100 gradient-custom-4' size='lg' disabled id="send_otp_btn" >Đã Xác Thực</Button></> : <>{loading1 === true ? <MySpinner /> : <MDBBtn onClick={authOTP} type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Xác nhận</MDBBtn>}</>}
+                                
                             </MDBCardBody>
                         </MDBCard>
                     </Form>

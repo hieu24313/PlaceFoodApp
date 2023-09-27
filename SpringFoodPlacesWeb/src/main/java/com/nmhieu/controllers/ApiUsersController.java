@@ -254,7 +254,7 @@ public class ApiUsersController {
             this.usersService.authPhoneNumber(username);
             return new ResponseEntity<>("Xác thực thành công!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Sai Mã OTP!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Mã OTP sai hoặc đã hết hạn!", HttpStatus.BAD_REQUEST);
         }
         //pending
         //approved
