@@ -6,6 +6,7 @@ import { MyCartContext } from "../App";
 import Apis, { authApi, endpoints } from "../configs/Apis";
 import MySpinner from "../layout/MySpinner";
 import '../resources/css/Cart.css'
+import { toast } from "react-toastify";
 
 const Cart = () => {
 
@@ -64,7 +65,7 @@ const Cart = () => {
                         nav("/")
                     }
                     else {
-                        alert("thanh toán thất bại!!!");
+                        toast.error("thanh toán thất bại!!!");
                     }
                 } else {
                     let res = await authApi().post(endpoints['pay'], carts);
@@ -80,7 +81,7 @@ const Cart = () => {
                         setCarts([]);
                         nav("/receipt");
                     }else {
-                        alert("thanh toán thất bại!!!");
+                        toast.error("thanh toán thất bại!!!");
                     }
                 }
             }catch(e){

@@ -86,7 +86,7 @@ const Receipt = () => {
     const acceipt = async (receiptId) => {
         try{
             let { data } = await authApi().post(endpoints['accept-receipt'](receiptId));
-            notify(data);
+            toast.success(data);
             setReceiptDetail(null)
             // setTimeout(() => {
                 loadReceipt();

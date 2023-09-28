@@ -95,11 +95,11 @@ const Profile = () => {
                     setLoading(false);
                     
                     // nav("/");
-                    toast("Lưu Thành Công!!");
+                    toast.success("Lưu Thành Công!!");
                 }
 
             } catch (err) {
-                toast(err.request.responseText);
+                toast.error(err.request.responseText);
                 console.log(err);
                 setLoading(false);
             }

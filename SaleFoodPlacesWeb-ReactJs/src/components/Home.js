@@ -14,7 +14,7 @@ const Home = () => {
     const [foodItems, setFoodItems] = useState(null);
     const [, cartDispatch] = useContext(MyCartContext);
     const [q] = useSearchParams();
-    const [restaurant, setRestaurant] = useState();
+    const [restaurant, setRestaurant] = useState([]);
 
     // const currentPage = useLocation();
     const [kw, setKw] = useState("");
@@ -104,7 +104,7 @@ const Home = () => {
 
 
     if (foodItems === null) {
-        return <MySpinner />
+        return <MySpinner className="spinner_" />
     }
 
     const order = (foodItem) => {
@@ -130,7 +130,7 @@ const Home = () => {
         }
 
         cookie.save("cart", cart);
-        notify("Thêm vào giỏ hàng thành công!!!");
+        toast.success("Thêm vào giỏ hàng thành công!!!");
     }
     // if (foodItems.length === 0 && restaurant.length)
     //     return <Alert variant="info" className="mt-2">Không có sản phẩm nào!</Alert>
@@ -242,7 +242,7 @@ const Home = () => {
             <div className="fooditems">
                 <Row>
                     {foodItems.length === 0 ? <Alert variant="info" className="mt-2">Không có sản phẩm nào!</Alert> : <>
-                        {foodItems === null ? <MySpinner /> : <>
+                        {foodItems === null ? <MySpinner className="spinner_" /> : <>
                             {foodItems.map(f => {
                                 let url = `/fooddetail/${f.foodId}`;
                                 return <Col xs={12} md={4} >

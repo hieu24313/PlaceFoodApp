@@ -41,8 +41,8 @@ const ChangePassword = () => {
                 // let e = `${endpoints['changePassword']}`
                 let data = await authApi().post(endpoints['changePassword'], form);
                 console.log(data);
-                toast("Đổi mật khẩu thành công!!")
-                // nav("/profile");
+                toast.success("Đổi mật khẩu thành công!!")
+                setTimeout(() => nav("/profile"), 1500);
             }catch(e){
                 console.error(e);
                 toast(e);
