@@ -104,7 +104,8 @@ const Home = () => {
 
 
     if (foodItems === null) {
-        return <MySpinner className="spinner_" />
+        return <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div>
+         
     }
 
     const order = (foodItem) => {
@@ -242,7 +243,7 @@ const Home = () => {
             <div className="fooditems">
                 <Row>
                     {foodItems.length === 0 ? <Alert variant="info" className="mt-2">Không có sản phẩm nào!</Alert> : <>
-                        {foodItems === null ? <MySpinner className="spinner_" /> : <>
+                        {foodItems === null ? <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div> : <>
                             {foodItems.map(f => {
                                 let url = `/fooddetail/${f.foodId}`;
                                 return <Col xs={12} md={4} >

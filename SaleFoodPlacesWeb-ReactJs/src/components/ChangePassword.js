@@ -8,15 +8,17 @@ import '../resources/css/ChangePassword.css'
 import ProfileComponents from "../layout/ProfileComponents";
 import MySpinner from "../layout/MySpinner";
 import { ToastContainer, toast } from "react-toastify";
+import { Navigate } from "react-router-dom/dist";
 
 const ChangePassword = () => {
+    
 
     const [user,] = useContext(MyUserContext);
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
     const notify = (x) => toast(x);
     const [newUserPassword, setNewUserPassword] = useState({
-        "username": user.username,
+        "username": "",
         "password": "",
         "newPassword": "",
         "confirmNewPassword": ""
@@ -34,7 +36,7 @@ const ChangePassword = () => {
         if (newUserPassword.newPassword === newUserPassword.confirmNewPassword) {
             try {
                 let form = new FormData();
-                form.append("username",newUserPassword.username)
+                form.append("username",user.username)
                 form.append("password",newUserPassword.password)
                 form.append("newPassword",newUserPassword.newPassword)
                 // let e = `${endpoints['changePassword']}?username=${newUserPassword.username}&password=${newUserPassword.password}&newPassword=${newUserPassword.newPassword}`;
@@ -50,6 +52,10 @@ const ChangePassword = () => {
         }
     }
 
+    if (user === null) {
+        return <Navigate to="/" />;
+    }
+
 
     return <>
         <h1 className="text-center text-info">Đổi Mật Khẩu</h1>
@@ -62,7 +68,7 @@ const ChangePassword = () => {
                         <MDBCard className='m-5 register_form' style={{ maxWidth: '600px' }}>
                             <MDBCardBody className='px-5 register_form_child'>
                                 <h2 className="text-uppercase text-center mb-5">Form Đổi Mật Khẩu</h2>
-                                <MDBInput wrapperClass='mb-4' onChange={(e) => change(e, "password")} required label='Mật khẩu hiện tại' size='lg' id='form1' type='text' />
+                                <MDBInput wrapperClass='mb-4' onChange={(e) => change(e, "password")} required label='Mật khẩu hiện tại' size='lg' id='form1' type='password' />
                                 <MDBInput wrapperClass='mb-4' onChange={(e) => change(e, "newPassword")} required label='Mật Khẩu Mới' size='lg' id='form3' type='password' />
                                 <MDBInput wrapperClass='mb-4' onChange={(e) => change(e, "confirmNewPassword")} required label='Nhập Lại Mật Khẩu Mới' size='lg' id='form31' type='password' />
                                 {loading === true ? <MySpinner /> : <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Đổi Mật Khẩu</MDBBtn>}

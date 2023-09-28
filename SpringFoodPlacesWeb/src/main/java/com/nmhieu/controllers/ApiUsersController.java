@@ -165,9 +165,7 @@ public class ApiUsersController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/change-password/",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping("/change-password/")
     @CrossOrigin
     public ResponseEntity<String> changePassword(@RequestParam Map<String, String> params) {
         int check = this.usersService.changePassword(params);
@@ -258,5 +256,48 @@ public class ApiUsersController {
         }
         //pending
         //approved
+    }
+    
+    @PostMapping(path = "/findAccountByPhoneNumber/")
+    @CrossOrigin
+    public ResponseEntity<String> find_AccountByPhoneNumber(@RequestBody Map<String,String> params){
+        String phoneNumber = params.get("phonenumber");
+        boolean check = this.usersService.isPhonenumberExists(phoneNumber);
+        if(check){
+            String phoneNumber_temp = phoneNumber.substring(1, phoneNumber.length());
+            String phoneNumberFinal = "+84" + phoneNumber_temp;
+            boolean checkSendPhoneNumber = this.twillioService.send_OTP(phoneNumberFinal);
+            if(checkSendPhoneNumber){
+                return new ResponseEntity<>("Gửi OTP Thành Công!", HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>("Dịch vụ gửi sms đang xảy ra lỗi!", HttpStatus.BAD_REQUEST);
+            }
+            
+        }
+        else{
+            return new ResponseEntity<>("Số điện thoại này chưa được đăng ký!", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    @PostMapping(path = "/checkOTPAndChangPassword/")
+    @CrossOrigin
+    public ResponseEntity<String> checkOTPAndChangePassword(@RequestBody Map<String,String> params){
+        String OTP = params.get("otp");
+        String phoneNumber = params.get("phonenumber");
+        String phoneNumber_temp = phoneNumber.substring(1, phoneNumber.length());
+        String phoneNumberFinal = "+84" + phoneNumber_temp;
+        boolean check = this.twillioService.checkOTP(OTP, phoneNumberFinal);
+        if (check) {
+            int checkSetPassword = this.usersService.setNewPassword_ForgotPassword(params);
+            if(checkSetPassword == 1){
+                return new ResponseEntity<>("Đổi mật khẩu thành công!", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("Có lỗi xảy ra ở quá trình đổi mật khẩu!", HttpStatus.BAD_REQUEST);
+            }
+            
+        } else {
+            return new ResponseEntity<>("Sai mã OTP!", HttpStatus.BAD_REQUEST);
+        }
     }
 }

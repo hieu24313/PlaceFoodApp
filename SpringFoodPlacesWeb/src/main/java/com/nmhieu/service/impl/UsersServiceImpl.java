@@ -505,4 +505,20 @@ public class UsersServiceImpl implements UsersService {
     public boolean authPhoneNumber(String username) {
         return this.usersRepo.authPhoneNumber(username);
     }
+
+    @Override
+    public Users getUserByPhoneNumber(String phoneNumber) {
+        return this.usersRepo.getUserByPhonenumber(phoneNumber);
+    }
+    
+    @Override
+    public int setNewPassword_ForgotPassword(Map<String, String> params) {
+        String phoneNumber = params.get("phonenumber");
+        String password = params.get("newpassword");
+        String endCodePassword = this.bCryptPasswordEncoder.encode(password);
+        Users u = this.getUserByPhoneNumber(phoneNumber);      
+        u.setPassword(endCodePassword);
+        return this.usersRepo.changePassword(u);
+    }
+
 }

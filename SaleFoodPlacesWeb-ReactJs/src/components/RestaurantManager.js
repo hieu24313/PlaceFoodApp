@@ -5,7 +5,7 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBCardTitle }
 import { useContext } from 'react';
 import { MyUserContext } from '../App';
 import Apis, { endpoints } from '../configs/Apis';
-import { Link } from 'react-router-dom/dist';
+import { Link, Navigate } from 'react-router-dom/dist';
 
 const RestaurantManager = () => {
     const [pageNumber, setPageNumber] = useState(null);
@@ -59,6 +59,10 @@ const RestaurantManager = () => {
 
         //xuat restaurant len giao dien
     }, [user.userId])
+
+    if (user === null) {
+        return <Navigate to="/" />;
+    }
 
 
     return <>

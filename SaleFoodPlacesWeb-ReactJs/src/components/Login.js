@@ -129,8 +129,8 @@ const Login = () => {
     if (user !== null) {
         let next = q.get("next") || "/";
         return <Navigate to={next} />;
-
     }
+    
     return <>
         <Form onSubmit={login}>
             <div className="">
@@ -159,7 +159,7 @@ const Login = () => {
                                         onChange={checkRecaptcha}
                                     />}
 
-                                    <p className="small mb-3 pb-lg-2"><Link class="text-white-50" to="/changPassword">Quên mật khẩu?</Link></p>
+                                    <p className="small mb-3 pb-lg-2"><Link class="text-white-50" to="/forgotPassword">Quên mật khẩu?</Link></p>
 
                                     {loading === true ? <MySpinner /> : <MDBBtn outline className='mx-2 px-5' type="submit" color='white' size='lg'>Đăng Nhập</MDBBtn>}
                                     <ToastContainer />

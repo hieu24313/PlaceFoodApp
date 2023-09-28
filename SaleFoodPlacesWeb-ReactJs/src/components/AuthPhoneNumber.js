@@ -10,6 +10,7 @@ import '../resources/css/AuthPhoneNumber.css'
 import { authApi, endpoints } from "../configs/Apis";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
+import { Navigate } from "react-router-dom/dist";
 
 
 const AuthPhoneNumber = () => {
@@ -21,7 +22,7 @@ const AuthPhoneNumber = () => {
     const notify = (x) => toast(x);
     const nav = useNavigate();
 
-    let countdown = 5; // Thời gian đếm ngược ban đầu (60 giây)
+    let countdown = 5; // Thời gian đếm ngược ban đầu 
     
 
     const count = () => {
@@ -102,6 +103,11 @@ const AuthPhoneNumber = () => {
             console.log(e)
             setLoading1(false);
         }
+    }
+
+
+    if (user === null) {
+        return <Navigate to="/" />;
     }
 
     return<>

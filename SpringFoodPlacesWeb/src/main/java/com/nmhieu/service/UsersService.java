@@ -61,5 +61,9 @@ public interface UsersService extends UserDetailsService {
     int authUserLoginGoogle(String username, String password);
     
     boolean authPhoneNumber(String username);
+    
+    Users getUserByPhoneNumber(String phoneNumber);
+    
+    int setNewPassword_ForgotPassword(Map<String, String> params);
 
 }

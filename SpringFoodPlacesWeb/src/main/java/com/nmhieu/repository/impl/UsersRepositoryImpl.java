@@ -471,4 +471,26 @@ public class UsersRepositoryImpl implements UsersRepository {
         }
     }
 
+//    @Override
+//    public Users getUserByPhoneNumber(String phoneNumber) {
+//        try {
+//            Session session = this.factory.getObject().getCurrentSession();
+//            CriteriaBuilder builder = session.getCriteriaBuilder();
+//            CriteriaQuery<Users> criteriaQuery = builder.createQuery(Users.class);
+//            Root<Users> root = criteriaQuery.from(Users.class);
+//
+//            Predicate idPredicate = builder.equal(root.get("phonenumber"), phoneNumber);
+//
+//            Predicate otherCondition = builder.equal(root.get("active"), Boolean.TRUE);
+//
+//            Predicate finalPredicate = builder.and(idPredicate, otherCondition);
+//
+//            criteriaQuery.where(finalPredicate);
+//            return session.createQuery(criteriaQuery).getSingleResult();
+//        } catch (NoResultException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
 }
