@@ -23,6 +23,14 @@
 
                 </div>
             </c:when>
+            
+            <c:when test="${pageContext.request.isUserInRole('ROLE_SupAdmin')}">
+                <div>
+
+                    <a href="<c:url value="/admin" />"><button>Quản trị hệ thống </button></a>
+
+                </div>
+            </c:when>
 
             <c:when test="${pageContext.request.isUserInRole('ROLE_RestaurantManager')}">
                 <div>

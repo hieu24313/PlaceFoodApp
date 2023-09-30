@@ -185,10 +185,10 @@ const Receipt = () => {
                                                                         <li className="text-muted">
                                                                             Tên Khách Hàng: <span style={{ color: "#5d9fc5" }}>{user.first} {user.lastname}</span>
                                                                         </li>
-                                                                        <li className="text-muted">{user.location}</li>
-                                                                        <li className="text-muted">{user.location}</li>
+                                                                        <li className="text-muted">Địa Chỉ: {user.location}</li>
+                                                                        <li className="text-muted">Email: {user.email}</li>
                                                                         <li className="text-muted">
-                                                                            <MDBIcon fas icon="phone-alt" /> {user.phonenumber}
+                                                                            <MDBIcon fas icon="phone-alt" /> Số điện thoại: {user.phonenumber}
                                                                         </li>
                                                                     </MDBTypography>
                                                                 </MDBCol>
@@ -201,7 +201,7 @@ const Receipt = () => {
                                                                         </li>
                                                                         <li className="text-muted">
                                                                             <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />
-                                                                            <span className="fw-bold ms-1">Ngày Tạo : </span> <Moment format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment>
+                                                                            <span className="fw-bold ms-1">Ngày Tạo : </span> <Moment locale="vi" format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment>
                                                                         </li>
                                                                         <li className="text-muted">
                                                                             <MDBIcon fas icon="circle" style={{ color: "#84B0CA" }} />

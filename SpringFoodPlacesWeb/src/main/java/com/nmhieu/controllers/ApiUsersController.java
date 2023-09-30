@@ -288,6 +288,7 @@ public class ApiUsersController {
         String phoneNumber_temp = phoneNumber.substring(1, phoneNumber.length());
         String phoneNumberFinal = "+84" + phoneNumber_temp;
         boolean check = this.twillioService.checkOTP(OTP, phoneNumberFinal);
+        System.out.println(check);
         if (check) {
             int checkSetPassword = this.usersService.setNewPassword_ForgotPassword(params);
             if(checkSetPassword == 1){

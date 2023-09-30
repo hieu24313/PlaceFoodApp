@@ -60,7 +60,7 @@ public class TwilioManager {
             .setCode(OTP)
             .create();
             auth = verificationCheck.getValid();
-            return auth = true;
+            return auth;
         }catch(ApiException e){
             e.printStackTrace();
             return auth = false;

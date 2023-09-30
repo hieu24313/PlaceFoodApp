@@ -23,6 +23,7 @@ import ChangePassword from './components/ChangePassword';
 import RestaurantManager from './components/RestaurantManager';
 import AuthPhoneNumber from './components/AuthPhoneNumber';
 import ForgotPassword from './components/ForgotPassword';
+import RestaurantManagerDetail from './components/RestaurantManagerDetail';
 
 
 export const MyUserContext = createContext();
@@ -61,6 +62,7 @@ function App() {
               <Route path="/restaurantmanager" element={<RestaurantManager />} />
               <Route path="/authPhoneNumber" element={<AuthPhoneNumber />} />
               <Route path="/forgotPassword" element={<ForgotPassword /> } />
+              <Route path="/restaurantManagerDetail/:restaurantId" element={<RestaurantManagerDetail />} />
               </Routes>
           </Container>
           <Footer />

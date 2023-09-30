@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyUserContext } from "../App";
 import { Link, Navigate, useNavigate } from "react-router-dom/dist";
 import { Form } from "react-bootstrap";
@@ -7,6 +7,7 @@ import MySpinner from "../layout/MySpinner";
 import Apis, { endpoints } from "../configs/Apis";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ForgotPassword = () => {
 
@@ -18,37 +19,59 @@ const ForgotPassword = () => {
     const [newPassword, setNewPassword] = useState();
     const [confirmNewPassword, setConfirmNewPassword] = useState();
     const nav = useNavigate();
-    
+    const [apiRecaptchaKey, setApiRecaptchaKey] = useState(null);
+    const [kt, setKt] = useState(false);
+
+
+    useEffect(() => {
+        const getKey = async () => {
+            try {
+                let res = await Apis.get(endpoints['get-recaptcha-key']);
+                setApiRecaptchaKey(res.data);
+                console.log(res.data);
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+        getKey();
+    }, [])
+
 
     const find_PhoneNumber = async (evt) => {
         evt.preventDefault();
-        setLoading(true);
+        if (kt) {
+            setLoading(true);
 
-        try {
-            // setHasPhoneNumber(true)
-            let form = new FormData();
-            // form.append("otp", otp);
-            // form.append("newpassword", newPassword);
-            form.append("phonenumber", phoneNumber);
-            let res = await Apis.post(endpoints['check-phonenumber'], {
-                "phonenumber":phoneNumber
-            });
-            if (res.status === 200) {
-                setHasPhoneNumber(true);
-                // let p = document.getElementById("phonenumber");
-                // p.defaultValue(phoneNumber);
-                // p.disabled = true;
+            try {
+                // setHasPhoneNumber(true)
+                let form = new FormData();
+                // form.append("otp", otp);
+                // form.append("newpassword", newPassword);
+                form.append("phonenumber", phoneNumber);
+                let res = await Apis.post(endpoints['check-phonenumber'], {
+                    "phonenumber": phoneNumber
+                });
+                if (res.status === 200) {
+                    setHasPhoneNumber(true);
+                    // let p = document.getElementById("phonenumber");
+                    // p.defaultValue(phoneNumber);
+                    // p.disabled = true;
+                    setLoading(false);
+                    toast.success(res.data);
+                    //     // nav("/login");
+                } else {
+                    toast.error(res.data);
+                }
+            } catch (error) {
                 setLoading(false);
-                toast.success(res.data);
-                //     // nav("/login");
-            }else{
-                toast.error(res.data);
+                toast.error(error.request.responseText);
+                console.log(error);
             }
-        } catch (error) {
-            setLoading(false);
-            toast.error(error.request.responseText);
-            console.log(error);
+        } else {
+            toast("Vui xác minh bạn là con người!!!")
         }
+
     }
 
     const changPassword = async (evt) => {
@@ -67,23 +90,27 @@ const ForgotPassword = () => {
                     "otp": otp,
                     "newpassword": newPassword
                 });
-                if(res.status === 200){
+                if (res.status === 200) {
                     toast.success(res.data);
                     setLoading(false);
                     setTimeout(() => nav('/login'), 1000);
                 }
 
             } catch (e) {
-                console.log(e.request.responseText);
+                toast.error(e.request.responseText);
                 setLoading(false);
 
             }
 
         }
-        else{
+        else {
             toast.error("Mật Khẩu không khớp!")
         }
 
+    }
+
+    const checkRecaptcha = () => {
+        setKt(true);
     }
 
 
@@ -116,7 +143,11 @@ const ForgotPassword = () => {
 
                         </> : <>
                             <MDBInput wrapperClass='mb-4' id="phonenumber" onChange={e => setPhoneNumber(e.target.value)} required label='Nhập số điện thoại' size='lg' type='text' />
-
+                            {apiRecaptchaKey === null ? <MySpinner /> : <ReCAPTCHA
+                            className="d-flex flex-row justify-content-center mb-4"
+                                sitekey={apiRecaptchaKey}
+                                onChange={checkRecaptcha}
+                            />}
                             <div className='d-flex flex-row justify-content-center mb-4'>
                                 {/* <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' /> */}
                                 <span>Đã có tài khoản?<Link to="/login"> Đăng Nhập</Link></span>

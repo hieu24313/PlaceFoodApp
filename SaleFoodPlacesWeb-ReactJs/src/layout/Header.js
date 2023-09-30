@@ -20,7 +20,7 @@ const Header = () => {
     }
 
     return <>
-        <Navbar expand="lg" className="navbar navbar-expand-sm bg-dark navbar-dark header">
+        <Navbar expand="lg" style={{backgroundColor: 'honeydew', color:'black'}} className="navbar navbar-expand-sm header">
             <Container>
                 <Navbar.Brand href="#">PLACE FOOD WEBSITE</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

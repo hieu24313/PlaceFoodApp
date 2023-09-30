@@ -1,0 +1,37 @@
+.dasboard_big {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* justify-content: space-around */
+}
+
+.dasboard_ul {
+    list-style-type: none;
+}
+
+.dasboard_ul li {
+    cursor: pointer;
+    margin: 10px;
+    width: 100%;
+}
+
+.dasboard_ul li:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.dasboard_1 {
+    width: 15% !important;
+    background-color: teal;
+    color: white;
+    height: 600px;
+}
+
+
+.dasboard_title {
+    margin-top: 3px;
+    left: -16%;
+}
+
+.dasboard_2 {
+    width: 85%;
+}

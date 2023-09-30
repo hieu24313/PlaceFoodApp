@@ -136,10 +136,10 @@ const RestaurantDetail = () => {
             // console.log(res);
             if (res.status === 201) {
                 setCheckFollow(true);
-                notify("Theo dõi thành công!!");
+                toast.success("Theo dõi thành công!!");
             } else {
                 setCheckFollow(false);
-                notify("Hủy theo dõi thành công!!");
+                toast.success("Hủy theo dõi thành công!!");
             }
         } catch (err) {
             console.log(err);

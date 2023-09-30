@@ -207,7 +207,7 @@ const FoodItemDetail = () => {
                                         <Image src={c.userId.avatar} roundedCircle />
                                         <div>
                                             <h5>{c.userId.firstname} {c.userId.lastname}</h5>
-                                            <Moment locale="vi" fromNow>{c.createdDate}</Moment>
+                                            <Moment format="YYYY/MM/DD" locale="vi" fromNow>{c.createdDate}</Moment>
                                         </div>
                                     </div>
                                     <hr />

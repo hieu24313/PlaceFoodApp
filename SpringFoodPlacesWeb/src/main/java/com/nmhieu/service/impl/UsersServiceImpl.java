@@ -282,64 +282,125 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public int updateUser(Map<String, String> params, MultipartFile avatar) {
         String username = params.get("username");
+        String phonenumber = params.get("phonenumber");
         boolean isUsernameExists = this.usersRepo.isUsernameExists(username);
+        Users oldUser = this.getUserByUsername_new(username);
+        if (oldUser.getPhonenumber().equals(phonenumber)) { // nếu không thay đổi số điện thoại thì k cần xác thực lại otp
+            if (isUsernameExists != true) {
+                return 2; // Không tìm thấy username để update
+            } else {
+                Users user = this.getUserByUsername_new(username);
 
-        if (isUsernameExists != true) {
-            return 2; // Không tìm thấy username để update
-        } else {
-            Users user = this.getUserByUsername_new(username);
+                String firstname = params.get("firstname");
+                String lastname = params.get("lastname");
+                String location = params.get("location");
+                String email = params.get("email");
 
-            String firstname = params.get("firstname");
-            String lastname = params.get("lastname");
-            String phonenumber = params.get("phonenumber");
-            String location = params.get("location");
-            String email = params.get("email");
+                if (firstname != null && !firstname.isEmpty()) {
+                    user.setFirstname(params.get("firstname"));
+                }
 
-            if (firstname != null && !firstname.isEmpty()) {
-                user.setFirstname(params.get("firstname"));
-            }
+                if (lastname != null && !lastname.isEmpty()) {
+                    user.setLastname(params.get("lastname"));
+                }
 
-            if (lastname != null && !lastname.isEmpty()) {
-                user.setLastname(params.get("lastname"));
-            }
+                if (phonenumber != null && !phonenumber.isEmpty()) {
+                    Users user_db_phonenumber = this.usersRepo.getUserByPhonenumber(phonenumber);
+                    if (user_db_phonenumber != null) {
+                        if (this.usersRepo.isPhonenumberExists(user.getPhonenumber()) == true && user_db_phonenumber.getUserId() != user.getUserId()) {
+                            return 3; // số điện thoại đã được đăng ký
+                        }
 
-            if (phonenumber != null && !phonenumber.isEmpty()) {
-                Users user_db_phonenumber = this.usersRepo.getUserByPhonenumber(phonenumber);
-                if (user_db_phonenumber != null) {
-                    if (this.usersRepo.isPhonenumberExists(user.getPhonenumber()) == true && user_db_phonenumber.getUserId() != user.getUserId()) {
-                        return 3; // số điện thoại đã được đăng ký
                     }
-
+                    user.setPhonenumber(params.get("phonenumber"));
                 }
-                user.setPhonenumber(params.get("phonenumber"));
-            }
 
-            if (location != null && !location.isEmpty()) {
-                user.setLocation(params.get("location"));
-            }
+                if (location != null && !location.isEmpty()) {
+                    user.setLocation(params.get("location"));
+                }
 
-            if (email != null && !email.isEmpty()) {
-                Users user_db_email = this.usersRepo.getUserByEmail(email);
-                if (user_db_email != null) {
-                    if (this.usersRepo.isEmailExists(user.getEmail()) == true && user_db_email.getUserId() != user.getUserId()) {
-                        return 4; // email đã được đăng ký
+                if (email != null && !email.isEmpty()) {
+                    Users user_db_email = this.usersRepo.getUserByEmail(email);
+                    if (user_db_email != null) {
+                        if (this.usersRepo.isEmailExists(user.getEmail()) == true && user_db_email.getUserId() != user.getUserId()) {
+                            return 4; // email đã được đăng ký
+                        }
+
                     }
-
+                    user.setEmail(params.get("email"));
                 }
-                user.setEmail(params.get("email"));
-            }
 
-            if (!avatar.isEmpty()) {
-                try {
-                    Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
-                            ObjectUtils.asMap("resource_type", "auto"));
-                    user.setAvatar(res.get("secure_url").toString());
-                } catch (IOException ex) {
-                    Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                if (!avatar.isEmpty()) {
+                    try {
+                        Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                                ObjectUtils.asMap("resource_type", "auto"));
+                        user.setAvatar(res.get("secure_url").toString());
+                    } catch (IOException ex) {
+                        Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                return this.usersRepo.updateUser(user);
             }
-            return this.usersRepo.updateUser(user);
+        } else { // nếu thay đổi số điện thoại thì cần xác thực lại otp
+            if (isUsernameExists != true) {
+                return 2; // Không tìm thấy username để update
+            } else {
+                Users user = this.getUserByUsername_new(username);
+
+                String firstname = params.get("firstname");
+                String lastname = params.get("lastname");
+                String location = params.get("location");
+                String email = params.get("email");
+
+                if (firstname != null && !firstname.isEmpty()) {
+                    user.setFirstname(params.get("firstname"));
+                }
+
+                if (lastname != null && !lastname.isEmpty()) {
+                    user.setLastname(params.get("lastname"));
+                }
+
+                if (phonenumber != null && !phonenumber.isEmpty()) {
+                    Users user_db_phonenumber = this.usersRepo.getUserByPhonenumber(phonenumber);
+                    if (user_db_phonenumber != null) {
+                        if (this.usersRepo.isPhonenumberExists(user.getPhonenumber()) == true && user_db_phonenumber.getUserId() != user.getUserId()) {
+                            return 3; // số điện thoại đã được đăng ký
+                        }
+
+                    }
+                    user.setPhonenumber(params.get("phonenumber"));
+                }
+
+                if (location != null && !location.isEmpty()) {
+                    user.setLocation(params.get("location"));
+                }
+
+                if (email != null && !email.isEmpty()) {
+                    Users user_db_email = this.usersRepo.getUserByEmail(email);
+                    if (user_db_email != null) {
+                        if (this.usersRepo.isEmailExists(user.getEmail()) == true && user_db_email.getUserId() != user.getUserId()) {
+                            return 4; // email đã được đăng ký
+                        }
+
+                    }
+                    user.setEmail(params.get("email"));
+                }
+
+                if (!avatar.isEmpty()) {
+                    try {
+                        Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                                ObjectUtils.asMap("resource_type", "auto"));
+                        user.setAvatar(res.get("secure_url").toString());
+                    } catch (IOException ex) {
+                        Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                user.setOtp("0");
+                return this.usersRepo.updateUser(user);
+            }
         }
+
     }
 
     @Override
@@ -476,12 +537,12 @@ public class UsersServiceImpl implements UsersService {
             user.setPassword(this.bCryptPasswordEncoder.encode(randomPassword));
 
             user.setRoleId(new Roles(3));
-            
+
             String pathAvatarGoogle = params.get("pathAvatarGoogle");
             if (pathAvatarGoogle != null && !pathAvatarGoogle.isEmpty()) {
                 user.setAvatar(pathAvatarGoogle);
             }
-            
+
             if (!avatar.isEmpty()) {
                 try {
                     Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
@@ -510,13 +571,13 @@ public class UsersServiceImpl implements UsersService {
     public Users getUserByPhoneNumber(String phoneNumber) {
         return this.usersRepo.getUserByPhonenumber(phoneNumber);
     }
-    
+
     @Override
     public int setNewPassword_ForgotPassword(Map<String, String> params) {
         String phoneNumber = params.get("phonenumber");
         String password = params.get("newpassword");
         String endCodePassword = this.bCryptPasswordEncoder.encode(password);
-        Users u = this.getUserByPhoneNumber(phoneNumber);      
+        Users u = this.getUserByPhoneNumber(phoneNumber);
         u.setPassword(endCodePassword);
         return this.usersRepo.changePassword(u);
     }

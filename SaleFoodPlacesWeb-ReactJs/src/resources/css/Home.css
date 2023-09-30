@@ -40,7 +40,7 @@
     position: relative;
     min-height: 600px;
     padding: 0 !important;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 .form_find_name {

@@ -64,13 +64,21 @@ const RestaurantManager = () => {
         return <Navigate to="/" />;
     }
 
+    const managerDetail = (evt, restaurantId) => {
+        evt.preventDefault();
+        let url = `/restaurantManagerDetail/${restaurantId}`;
+        alert(url)
+        return <Navigate to={url}></Navigate>
+    }
+
 
     return <>
         <div>
-            <h1 className="text-center text-primary"> Quản Lý Nhà Hàng</h1>
+            <h1 className="text-center text-primary"> Quản Lý Toàn Nhà Hàng</h1>
         </div>
         <div className="restaurants">
             {Object.values(restaurant).map(r => {
+                let url = `/restaurantManagerDetail/${r.restaurantId}`;
                 return <div className="restaurant">
                 <MDBCard>
                     <MDBCardImage src={r.avatar} position='top' alt={r.restaurantName} />
@@ -79,7 +87,7 @@ const RestaurantManager = () => {
                         <MDBCardText>
                             {r.location}
                         </MDBCardText>
-                        <MDBBtn className="btncate btncate-2 cate_res_detail btn">Quản Lý</MDBBtn>
+                        <Link to={url}><MDBBtn className="btncate btncate-2 cate_res_detail btn">Quản Lý</MDBBtn></Link>
                     </MDBCardBody>
                 </MDBCard>
             </div>
