@@ -23,7 +23,6 @@ public class TwillioService {
 
     @Autowired
     public TwillioService(TwilioManager twilioManager) {
-        
         this.twilioManager = twilioManager;
     }
     
