@@ -68,7 +68,7 @@ const Home = () => {
                 let res = await Apis.get(e);
 
                 setFoodItems(res.data);
-                // console.log(res.data)
+                console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }

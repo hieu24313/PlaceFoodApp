@@ -28,4 +28,6 @@ public interface RestaurantsService {
     List<Restaurants> getRestaurantByUserId(int userId);
     
     Restaurants registerRestaurant(Map<String, String> params, MultipartFile avatar);
+    
+    boolean checkUserAndRestaurant(Map <String, String> params);
 }

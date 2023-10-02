@@ -35,7 +35,9 @@ export const endpoints = {
     "send-otp": `${SERVER_CONTEXT}/api/sendOTP/`,
     "check-otp": `${SERVER_CONTEXT}/api/check-otp/`,
     "check-phonenumber": `${SERVER_CONTEXT}/api/findAccountByPhoneNumber/`,
-    "check-otp-and-set-password": `${SERVER_CONTEXT}/api/checkOTPAndChangPassword/`
+    "check-otp-and-set-password": `${SERVER_CONTEXT}/api/checkOTPAndChangPassword/`,
+    "check-restaurant-user": `${SERVER_CONTEXT}/api/restaurantManager/check-restaurant-user/`
+
 
 
 

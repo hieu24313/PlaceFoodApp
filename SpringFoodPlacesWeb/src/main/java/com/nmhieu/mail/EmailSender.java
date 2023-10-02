@@ -19,7 +19,7 @@ public class EmailSender {
    public static void main(String[] args) throws UnsupportedEncodingException {
         String fromEmail = "hieu01659505026@gmail.com";
         String password = "oobbdhqqsetjtnkk";
-        String toEmail = "2051050138hieu@ou.edu.vn";
+        String toEmail = "trandangtuan0168@gmail.com";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -43,7 +43,7 @@ public class EmailSender {
 //            String emailContent = "<html><body>";
 //            emailContent += "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Đây là nội dung email gửi từ ứng dụng Java.</p>";
 //            emailContent += "</body></html>";
-            String emailContent = "hiếu gửi mail";
+            String emailContent = "hiếu gửi được email rồi";
             message.setContent(emailContent, "text/html; charset=UTF-8");
 
             Transport.send(message);

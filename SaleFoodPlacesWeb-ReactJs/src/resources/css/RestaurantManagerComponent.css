@@ -1,0 +1,57 @@
+.dasboard_big {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/backgroundManager.png');
+    /* justify-content: space-around */  
+}
+
+.dasboard_ul {
+    list-style-type: none;
+    width: 100%;
+    height: 100%;
+}
+
+.dasboard_ul li {
+    cursor: pointer;
+    margin: 0px;
+    /* width: 100%; */
+}
+
+.dasboard_ul li a {
+    width: 100%;
+    color: white;
+}
+
+.dasboard_ul li a:hover {
+    background-color: white;
+    color:black;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.dasboard_ul_lastchild {
+    /* background-color: black; */
+    /* margin-top: auto; */
+}
+
+.dasboard_1 {
+    width: 15% !important;
+    background-color: teal;
+    color: white;
+    height: 660px !important;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; /* Đặt thanh dọc ở phía trên cùng của trang */
+    height: 100%; /* Đặt chiều cao của thanh dọc bằng 100% của trang */
+}
+
+
+.dasboard_title {
+    margin-top: 3px;
+    left: -16%;
+}
+
+.dasboard_2 {
+    width: 85%;
+    /* position: relative; */
+}

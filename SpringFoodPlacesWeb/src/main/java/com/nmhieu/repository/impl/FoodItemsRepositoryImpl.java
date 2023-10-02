@@ -155,8 +155,7 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
                 } else {
                     session.delete(food);
                 }
-            }
-            else {
+            } else {
                 return false;
             }
 //            session.delete(food);
@@ -243,6 +242,39 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    
+    /*
+    hàm thêm fooditem
+    */
+    @Override
+    public boolean addFoodItem(Fooditems foodItem) {
+        Session session = this.factory.getObject().getCurrentSession();
+        try {
+            foodItem.setActive(Boolean.TRUE);
+            session.save(foodItem);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    
+    /*
+    hàm update fooditem
+    */
+    @Override
+    public boolean updateFoodItem(Fooditems foodItem) {
+        Session session = this.factory.getObject().getCurrentSession();
+        try {
+            session.update(foodItem);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 

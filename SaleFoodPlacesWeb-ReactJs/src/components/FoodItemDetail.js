@@ -18,7 +18,7 @@ const FoodItemDetail = () => {
     const [, cartDispatch] = useContext(MyCartContext);
     const [foodItem, setFoodItem] = useState(null);
     const [newComment, setNewComment] = useState(null);
-    const notify = (x) => toast(x);
+    // const notify = (x) => toast(x);
 
     const [comments, setComments] = useState(null);
     const [rating, setRating] = useState(null);
@@ -95,7 +95,7 @@ const FoodItemDetail = () => {
         }
 
         cookie.save("cart", cart);
-        notify("Thêm vào giỏ hàng thành công!!!");
+        toast.success("Thêm vào giỏ hàng thành công!!!");
     }
 
 

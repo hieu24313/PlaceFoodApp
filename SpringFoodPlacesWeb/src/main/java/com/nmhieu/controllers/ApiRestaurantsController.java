@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -134,5 +135,16 @@ public class ApiRestaurantsController {
 //            model.addAttribute("restaurant_list", this.restaurantsService.getRestaurants(params));
         }
         
+    }
+    
+    @GetMapping("/restaurantManager/check-restaurant-user/")
+    @CrossOrigin
+    public ResponseEntity<String> checkUserAndRestaurant(@RequestParam Map<String, String> params){
+        boolean check = this.restaurantsService.checkUserAndRestaurant(params);
+        if(check){
+            return new ResponseEntity<>("Check thành công", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Bạn không sở hữu nhà hàng này", HttpStatus.BAD_REQUEST);
+        }
     }
 }

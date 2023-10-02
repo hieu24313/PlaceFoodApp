@@ -20,6 +20,7 @@ public interface RestaurantsRepository {
     int countRestaurants(Map<String, String> params);
     List<Restaurants> getRestaurantByUserId(int userId);
     Restaurants registerRestaurant(Restaurants restaurant);
+    boolean checkUserAndRestaurant(Map <String, String> params);
     
 //    List<Object[]> getRestaurantsNotConfirm(Map<String, String> params);
 }

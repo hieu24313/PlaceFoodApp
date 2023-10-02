@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { MyUserContext } from '../App';
 import Apis, { endpoints } from '../configs/Apis';
 import { Link, Navigate } from 'react-router-dom/dist';
+import { Alert } from 'react-bootstrap';
 
 const RestaurantManager = () => {
     const [pageNumber, setPageNumber] = useState(null);
@@ -62,6 +63,10 @@ const RestaurantManager = () => {
 
     if (user === null) {
         return <Navigate to="/" />;
+    }
+
+    if (restaurant.length === 0 ){
+        return <Alert className='alert-warning'>Bạn chưa sở hữu nhà hàng nào!!!</Alert>
     }
 
     const managerDetail = (evt, restaurantId) => {

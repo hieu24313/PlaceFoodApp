@@ -24,6 +24,9 @@ import RestaurantManager from './components/RestaurantManager';
 import AuthPhoneNumber from './components/AuthPhoneNumber';
 import ForgotPassword from './components/ForgotPassword';
 import RestaurantManagerDetail from './components/RestaurantManagerDetail';
+import Revenus from './components/RestaurantManagerDetail/Revenus';
+import FoodItemManager from './components/RestaurantManagerDetail/FoodItemsManager';
+import PromotionManager from './components/RestaurantManagerDetail/PromotionManager';
 
 
 export const MyUserContext = createContext();
@@ -63,6 +66,9 @@ function App() {
               <Route path="/authPhoneNumber" element={<AuthPhoneNumber />} />
               <Route path="/forgotPassword" element={<ForgotPassword /> } />
               <Route path="/restaurantManagerDetail/:restaurantId" element={<RestaurantManagerDetail />} />
+              <Route path="/revenus/:restaurantId" element={<Revenus />} />
+              <Route path="/food_manager/:restaurantId" element={<FoodItemManager />} />
+              <Route path="/promotion/:restaurantId" element= {<PromotionManager />} />
               </Routes>
           </Container>
           <Footer />

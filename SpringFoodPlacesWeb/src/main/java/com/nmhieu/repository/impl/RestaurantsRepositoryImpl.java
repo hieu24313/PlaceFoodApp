@@ -313,4 +313,21 @@ public class RestaurantsRepositoryImpl implements RestaurantsRepository {
         }
     }
 
+    @Override
+    public boolean checkUserAndRestaurant(Map<String, String> params) {
+        int restaurantId = Integer.parseInt(params.get("restaurantId"));
+        int userId = Integer.parseInt(params.get("userId"));
+        Restaurants restaurant = this.getRestaurantById(restaurantId);
+        System.out.println(restaurantId);
+        System.out.println(restaurant);
+        if(restaurant == null){
+            return false;
+        }
+        else{
+            return restaurant.getUserId().getUserId() == userId;
+        }
+    }
+    
+    
+
 }

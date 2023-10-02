@@ -100,4 +100,9 @@ public class RestaurantsServiceImpl implements RestaurantsService {
         return this.restaurantsRepo.registerRestaurant(restaurant);
     }
 
+    @Override
+    public boolean checkUserAndRestaurant(Map<String, String> params) {
+        return this.restaurantsRepo.checkUserAndRestaurant(params);
+    }
+
 }

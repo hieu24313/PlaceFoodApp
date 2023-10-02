@@ -15,6 +15,7 @@ const Cart = () => {
     const [user,] = useState(cookie.load("user") || null);
     const [, cartDispatch] = useContext(MyCartContext);
     const nav = useNavigate();
+    const [checkUser, setCheckUser] = useState();
     // const [empty, setEmpty] = useState();
 
     let tong = 0;
@@ -109,6 +110,9 @@ const Cart = () => {
     if (carts === null)
         return <Alert variant="info" className="mt-2">Không có sản phẩm trong giỏ!</Alert>
 
+    // if (user === null){
+    //     setCheckUser(false);
+    // }
 
     // if (carts.length === 0)
     //     nav("/receipt");
@@ -155,16 +159,16 @@ const Cart = () => {
             <h3>Tổng Tiền: {tong}</h3>
         </div>
         <div className="div_btn_pay">
-            {/* <div>
-                Vui lòng nhập địa chỉ và số điện thoại.
-            </div> */}
-            {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>}
+             {user !== null ? <>
+                {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>}
+            </> : <>
 
-            {/* {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán! </p> : 
-            user.location === null ? <p>Vui lòng thêm <Link to="/profile">địa chỉ</Link> để thanh toán!</p> : 
-            <>
-            </>
-            } */}
+            
+                    
+                {loading === true ? <MySpinner /> : <Button disabled variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button> }
+                
+            </>}
+            
         </div>
     </>
 }
