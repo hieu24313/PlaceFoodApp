@@ -15,4 +15,6 @@ import java.util.Map;
 public interface PromotionRepository {
     List<Promotion> getPromotion(Map <String, String> params);
     Promotion getPromotionById(int id);
+    boolean addPromotionForFood(int idFood, int idPromotion);
+    boolean addOrUpdatePromotion(Promotion promotion);
 }

@@ -7,6 +7,7 @@ package com.nmhieu.service;
 import com.nmhieu.pojo.Fooditems;
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -29,4 +30,6 @@ public interface FoodItemsService {
     List<Fooditems> getFoodItemsByCategoryId(int cateId);
 
     List<Fooditems> getFoodItemsByShelflifeId(int shelflifeId);
+    
+    boolean addOrUpdateFoodItem(Map<String, String> params, MultipartFile avatar);
 }

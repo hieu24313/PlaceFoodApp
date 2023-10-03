@@ -30,7 +30,7 @@ const FoodItemManager = () => {
             }
         }
         loadFoodItems();
-    })
+    }, [restaurantId])
 
     const getFoodItem = async (evt, id) => {
         evt.preventDefault();

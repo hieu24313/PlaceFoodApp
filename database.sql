@@ -185,7 +185,7 @@ CREATE TABLE `follow` (
   KEY `user_id` (`user_id_index`),
   CONSTRAINT `restaurant_ibfk_1` FOREIGN KEY (`restaurant_id_index`) REFERENCES `restaurants` (`restaurant_id`),
   CONSTRAINT `user_id_ibfk_1` FOREIGN KEY (`user_id_index`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `follow` (
 
 LOCK TABLES `follow` WRITE;
 /*!40000 ALTER TABLE `follow` DISABLE KEYS */;
-INSERT INTO `follow` VALUES (1,3,19),(3,4,19);
+INSERT INTO `follow` VALUES (1,3,19),(3,4,19),(8,3,20);
 /*!40000 ALTER TABLE `follow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,11 +281,14 @@ CREATE TABLE `promotion` (
   `to_date` date DEFAULT NULL,
   `price_promotion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `promotion_type_id` int DEFAULT NULL,
+  `restaurant_id` int DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`promotion_id`),
   KEY `promotion_type_id` (`promotion_type_id`),
-  CONSTRAINT `promotion_ibfk_1` FOREIGN KEY (`promotion_type_id`) REFERENCES `promotion_type` (`promotion_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `restaurant_id` (`restaurant_id`),
+  CONSTRAINT `promotion_ibfk_1` FOREIGN KEY (`promotion_type_id`) REFERENCES `promotion_type` (`promotion_type_id`),
+  CONSTRAINT `promotion_ibfk_2` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`restaurant_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,6 +297,7 @@ CREATE TABLE `promotion` (
 
 LOCK TABLES `promotion` WRITE;
 /*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
+INSERT INTO `promotion` VALUES (1,'Trung thu',NULL,NULL,NULL,NULL,NULL,1),(2,'Tết nguyên đán',NULL,NULL,NULL,NULL,null,1),(3,'111',NULL,NULL,NULL,NULL,NULL,1),(4,'222',NULL,NULL,NULL,NULL,NULL,1),(5,'333',NULL,NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +318,7 @@ CREATE TABLE `promotion_fooditems` (
   KEY `promotion_id` (`promotion_id`),
   CONSTRAINT `promotion_fooditems_ibfk_1` FOREIGN KEY (`food_id`) REFERENCES `fooditems` (`food_id`),
   CONSTRAINT `promotion_fooditems_ibfk_2` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`promotion_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,6 +327,7 @@ CREATE TABLE `promotion_fooditems` (
 
 LOCK TABLES `promotion_fooditems` WRITE;
 /*!40000 ALTER TABLE `promotion_fooditems` DISABLE KEYS */;
+INSERT INTO `promotion_fooditems` VALUES (1,66,1,1),(2,65,1,1),(3,66,2,1),(4,65,2,1),(5,64,1,1),(6,64,2,1),(7,64,3,1);
 /*!40000 ALTER TABLE `promotion_fooditems` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +375,7 @@ CREATE TABLE `receipt_detail` (
   KEY `receipt_id` (`receipt_id`),
   CONSTRAINT `receipt_detail_ibfk_1` FOREIGN KEY (`fooditem_id`) REFERENCES `fooditems` (`food_id`),
   CONSTRAINT `receipt_detail_ibfk_2` FOREIGN KEY (`receipt_id`) REFERENCES `receipts` (`receipt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +384,7 @@ CREATE TABLE `receipt_detail` (
 
 LOCK TABLES `receipt_detail` WRITE;
 /*!40000 ALTER TABLE `receipt_detail` DISABLE KEYS */;
-INSERT INTO `receipt_detail` VALUES (19,57,10,1,51000.00,51000.00),(20,58,10,3,78000.00,234000.00),(21,60,10,1,66000.00,66000.00),(22,61,10,2,150000.00,300000.00),(23,51,11,1,35000.00,35000.00),(24,53,11,1,58000.00,58000.00),(25,56,11,5,50000.00,250000.00),(26,59,11,10,14000.00,140000.00),(27,46,12,1,40000.00,40000.00),(28,66,12,4,1111.00,4444.00),(29,64,13,2,200000.00,400000.00),(30,65,13,3,55000.00,165000.00),(31,66,13,3,1111.00,3333.00),(32,61,14,2,150000.00,300000.00),(33,62,14,4,37000.00,148000.00),(34,61,15,1,150000.00,150000.00),(35,62,15,3,37000.00,111000.00),(36,65,15,2,55000.00,110000.00),(37,64,16,2,200000.00,400000.00),(38,65,16,2,55000.00,110000.00),(39,62,17,3,37000.00,111000.00),(40,65,18,4,55000.00,220000.00),(41,66,19,7,1111.00,7777.00),(42,63,20,3,92000.00,276000.00),(43,64,20,3,200000.00,600000.00),(44,65,20,3,55000.00,165000.00),(45,61,21,4,150000.00,600000.00),(46,62,21,4,37000.00,148000.00),(47,52,22,6,22000.00,132000.00),(48,53,22,5,58000.00,290000.00),(49,61,23,4,150000.00,600000.00),(50,62,23,6,37000.00,222000.00),(51,63,24,3,92000.00,276000.00),(52,64,24,3,200000.00,600000.00),(53,65,24,4,55000.00,220000.00),(54,52,25,6,22000.00,132000.00);
+INSERT INTO `receipt_detail` VALUES (19,57,10,1,51000.00,51000.00),(20,58,10,3,78000.00,234000.00),(21,60,10,1,66000.00,66000.00),(22,61,10,2,150000.00,300000.00),(23,51,11,1,35000.00,35000.00),(24,53,11,1,58000.00,58000.00),(25,56,11,5,50000.00,250000.00),(26,59,11,10,14000.00,140000.00),(27,46,12,1,40000.00,40000.00),(28,66,12,4,1111.00,4444.00),(29,64,13,2,200000.00,400000.00),(30,65,13,3,55000.00,165000.00),(31,66,13,3,1111.00,3333.00),(32,61,14,2,150000.00,300000.00),(33,62,14,4,37000.00,148000.00),(34,61,15,1,150000.00,150000.00),(35,62,15,3,37000.00,111000.00),(36,65,15,2,55000.00,110000.00),(37,64,16,2,200000.00,400000.00),(38,65,16,2,55000.00,110000.00),(39,62,17,3,37000.00,111000.00),(40,65,18,4,55000.00,220000.00),(41,66,19,7,1111.00,7777.00),(42,63,20,3,92000.00,276000.00),(43,64,20,3,200000.00,600000.00),(44,65,20,3,55000.00,165000.00),(45,61,21,4,150000.00,600000.00),(46,62,21,4,37000.00,148000.00),(47,52,22,6,22000.00,132000.00),(48,53,22,5,58000.00,290000.00),(49,61,23,4,150000.00,600000.00),(50,62,23,6,37000.00,222000.00),(51,63,24,3,92000.00,276000.00),(52,64,24,3,200000.00,600000.00),(53,65,24,4,55000.00,220000.00),(54,52,25,6,22000.00,132000.00),(55,59,26,3,14000.00,42000.00),(56,58,27,4,78000.00,312000.00),(57,59,27,2,14000.00,28000.00),(58,62,27,14,37000.00,518000.00),(59,58,29,3,78000.00,234000.00),(60,59,29,4,14000.00,56000.00),(61,39,30,19,500000.00,9500000.00),(62,59,30,24,14000.00,336000.00),(63,30,31,1,70000.00,70000.00),(64,51,31,1,35000.00,35000.00),(65,52,31,10,22000.00,220000.00),(66,53,31,22,58000.00,1276000.00);
 /*!40000 ALTER TABLE `receipt_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,7 +432,7 @@ CREATE TABLE `receipts` (
   KEY `status_receipt_id` (`status_receipt_id`),
   CONSTRAINT `receipts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `status_receipt_id_ibfk_1` FOREIGN KEY (`status_receipt_id`) REFERENCES `receipt_status` (`status_receipt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,7 +441,7 @@ CREATE TABLE `receipts` (
 
 LOCK TABLES `receipts` WRITE;
 /*!40000 ALTER TABLE `receipts` DISABLE KEYS */;
-INSERT INTO `receipts` VALUES (10,3,'2023-09-10 11:24:05',651000.00,2,1),(11,30,'2023-09-10 11:25:28',483000.00,2,1),(12,3,'2023-09-11 08:56:15',44444.00,2,1),(13,1,'2023-09-12 16:44:28',568333.00,2,1),(14,39,'2023-09-12 16:47:02',448000.00,2,1),(15,3,'2023-09-12 19:54:16',371000.00,2,1),(16,3,'2023-09-12 19:55:17',510000.00,2,1),(17,3,'2023-09-12 20:01:22',111000.00,2,1),(18,41,'2023-09-19 16:38:26',220000.00,2,1),(19,41,'2023-09-19 16:43:46',7777.00,2,1),(20,3,'2023-09-26 16:12:39',1041000.00,1,1),(21,3,'2023-09-26 17:04:51',748000.00,1,1),(22,NULL,'2023-09-26 17:14:37',422000.00,1,1),(23,NULL,'2023-09-26 17:17:28',822000.00,1,1),(24,NULL,'2023-09-26 17:18:55',1096000.00,1,1),(25,NULL,'2023-09-26 17:20:46',132000.00,1,1);
+INSERT INTO `receipts` VALUES (10,3,'2023-09-10 11:24:05',651000.00,2,1),(11,30,'2023-09-10 11:25:28',483000.00,2,1),(12,3,'2023-09-11 08:56:15',44444.00,2,1),(13,1,'2023-09-12 16:44:28',568333.00,2,1),(14,39,'2023-09-12 16:47:02',448000.00,2,1),(15,3,'2023-09-12 19:54:16',371000.00,2,1),(16,3,'2023-09-12 19:55:17',510000.00,2,1),(17,3,'2023-09-12 20:01:22',111000.00,2,1),(18,41,'2023-09-19 16:38:26',220000.00,2,1),(19,41,'2023-09-19 16:43:46',7777.00,2,1),(20,3,'2023-09-26 16:12:39',1041000.00,2,1),(21,3,'2023-09-26 17:04:51',748000.00,2,1),(22,NULL,'2023-09-26 17:14:37',422000.00,1,1),(23,NULL,'2023-09-26 17:17:28',822000.00,1,1),(24,NULL,'2023-09-26 17:18:55',1096000.00,1,1),(25,NULL,'2023-09-26 17:20:46',132000.00,1,1),(26,1,'2023-09-27 15:55:45',42000.00,2,1),(27,NULL,'2023-09-27 16:27:39',858000.00,1,1),(29,NULL,'2023-09-30 09:26:31',290000.00,1,1),(30,3,'2023-09-30 13:15:42',9836000.00,2,1),(31,3,'2023-10-01 16:27:13',1601000.00,2,1);
 /*!40000 ALTER TABLE `receipts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -487,7 +492,7 @@ CREATE TABLE `restaurants` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `restaurants_ibfk_1` FOREIGN KEY (`restaurant_status`) REFERENCES `restaurant_status` (`status_id`),
   CONSTRAINT `restaurants_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,7 +501,7 @@ CREATE TABLE `restaurants` (
 
 LOCK TABLES `restaurants` WRITE;
 /*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
-INSERT INTO `restaurants` VALUES (19,'A Mà','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694307377/m9ghsputjx4gtgxh7qcn.png','97 Võ Văn Tần, Quận 3, TP. HCM',1,'97 Võ Văn Tần, Quận 3, TP. HCM',3,2,1),(20,'Mười Khó','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694307463/hxh9n6vaufw1wztinqxg.png','27 Trần Quốc Thảo, Quận 3, TP. HCM',1,'27 Trần Quốc Thảo, Quận 3, TP. HCM',3,1,1),(21,'Bùi Viện','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694310757/my2c2nzq4v1cexr1snsk.png','158 Bùi Viện, Quận 1, TP. HCM',1,'158 Bùi Viện, Quận 1, TP. HCM',3,2,1),(22,'Landmark Reactjs','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694310933/tvqyrkqhzbvlbl1cgohx.png','720A Đ. Điện Biên Phủ, Quận Bình Thạnh, Đồng Tháp',0,'720A Đ. Điện Biên Phủ, Quận Bình Thạnh, Đồng Tháp',3,2,1),(23,'Honestly','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311139/ffh4jffipolabfygemqk.png','65 Trần Xuân Soạn, Quận 7, TP. HCM',1,'65 Trần Xuân Soạn, Quận 7, TP. HCM',3,1,1),(24,'Anyway','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311219/xknywvpqbh87rpnghwb4.png','702 Nguyễn Văn Linh, Quận 7, TP. HCM',1,'702 Nguyễn Văn Linh, Quận 7, TP. HCM',3,1,1),(25,'SpringMVC','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311292/msz0kwhwuhl8hmqqiorv.png','Long Mỹ, Hậu Giang',1,'Long Mỹ, Hậu Giang',3,2,1),(26,'ReactNative','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311327/xjxjb7kw5boymopdh5w6.png','Cai Lậy, Tiền Giang',0,'Cai Lậy, Tiền Giang',3,2,1),(27,'Dimensity 1080','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311456/l4f1zwtlmkjhrk8l6hvb.png','Las Vegas, Nevada, New York',1,'Las Vegas, Nevada, New York',3,1,1),(28,'ZFlip3','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311565/jr7oatfd1ryigxe3o0xf.png','Đường 30/4, Thủ Dầu Một, Bình Dương',1,'Đường 30/4, Thủ Dầu Một, Bình Dương',3,2,1),(29,'Cùng Học Lập Trình','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311704/twpxmhub52b8bxovpmvo.png','Đường Huỳnh Thiên Lộc, Quận Tân Phú, TP. HCM',1,'Đường Huỳnh Thiên Lộc, Quận Tân Phú, TP. HCM',3,1,1),(30,'Lâu Đài Tình Ái','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311783/aipfjzp3jni87fymjcod.png','KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',0,'KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',3,2,1),(31,'TwillioAPI','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311856/xck8f1cpnff2mdxx1yya.png','KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',1,'KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',3,2,1),(32,'BeHappySis','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312251/g63mjhqjhuclowxqkqtx.png','Khu đô thị Phú Mỹ Hưng, Quận 7, TP. HCM',1,'Khu đô thị Phú Mỹ Hưng, Quận 7, TP. HCM',33,2,1),(33,'Mike Music','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','20 Hồ Văn Huê, Quận Phú Nhuận, TP. HCM',1,'20 Hồ Văn Huê, Quận Phú Nhuận, TP. HCM',34,2,1),(34,'Hieu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','371',1,'',3,2,0),(35,'testdemo','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','123',1,'',3,2,0),(36,'123','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','123',0,NULL,41,2,1);
+INSERT INTO `restaurants` VALUES (19,'A Mà','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694307377/m9ghsputjx4gtgxh7qcn.png','97 Võ Văn Tần, Quận 3, TP. HCM',1,'97 Võ Văn Tần, Quận 3, TP. HCM',3,2,1),(20,'Mười Khó','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694307463/hxh9n6vaufw1wztinqxg.png','27 Trần Quốc Thảo, Quận 3, TP. HCM',1,'27 Trần Quốc Thảo, Quận 3, TP. HCM',3,1,1),(21,'Bùi Viện','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694310757/my2c2nzq4v1cexr1snsk.png','158 Bùi Viện, Quận 1, TP. HCM',1,'158 Bùi Viện, Quận 1, TP. HCM',3,2,1),(22,'Landmark Reactjs','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694310933/tvqyrkqhzbvlbl1cgohx.png','720A Đ. Điện Biên Phủ, Quận Bình Thạnh, Đồng Tháp',0,'720A Đ. Điện Biên Phủ, Quận Bình Thạnh, Đồng Tháp',3,2,1),(23,'Honestly','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311139/ffh4jffipolabfygemqk.png','65 Trần Xuân Soạn, Quận 7, TP. HCM',1,'65 Trần Xuân Soạn, Quận 7, TP. HCM',3,1,1),(24,'Anyway','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311219/xknywvpqbh87rpnghwb4.png','702 Nguyễn Văn Linh, Quận 7, TP. HCM',1,'702 Nguyễn Văn Linh, Quận 7, TP. HCM',3,1,1),(25,'SpringMVC','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311292/msz0kwhwuhl8hmqqiorv.png','Long Mỹ, Hậu Giang',1,'Long Mỹ, Hậu Giang',3,2,1),(26,'ReactNative','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311327/xjxjb7kw5boymopdh5w6.png','Cai Lậy, Tiền Giang',0,'Cai Lậy, Tiền Giang',3,2,1),(27,'Dimensity 1080','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311456/l4f1zwtlmkjhrk8l6hvb.png','Las Vegas, Nevada, New York',1,'Las Vegas, Nevada, New York',3,1,1),(28,'ZFlip3','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311565/jr7oatfd1ryigxe3o0xf.png','Đường 30/4, Thủ Dầu Một, Bình Dương',1,'Đường 30/4, Thủ Dầu Một, Bình Dương',3,2,1),(29,'Cùng Học Lập Trình','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311704/twpxmhub52b8bxovpmvo.png','Đường Huỳnh Thiên Lộc, Quận Tân Phú, TP. HCM',1,'Đường Huỳnh Thiên Lộc, Quận Tân Phú, TP. HCM',3,1,1),(30,'Lâu Đài Tình Ái','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311783/aipfjzp3jni87fymjcod.png','KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',0,'KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',3,2,1),(31,'TwillioAPI','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694311856/xck8f1cpnff2mdxx1yya.png','KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',1,'KDC Nhơn Đức, Huyện Nhà Bè, TP. HCM',3,2,1),(32,'BeHappySis','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312251/g63mjhqjhuclowxqkqtx.png','Khu đô thị Phú Mỹ Hưng, Quận 7, TP. HCM',1,'Khu đô thị Phú Mỹ Hưng, Quận 7, TP. HCM',33,2,1),(33,'Mike Music','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','20 Hồ Văn Huê, Quận Phú Nhuận, TP. HCM',1,'20 Hồ Văn Huê, Quận Phú Nhuận, TP. HCM',34,2,1),(34,'Hieu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','371',1,'',3,2,0),(35,'testdemo','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','123',1,'',3,2,0),(36,'123','https://res.cloudinary.com/dhwuwy0to/image/upload/v1694312156/vjcnceejxa6uzvogzcja.png','123',0,NULL,41,2,1),(37,'123','https://res.cloudinary.com/dyfzuigha/image/upload/v1695892941/lleqk34473dviwhp5t45.jpg','123',0,NULL,3,2,1);
 /*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,7 +517,7 @@ CREATE TABLE `roles` (
   `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -521,7 +526,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'ROLE_Admin',1),(2,'ROLE_RestaurantManager',1),(3,'ROLE_User',1);
+INSERT INTO `roles` VALUES (1,'ROLE_Admin',1),(2,'ROLE_RestaurantManager',1),(3,'ROLE_User',1),(4,'ROLE_SupAdmin',1);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -590,7 +595,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Nguyễn Minh','Hiếu','0124','hieu','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','',1,'','0'),(3,'Trương Nguyễn Minh','Thái','0359505026','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Gia Lai',1,'thai@gmail.com','1'),(4,'Trần Đăng ','Tuấn','0123','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','HCM',1,NULL,'0'),(24,'Lê Thị Quỳnh','Như','01210','nhu','$2a$10$juE6Ysn8tpt1AApnPi8UvOzub2oqPV4C.N5vymEkS3/cuuSbV5z3K',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Đồng Tháp',1,'nhu.ltq@gmail.com','0'),(25,'Lê Hoài','Vũ','02222','vu','$2a$10$i1SN.uNDTb/s4gvhOkkjoO54265VEblv17Mz8nEadlkp.kX0YgReC',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png',NULL,1,'viet@gmail.com','0'),(30,'Mai Văn','Thành','0126','thanh','$2a$10$hU2eXi28feCNXviGcXPV4ekHBjF614drFuRYVvkfm3Px9iQ/uNWVO',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Hậu Giang',1,'thanh@iphonepromax.com','0'),(31,'Nguyễn Thị Phương','Anh','0129','anh','$2a$10$q9t0qJmJ1iJjiMBgJk6Bcey/p0KQq4AQ/4pfraFdQVaQ9YThpvPM2',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Đồng Nai',1,'tr@gmail.com','0'),(32,'Đỗ ','Việt','0156','viet','$2a$10$dsaeTLdjB52K0q.LC9zw.Oqjvf3PeVgBGmvLmi86tw22AcINbRBsi',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Quận Cam',1,'phuon@gmail.com','0'),(33,'Thiều Bảo','Trâm','0147','tram','$2a$10$P0B4BxUCQDuryifbMJ7XouLzmz.Mzrc2yje0mGBcUS2IsjHRAUi4i',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Nam Định',1,'tram.tb@gmail.com','0'),(34,'Mai Âm','Nhạc','0128','nhac','$2a$10$eFB9CJ1UlQf58UVVBXwMHeuwklMz7RG1E/nRq2XV/wXWuAPTcxs26',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Mỹ Tho',1,'mai.an@gmail.com','0'),(35,'Trương Nguyễn Minh','Thái',NULL,'2051052125thai@ou.edu.vn','$2a$10$uBIvAS/6AoFm4WcLvwkzCOx576IKKBllxAVr0KiTsINdIQ5lMkADC',3,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','null',1,'2051052125thai@ou.edu.vn','0'),(38,'Hieu','Nguyen','123','hieu123','$2a$10$ys3u9x73SGRUWAHO/OblXu/ZzINF2UVsO9SPuv4O3LPv3AsXdDIDe',3,'https://res.cloudinary.com/dyfzuigha/image/upload/v1694511752/pespwbgjafxp3bjskwwj.jpg','Vietnam',1,'hieu@123','0'),(39,'Nguyễn Minh','Hiếu','0123456','2051050138hieu@ou.edu.vn','$2a$10$wwV1G3vljQQ.uLEcAqQszunC19KTNLvR29YUul4wr4Xfv8gcdGZOO',3,'https://lh3.googleusercontent.com/a/ACg8ocKtKQ9uoE9k4i0Lre5zQsSs9XKzEX10UuI95kfXj9MW=s96-c','371 Nguyễn Kiệm',1,'2051050138hieu@ou.edu.vn','0'),(40,NULL,NULL,NULL,'123','$2a$10$RW6vXGn1V8W2wxdlqqZZu.LJ7ZfKCPC6mo6oiETehRoms5lD0afYO',3,NULL,NULL,1,NULL,'0'),(41,'nguyen','hieu','0359','nro881234@gmail.com','$2a$10$woIcXTC.PvCOkWutWFsbkulWbqbBVSS3K8NgCKjqQrV61z1SlOHUa',3,'https://lh3.googleusercontent.com/a/ACg8ocIc43dcJfBfOTxMnLDFekxwPG1zcitzYdaGLUmz6gAI=s96-c','Thái',1,'nro881234@gmail.com','0'),(42,'Nguyễn Minh','Hiếu',NULL,'hieu24313@gmail.com','$2a$10$dWeXsNlr73pTRB8C5I0mnu4MuILsjyBF1KLbENXAs1RDXt5QP40MO',3,'https://lh3.googleusercontent.com/a/ACg8ocK3CZDs05H0WemLDIxEqn2JzGbfe1bPwSbsnRLQnxDLcvA=s96-c',NULL,1,'hieu24313@gmail.com','0');
+INSERT INTO `users` VALUES (1,'Nguyễn Minh','Hiếu','0359505026','hieu','$2a$10$CSDHLcIJV/hsMU4GgOl5L.5KtQSNUhhQTFL9q55xV4S1MhFd25uAe',4,'https://res.cloudinary.com/dyfzuigha/image/upload/v1695806482/qjjjflv5obsdlbfwgnwy.jpg','đasa',1,'d@123','1'),(3,'Trương Nguyễn Minh','Thái','0359505027','thai','$2a$10$10A4Ndpodu5rkCvw1IIB4e.FL8ny3W6wdxyHaGJFrjH03JXewIei.',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Gia Lai',1,'thai@gmail.com','1'),(4,'Trần Đăng ','Tuấn','0123','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','HCM',1,NULL,'0'),(24,'Lê Thị Quỳnh','Như','01210','nhu','$2a$10$juE6Ysn8tpt1AApnPi8UvOzub2oqPV4C.N5vymEkS3/cuuSbV5z3K',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Đồng Tháp',1,'nhu.ltq@gmail.com','0'),(25,'Lê Hoài','Vũ','02222','vu','$2a$10$i1SN.uNDTb/s4gvhOkkjoO54265VEblv17Mz8nEadlkp.kX0YgReC',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png',NULL,1,'viet@gmail.com','0'),(30,'Mai Văn','Thành','0126','thanh','$2a$10$hU2eXi28feCNXviGcXPV4ekHBjF614drFuRYVvkfm3Px9iQ/uNWVO',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Hậu Giang',1,'thanh@iphonepromax.com','0'),(31,'Nguyễn Thị Phương','Anh','0129','anh','$2a$10$q9t0qJmJ1iJjiMBgJk6Bcey/p0KQq4AQ/4pfraFdQVaQ9YThpvPM2',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Đồng Nai',1,'tr@gmail.com','0'),(32,'Đỗ ','Việt','0156','viet','$2a$10$dsaeTLdjB52K0q.LC9zw.Oqjvf3PeVgBGmvLmi86tw22AcINbRBsi',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Quận Cam',1,'phuon@gmail.com','0'),(33,'Thiều Bảo','Trâm','0147','tram','$2a$10$P0B4BxUCQDuryifbMJ7XouLzmz.Mzrc2yje0mGBcUS2IsjHRAUi4i',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Nam Định',1,'tram.tb@gmail.com','0'),(34,'Mai Âm','Nhạc','0128','nhac','$2a$10$eFB9CJ1UlQf58UVVBXwMHeuwklMz7RG1E/nRq2XV/wXWuAPTcxs26',2,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','Mỹ Tho',1,'mai.an@gmail.com','0'),(35,'Trương Nguyễn Minh','Thái',NULL,'2051052125thai@ou.edu.vn','$2a$10$uBIvAS/6AoFm4WcLvwkzCOx576IKKBllxAVr0KiTsINdIQ5lMkADC',3,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1694390209/zzhhg64tabwsenwkaqte.png','null',1,'2051052125thai@ou.edu.vn','0'),(38,'Hieu','Nguyen','123','hieu123','$2a$10$ys3u9x73SGRUWAHO/OblXu/ZzINF2UVsO9SPuv4O3LPv3AsXdDIDe',3,'https://res.cloudinary.com/dyfzuigha/image/upload/v1694511752/pespwbgjafxp3bjskwwj.jpg','Vietnam',1,'hieu@123','0'),(39,'Nguyễn Minh','Hiếu','0123456','2051050138hieu@ou.edu.vn','$2a$10$wwV1G3vljQQ.uLEcAqQszunC19KTNLvR29YUul4wr4Xfv8gcdGZOO',3,'https://lh3.googleusercontent.com/a/ACg8ocKtKQ9uoE9k4i0Lre5zQsSs9XKzEX10UuI95kfXj9MW=s96-c','371 Nguyễn Kiệm',1,'2051050138hieu@ou.edu.vn','0'),(40,NULL,NULL,NULL,'123','$2a$10$RW6vXGn1V8W2wxdlqqZZu.LJ7ZfKCPC6mo6oiETehRoms5lD0afYO',3,NULL,NULL,1,NULL,'0'),(41,'nguyen','hieu','0359','nro881234@gmail.com','$2a$10$woIcXTC.PvCOkWutWFsbkulWbqbBVSS3K8NgCKjqQrV61z1SlOHUa',3,'https://lh3.googleusercontent.com/a/ACg8ocIc43dcJfBfOTxMnLDFekxwPG1zcitzYdaGLUmz6gAI=s96-c','Thái',1,'nro881234@gmail.com','0'),(42,'Nguyễn Minh','Hiếu',NULL,'hieu24313@gmail.com','$2a$10$dWeXsNlr73pTRB8C5I0mnu4MuILsjyBF1KLbENXAs1RDXt5QP40MO',3,'https://lh3.googleusercontent.com/a/ACg8ocK3CZDs05H0WemLDIxEqn2JzGbfe1bPwSbsnRLQnxDLcvA=s96-c',NULL,1,'hieu24313@gmail.com','0');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -603,4 +608,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-27 13:21:42
+-- Dump completed on 2023-10-03 15:07:31

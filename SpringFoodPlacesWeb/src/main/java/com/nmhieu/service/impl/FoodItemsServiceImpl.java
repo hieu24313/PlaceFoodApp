@@ -8,14 +8,21 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.nmhieu.pojo.Fooditems;
 import com.nmhieu.repository.FoodItemsRepository;
+import com.nmhieu.service.CategoriesFoodService;
 import com.nmhieu.service.FoodItemsService;
+import com.nmhieu.service.PromotionService;
+import com.nmhieu.service.RestaurantsService;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -29,6 +36,15 @@ public class FoodItemsServiceImpl implements FoodItemsService {
 
     @Autowired
     private Cloudinary cloudinary;
+    
+    @Autowired
+    private CategoriesFoodService cateService;
+    
+    @Autowired
+    private RestaurantsService restaurantService;
+    
+    @Autowired
+    private PromotionService promotionService;
 
     @Override
     public List<Fooditems> getFoodItems(Map<String, String> params) {
@@ -79,6 +95,45 @@ public class FoodItemsServiceImpl implements FoodItemsService {
     @Override
     public List<Fooditems> getFoodItemsByShelflifeId(int shelflifeId) {
         return this.foodItemRepo.getFoodItemsByShelflifeId(shelflifeId);
+    }
+
+    @Override
+    public boolean addOrUpdateFoodItem(Map<String, String> params, MultipartFile avatar) {
+        Fooditems foodItem = new Fooditems();
+        String foodId = params.get("foodId");
+        foodItem.setFoodName(params.get("foodName"));
+        BigDecimal price = new BigDecimal(params.get("price"));
+        foodItem.setPrice(price);
+        foodItem.setDescription(params.get("description"));
+        foodItem.setCategoryfoodId(this.cateService.getCategoryById(Integer.parseInt(params.get("categoryfoodId"))));
+        foodItem.setRestaurantId(this.restaurantService.getRestaurantById(Integer.parseInt(params.get("restaurantId"))));
+        if (!avatar.isEmpty()) {
+                try {
+                    Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                            ObjectUtils.asMap("resource_type", "auto"));
+                    foodItem.setAvatar(res.get("secure_url").toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        String PromotionId = params.get("promotion");
+        if(PromotionId != null || PromotionId.isEmpty()){
+            List<Integer> numbers = Arrays.stream(PromotionId.split(","))
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+            int idFood = Integer.parseInt(foodId);
+            for (int proId : numbers){
+                this.promotionService.addPromotionForFood(idFood, proId);
+            }
+        }
+        
+        if(foodId == null || foodId.isEmpty()){
+            return this.foodItemRepo.addFoodItem(foodItem);
+        }else{
+            foodItem.setFoodId(Integer.valueOf(foodId));
+            return this.foodItemRepo.updateFoodItem(foodItem);
+        }
+        
     }
 
 }

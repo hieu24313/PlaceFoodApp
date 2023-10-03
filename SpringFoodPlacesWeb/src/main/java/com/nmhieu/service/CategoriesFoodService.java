@@ -25,4 +25,6 @@ public interface CategoriesFoodService {
     boolean delCategory(int id);
 
     List<CategoriesFood> getCategoriesFoodByRestaurantId(int restaurantId);
+    
+    boolean addOrUpdateCate(Map<String, String> params);
 }

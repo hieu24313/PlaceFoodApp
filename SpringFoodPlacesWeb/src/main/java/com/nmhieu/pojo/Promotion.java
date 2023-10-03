@@ -4,10 +4,8 @@
  */
 package com.nmhieu.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,10 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Promotion.findByPricePromotion", query = "SELECT p FROM Promotion p WHERE p.pricePromotion = :pricePromotion"),
     @NamedQuery(name = "Promotion.findByActive", query = "SELECT p FROM Promotion p WHERE p.active = :active")})
 public class Promotion implements Serializable {
-
-    @OneToMany(mappedBy = "promotionId")
-    @JsonIgnore
-    private Set<PromotionFooditems> promotionFooditemsSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,6 +62,9 @@ public class Promotion implements Serializable {
     @JoinColumn(name = "promotion_type_id", referencedColumnName = "promotion_type_id")
     @ManyToOne
     private PromotionType promotionTypeId;
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
+    @ManyToOne
+    private Restaurants restaurantId;
 
     public Promotion() {
     }
@@ -134,6 +129,14 @@ public class Promotion implements Serializable {
         this.promotionTypeId = promotionTypeId;
     }
 
+    public Restaurants getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Restaurants restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -157,15 +160,6 @@ public class Promotion implements Serializable {
     @Override
     public String toString() {
         return "com.nmhieu.pojo.Promotion[ promotionId=" + promotionId + " ]";
-    }
-
-    @XmlTransient
-    public Set<PromotionFooditems> getPromotionFooditemsSet() {
-        return promotionFooditemsSet;
-    }
-
-    public void setPromotionFooditemsSet(Set<PromotionFooditems> promotionFooditemsSet) {
-        this.promotionFooditemsSet = promotionFooditemsSet;
     }
     
 }

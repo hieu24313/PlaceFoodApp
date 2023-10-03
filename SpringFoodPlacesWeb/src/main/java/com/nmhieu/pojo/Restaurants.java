@@ -43,6 +43,10 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "Restaurants.findByActive", query = "SELECT r FROM Restaurants r WHERE r.active = :active")})
 public class Restaurants implements Serializable {
 
+    @OneToMany(mappedBy = "restaurantId")
+    @JsonIgnore
+    private Set<Promotion> promotionSet;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -263,6 +267,15 @@ public class Restaurants implements Serializable {
     @Override
     public String toString() {
         return "com.tuantran.pojo.Restaurants[ restaurantId=" + restaurantId + " ]";
+    }
+
+    @XmlTransient
+    public Set<Promotion> getPromotionSet() {
+        return promotionSet;
+    }
+
+    public void setPromotionSet(Set<Promotion> promotionSet) {
+        this.promotionSet = promotionSet;
     }
 
 }

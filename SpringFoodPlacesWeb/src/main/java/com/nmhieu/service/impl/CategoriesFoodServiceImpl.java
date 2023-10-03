@@ -7,6 +7,7 @@ package com.nmhieu.service.impl;
 import com.nmhieu.pojo.CategoriesFood;
 import com.nmhieu.repository.CategoryFoodRepository;
 import com.nmhieu.service.CategoriesFoodService;
+import com.nmhieu.service.RestaurantsService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class CategoriesFoodServiceImpl implements CategoriesFoodService{
         return this.categoryFoodRepo.getCategoriesFood(params);
     }
 
+    @Autowired
+    private RestaurantsService restaurantService;
+    
     @Override
     public int countCategoriesFood() {
         return this.categoryFoodRepo.countCategoriesFood();
@@ -48,6 +52,20 @@ public class CategoriesFoodServiceImpl implements CategoriesFoodService{
     @Override
     public List<CategoriesFood> getCategoriesFoodByRestaurantId(int restaurantId) {
         return this.categoryFoodRepo.getCategoriesFoodByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public boolean addOrUpdateCate(Map<String, String> params) {
+        String cateId = params.get("CategoryId");
+        String cateName = params.get("categoryName");
+        int restaurantId = Integer.parseInt(params.get("restaurantId"));
+        CategoriesFood cate = new CategoriesFood();
+        cate.setCategoryname(cateName);
+        cate.setRestaurantId(this.restaurantService.getRestaurantById(restaurantId));
+        if(cateId != null && !cateId.isEmpty()){
+            cate.setCategoryfoodId(Integer.valueOf(cateId));
+        }
+        return this.categoryFoodRepo.addOrUpdateCate(cate);
     }
     
 }

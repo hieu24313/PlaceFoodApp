@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -60,6 +64,17 @@ public class ApiFoodItemsController {
     @CrossOrigin
     public ResponseEntity<List<Fooditems>> listFood(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.foodItemsSer.getFoodItems(params), HttpStatus.OK);
+    }
+    
+    @PostMapping("/restaurantManager/add-or-update-fooditem/")
+    @CrossOrigin
+    public ResponseEntity<String> addOrUpdateFoodItem(@RequestBody Map<String,String> params, @RequestPart MultipartFile avatar){
+        boolean check = this.foodItemsSer.addOrUpdateFoodItem(params, avatar);
+        if(check){
+            return new ResponseEntity<>("Thành công!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Có lỗi xảy ra!", HttpStatus.BAD_REQUEST);
+        }
     }
     
 //    @GetMapping("/foodItems/{foodId}/")
