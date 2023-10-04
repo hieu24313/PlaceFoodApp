@@ -77,6 +77,12 @@ public class ApiFoodItemsController {
         }
     }
     
+    @GetMapping("/restaurantManager/fooditems-promotion/")
+    @CrossOrigin
+    public ResponseEntity<List<Object>> getFoodAndPromotion(@RequestParam Map<String, String> params){
+        return new ResponseEntity<>(this.foodItemsSer.getFoodItemsAndPromotion(params), HttpStatus.OK);
+    }
+    
 //    @GetMapping("/foodItems/{foodId}/")
 //    @CrossOrigin
 //    public ResponseEntity<Fooditems> foodItem(@PathVariable(value = "foodId") int foodid) {

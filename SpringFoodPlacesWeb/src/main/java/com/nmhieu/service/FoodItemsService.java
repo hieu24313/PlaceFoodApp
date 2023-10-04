@@ -5,6 +5,7 @@
 package com.nmhieu.service;
 
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.PromotionFooditems;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,4 +33,8 @@ public interface FoodItemsService {
     List<Fooditems> getFoodItemsByShelflifeId(int shelflifeId);
     
     boolean addOrUpdateFoodItem(Map<String, String> params, MultipartFile avatar);
+    
+    List<Object> getFoodItemsAndPromotion(Map<String, String> params);
+    
+    List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params);
 }

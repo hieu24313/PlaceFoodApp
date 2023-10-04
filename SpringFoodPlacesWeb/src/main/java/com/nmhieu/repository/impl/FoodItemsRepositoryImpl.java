@@ -5,6 +5,8 @@
 package com.nmhieu.repository.impl;
 
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.Promotion;
+import com.nmhieu.pojo.PromotionFooditems;
 import com.nmhieu.repository.FoodItemsRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,10 +247,9 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
         }
     }
 
-    
     /*
     hàm thêm fooditem
-    */
+     */
     @Override
     public boolean addFoodItem(Fooditems foodItem) {
         Session session = this.factory.getObject().getCurrentSession();
@@ -262,10 +263,9 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
         }
     }
 
-    
     /*
     hàm update fooditem
-    */
+     */
     @Override
     public boolean updateFoodItem(Fooditems foodItem) {
         Session session = this.factory.getObject().getCurrentSession();
@@ -276,6 +276,102 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<Object> getFoodItemsAndPromotion(Map<String, String> params) {
+        Session session = this.factory.getObject().getCurrentSession();
+//        Query query = session.createQuery("From Fooditems");
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Object> q = criteriaBuilder.createQuery(Object.class);
+        Root rootFood = q.from(Fooditems.class);
+        Root rootFood_Promotion = q.from(PromotionFooditems.class);
+        Root rootPromotion = q.from(Promotion.class);
+//        q.select(rootFood);
+        // SELECT MULTIPLE COLUMNS
+        q.multiselect(
+                rootFood,
+                rootFood_Promotion,
+                rootPromotion
+        );
+        
+//        try {
+//            CriteriaBuilder builder = session.getCriteriaBuilder();
+//            CriteriaQuery<Fooditems> criteriaQuery = builder.createQuery(Fooditems.class);
+//            Root<Fooditems> root = criteriaQuery.from(Fooditems.class);
+//
+//            Predicate idPredicate = builder.equal(root.get("shelflifeId"), shelflifeId);
+//
+//            Predicate otherCondition = builder.equal(root.get("active"), Boolean.TRUE);
+//
+//            Predicate finalPredicate = builder.and(idPredicate, otherCondition);
+//
+//            criteriaQuery.where(finalPredicate);
+//            Query final_query = session.createQuery(q);
+//            return final_query.getResultList();
+//        } catch (NoResultException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+
+        // WHERE JOIN BẢNG
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(criteriaBuilder.equal(
+                rootFood.get("foodId"),
+                rootFood_Promotion.get("foodId"))
+        );
+
+        predicates.add(criteriaBuilder.equal(
+                rootPromotion.get("promotionId"),
+                rootFood_Promotion.get("promotionId"))
+        );
+
+        String restaurantId = params.get("restaurantId");
+
+        if (restaurantId != null && !restaurantId.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(rootFood.get("restaurantId"), Integer.parseInt(restaurantId)));
+        }
+        q.where(predicates.toArray(Predicate[]::new));
+
+        Query final_query = session.createQuery(q);
+        return final_query.getResultList();
+    }
+
+//    @Override
+//    public List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params) {
+//        Session session = this.factory.getObject().getCurrentSession();
+////        Query query = session.createQuery("From Fooditems");
+//        CriteriaBuilder b = session.getCriteriaBuilder();
+//        CriteriaQuery<PromotionFooditems> q = b.createQuery(PromotionFooditems.class);
+//        Root root = q.from(PromotionFooditems.class);
+//        q.select(root);
+//
+//        List<Predicate> predicates = new ArrayList<>();
+////        if (params != null) {
+////            
+////        }
+//        predicates.add(b.equal(root.get("active"), Boolean.TRUE));
+//        q.where(predicates.toArray(Predicate[]::new));
+//
+//        Query query = session.createQuery(q);
+//
+//        if (params != null) {
+//            String page = params.get("page");
+//            if (page != null && !page.isEmpty()) {
+//                int p = Integer.parseInt(page);
+//                int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+//
+//                query.setMaxResults(pageSize);
+//                query.setFirstResult((p - 1) * pageSize);
+//            }
+//        }
+//
+//        return query.getResultList();
+//    }
+
+    @Override
+    public List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

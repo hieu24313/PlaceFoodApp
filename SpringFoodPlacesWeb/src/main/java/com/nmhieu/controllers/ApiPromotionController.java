@@ -35,7 +35,7 @@ public class ApiPromotionController {
         return new ResponseEntity<>(this.promotionService.getPromotion(params), HttpStatus.OK);
     }
     
-    @PostMapping("/restaurantManager/add-or-update0promotion/")
+    @PostMapping("/restaurantManager/add-or-update-promotion/")
     @CrossOrigin
     public ResponseEntity<String> addOrUpdatePromotion(@RequestBody Map<String, String> params){
         boolean check = this.promotionService.addOrUpdatePromotion(params);

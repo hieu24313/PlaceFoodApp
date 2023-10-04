@@ -5,6 +5,7 @@
 package com.nmhieu.repository;
 
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.PromotionFooditems;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,6 @@ public interface FoodItemsRepository {
     List<Fooditems> getFoodItemsByShelflifeId(int shelflifeId);
     boolean addFoodItem(Fooditems foodItem);
     boolean updateFoodItem(Fooditems foodItem);
+    List<Object> getFoodItemsAndPromotion(Map<String, String> params);
+    List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params);
 }

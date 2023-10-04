@@ -7,6 +7,7 @@ package com.nmhieu.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.PromotionFooditems;
 import com.nmhieu.repository.FoodItemsRepository;
 import com.nmhieu.service.CategoriesFoodService;
 import com.nmhieu.service.FoodItemsService;
@@ -134,6 +135,16 @@ public class FoodItemsServiceImpl implements FoodItemsService {
             return this.foodItemRepo.updateFoodItem(foodItem);
         }
         
+    }
+
+    @Override
+    public List<Object> getFoodItemsAndPromotion(Map<String, String> params) {
+        return this.foodItemRepo.getFoodItemsAndPromotion(params);
+    }
+
+    @Override
+    public List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params) {
+        return this.foodItemRepo.getFoodAndPromotion(params);
     }
 
 }

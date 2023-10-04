@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Alert, Button, Card, Carousel, Col, Form, Row } from "react-bootstrap";
-import Apis, { endpoints } from "../configs/Apis";
+import Apis, { authApi, endpoints } from "../configs/Apis";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import MySpinner from "../layout/MySpinner";
 import '../resources/css/Home.css'
@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
 
-    const [foodItems, setFoodItems] = useState(null);
+    const [foodItems, setFoodItems] = useState([]);
     const [, cartDispatch] = useContext(MyCartContext);
     const [q] = useSearchParams();
     const [restaurant, setRestaurant] = useState([]);
@@ -23,6 +23,8 @@ const Home = () => {
     const [page, setPage] = useState("");
     const nav = useNavigate();
     const notify = (x) => toast(x);
+    const [promo_Food, setPromo_Food] = useState([]);
+    // const []
 
 
     const search = (evt) => {
@@ -43,7 +45,69 @@ const Home = () => {
         nav(find)
     }
 
+    
+
     useEffect(() => {
+        const newPrice = (data) => {
+            data.forEach(item => {
+                item.hasPromotion = false; // Thêm thuộc tính mới với giá trị mặc định
+                item.oldPrice = 1;
+            });
+            console.log(data)
+            for (let pf of promo_Food) {
+                console.log(1)
+                let id = pf[1]['foodId']['foodId'];
+                console.log(id)
+                const foundFood = data.findIndex(item => item.foodId === id);
+                if (foundFood !== -1) {
+                    console.log(2)
+                    let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
+                    let price = data[foundFood].price; // giá ban đầu
+                    // console.log(pf[2].pricePromotion);
+                    if (type === 1) { // giảm theo %
+                        console.log(21)
+                        if(price - (pf[2].pricePromotion * price / 100) >= 0){
+                            data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
+                        }else{
+                            data[foundFood].price = 0;
+                        }
+                        
+                        data[foundFood].hasPromotion = true;
+                        if(data[foundFood].oldPrice === 1){
+                            data[foundFood].oldPrice = price;
+                        }
+                    }
+                    else if (type === 2) { //giảm theo giá tiền
+                        console.log(22)
+                        if (price - pf[2].pricePromotion >= 0){
+                            data[foundFood].price = price - pf[2].pricePromotion;
+                        }else{
+                            data[foundFood].price = 0;
+                        }
+                        
+                        data[foundFood].hasPromotion = true;
+                        if(data[foundFood].oldPrice === 1){
+                            data[foundFood].oldPrice = price;
+                        }
+                    }
+                }
+            }
+            console.log(data)
+            setFoodItems(data);
+        }
+
+        const loadFood_Promotion = async () => {
+            try {
+                let res = await authApi().get(endpoints['fooditems-promotion']);
+                console.log(res.data[0][2]); //lấy được id của food khuyến mãi
+                setPromo_Food(res.data);
+                // console.log(promo_Food)
+                // console.log("ở đây ")
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
         const loadFoodItems = async () => {
             try {
                 let e = `${endpoints['fooditems']}?`;
@@ -66,8 +130,8 @@ const Home = () => {
                 // }
 
                 let res = await Apis.get(e);
-
-                setFoodItems(res.data);
+                
+                newPrice(res.data);
                 console.log(res.data)
             } catch (ex) {
                 console.error(ex);
@@ -97,15 +161,18 @@ const Home = () => {
             }
         }
 
+
+        loadFood_Promotion();
         loadFoodItems();
         loadRestaurant();
+    }, [q, promo_Food, page])
 
-    }, [q])
-
+    // const hasAvatar = promo_Food[0][1].hasOwnProperty('foodId');
+    // console.log("kiểm tra " + hasAvatar); // true
 
     if (foodItems === null) {
         return <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div>
-         
+
     }
 
     const order = (foodItem) => {
@@ -113,7 +180,7 @@ const Home = () => {
             "type": "inc",
             "payload": 1
         })
-        
+
 
         let cart = cookie.load("cart") || null;
         if (cart == null)
@@ -139,7 +206,7 @@ const Home = () => {
     return <>
         <div>
             <div>
-            <ToastContainer />
+                <ToastContainer />
                 <Form onSubmit={search} className="mt-3 mb-2 form_find_name" inline>
                     <Row className="find_first">
                         <Col xs="auto" className="input1">
@@ -186,7 +253,7 @@ const Home = () => {
                         </Col>
                     </Row> *
                 </Form> */}
-                 {/* <ToastContainer /> */}
+                {/* <ToastContainer /> */}
                 <Carousel data-bs-theme="dark" className="carousel_edit">
                     {/* {restaurant === null ? <MySpinner /> : <> */}
                     {Object.values(restaurant).map(r => {
@@ -246,6 +313,7 @@ const Home = () => {
                         {foodItems === null ? <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div> : <>
                             {foodItems.map(f => {
                                 let url = `/fooddetail/${f.foodId}`;
+                                let id = `price${f.foodId}`
                                 return <Col xs={12} md={4} >
                                     <Card className="mt-3 food_item">
                                         <Link to={url}><Card.Img variant="top" className="w-100" src={f.avatar} /></Link>
@@ -259,13 +327,23 @@ const Home = () => {
                                                 </div>
                                             </div>
                                             <div>
-                                                <Card.Text className="text-danger" style={{ fontSize: 25 + "px" }}>
-                                                    {f.price} VNĐ
-                                                </Card.Text>
+                                                {f.hasPromotion === true ? <>
+                                                    <sub style={{ color: 'red', fontSize: 18 + 'px' }}><s>{f.oldPrice} VNĐ </s></sub>
+                                                    <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
+                                                        
+                                                        Giảm giá: {f.price} VNĐ
+                                                    </Card.Text>
+                                                    
+                                                </> : <>
+                                                <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
+                                                       k {f.price} VNĐ
+                                                    </Card.Text>
+                                                </>}
+
                                             </div>
                                             <div className="btn_all">
                                                 <Button onClick={() => { order(f) }} className="raise" variant="success">ADD TO CART</Button>
-                                                
+
                                                 <Link to={url} variant="primary" className="btn-food btn btn-primary raise">Xem chi tiết</Link>
                                             </div>
                                         </Card.Body>
