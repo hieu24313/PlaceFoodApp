@@ -96,7 +96,11 @@ const Profile = () => {
                 } else {
                     form.append("avatar", new Blob());
                 }
-                let res = await authApi().post(endpoints['update-user'], form);
+                let res = await authApi().post(endpoints['update-user'], form,{
+                    headers: {
+                      'Content-Type': 'multipart/form-data', // Đặt tiêu đề Content-Type thành multipart/form-data
+                    },
+                  });
                 if (res.status === 200) {
                     setLoading(true);
                     reloadUser();

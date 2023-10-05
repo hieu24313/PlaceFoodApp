@@ -59,30 +59,32 @@ public class ApiFoodItemsController {
     public ResponseEntity<Fooditems> detail(@PathVariable(value = "foodId") int foodId) {
         return new ResponseEntity<>(this.foodItemsSer.getFoodItemById(foodId), HttpStatus.OK);
     }
-    
+
     @GetMapping("/foodItems/")
     @CrossOrigin
     public ResponseEntity<List<Fooditems>> listFood(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.foodItemsSer.getFoodItems(params), HttpStatus.OK);
     }
-    
-    @PostMapping("/restaurantManager/add-or-update-fooditem/")
+
+    @PostMapping(path = "/restaurantManager/add-or-update-fooditem/",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @CrossOrigin
-    public ResponseEntity<String> addOrUpdateFoodItem(@RequestBody Map<String,String> params, @RequestPart MultipartFile avatar){
+    public ResponseEntity<String> addOrUpdateFoodItem(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         boolean check = this.foodItemsSer.addOrUpdateFoodItem(params, avatar);
-        if(check){
+        if (check) {
             return new ResponseEntity<>("Thành công!", HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>("Có lỗi xảy ra!", HttpStatus.BAD_REQUEST);
         }
     }
-    
-    @GetMapping("/restaurantManager/fooditems-promotion/")
+
+    @GetMapping("/fooditems-promotion/")
     @CrossOrigin
-    public ResponseEntity<List<Object>> getFoodAndPromotion(@RequestParam Map<String, String> params){
+    public ResponseEntity<List<Object>> getFoodAndPromotion(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.foodItemsSer.getFoodItemsAndPromotion(params), HttpStatus.OK);
     }
-    
+
 //    @GetMapping("/foodItems/{foodId}/")
 //    @CrossOrigin
 //    public ResponseEntity<Fooditems> foodItem(@PathVariable(value = "foodId") int foodid) {

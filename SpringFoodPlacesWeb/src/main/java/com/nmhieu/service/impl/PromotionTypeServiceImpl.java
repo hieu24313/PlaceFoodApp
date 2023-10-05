@@ -5,6 +5,7 @@
 package com.nmhieu.service.impl;
 
 import com.nmhieu.pojo.PromotionType;
+import com.nmhieu.repository.PromotionTypeRepository;
 import com.nmhieu.service.PromotionTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,10 @@ import org.springframework.stereotype.Service;
 public class PromotionTypeServiceImpl implements PromotionTypeService{
 
     @Autowired
-    private PromotionTypeService promotionTypeService;
+    private PromotionTypeRepository promotionTypeRepo;
     @Override
     public PromotionType getPromotionTypeById(int id) {
-        return this.promotionTypeService.getPromotionTypeById(id);
+        return this.promotionTypeRepo.getPromotionTypeById(id);
     }
     
 }

@@ -8,6 +8,7 @@ import com.nmhieu.pojo.Promotion;
 import com.nmhieu.repository.PromotionRepository;
 import com.nmhieu.service.PromotionService;
 import com.nmhieu.service.PromotionTypeService;
+import com.nmhieu.service.RestaurantsService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +33,9 @@ public class PromotionServiceImpl implements PromotionService{
     private SimpleDateFormat MY_DATE_FORMAT;
     
     @Autowired
+    private RestaurantsService restaurantService;
+    
+    @Autowired
     private PromotionTypeService promotionTypeService;
     
     @Override
@@ -54,6 +58,8 @@ public class PromotionServiceImpl implements PromotionService{
         Promotion promotion = new Promotion();
         String PromotionId = params.get("promotionId");
         String promotionName = params.get("promotionName");
+        int restaurantId = Integer.parseInt(params.get("restaurantId"));
+        promotion.setRestaurantId(this.restaurantService.getRestaurantById(restaurantId));
         Date fromDate = null;
         Date toDate = null;
         try {

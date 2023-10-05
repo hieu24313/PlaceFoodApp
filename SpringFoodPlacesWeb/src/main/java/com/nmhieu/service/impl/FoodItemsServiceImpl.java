@@ -37,13 +37,13 @@ public class FoodItemsServiceImpl implements FoodItemsService {
 
     @Autowired
     private Cloudinary cloudinary;
-    
+
     @Autowired
     private CategoriesFoodService cateService;
-    
+
     @Autowired
     private RestaurantsService restaurantService;
-    
+
     @Autowired
     private PromotionService promotionService;
 
@@ -106,35 +106,44 @@ public class FoodItemsServiceImpl implements FoodItemsService {
         BigDecimal price = new BigDecimal(params.get("price"));
         foodItem.setPrice(price);
         foodItem.setDescription(params.get("description"));
-        foodItem.setCategoryfoodId(this.cateService.getCategoryById(Integer.parseInt(params.get("categoryfoodId"))));
+        String cateId = params.get("categoryfoodId");
+        if (cateId != null) {
+            System.out.println(cateId);
+            foodItem.setCategoryfoodId(this.cateService.getCategoryById(Integer.parseInt(cateId)));
+        }
         foodItem.setRestaurantId(this.restaurantService.getRestaurantById(Integer.parseInt(params.get("restaurantId"))));
         if (!avatar.isEmpty()) {
-                try {
-                    Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
-                            ObjectUtils.asMap("resource_type", "auto"));
-                    foodItem.setAvatar(res.get("secure_url").toString());
-                } catch (IOException ex) {
-                    Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                foodItem.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UsersServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         String PromotionId = params.get("promotion");
-        if(PromotionId != null || PromotionId.isEmpty()){
+        if (PromotionId != null && PromotionId.isEmpty()) {
             List<Integer> numbers = Arrays.stream(PromotionId.split(","))
-            .map(Integer::parseInt)
-            .collect(Collectors.toList());
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
             int idFood = Integer.parseInt(foodId);
-            for (int proId : numbers){
+            for (int proId : numbers) {
                 this.promotionService.addPromotionForFood(idFood, proId);
             }
         }
-        
-        if(foodId == null || foodId.isEmpty()){
-            return this.foodItemRepo.addFoodItem(foodItem);
-        }else{
+        if (foodId != null && !foodId.isEmpty()) {
+            Fooditems f = this.getFoodItemById(Integer.parseInt(foodId));
+            if (avatar.isEmpty()) {
+                foodItem.setAvatar(f.getAvatar());
+            }
+            foodItem.setAvailable(f.getAvailable());
+            foodItem.setShelflifeId(f.getShelflifeId());
+            foodItem.setActive(Boolean.TRUE);
             foodItem.setFoodId(Integer.valueOf(foodId));
             return this.foodItemRepo.updateFoodItem(foodItem);
+        } else {
+            return this.foodItemRepo.addFoodItem(foodItem);
         }
-        
     }
 
     @Override

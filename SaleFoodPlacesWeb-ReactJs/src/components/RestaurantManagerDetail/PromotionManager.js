@@ -10,7 +10,7 @@ const PromotionManager = () => {
                 <RestaurantManagerConpoment />
             </div>
             <div className="dasboard_2">
-                <h1 className="text-center">Trang quản lý khuyễn mãi {restaurantId}</h1>
+                <h1 className="text-center">Trang quản lý khuyến mãi {restaurantId}</h1>
             </div>
         </div>
     </>
