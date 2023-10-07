@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,17 @@ public class ApiPromotionController {
         boolean check = this.promotionService.addOrUpdatePromotion(params);
         if(check){
             return new ResponseEntity<>("Thành công!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Có lỗi xảy ra!", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    @PostMapping("/restaurantManager/delete-promotion/{promotionId}")
+    @CrossOrigin
+    public ResponseEntity<String> deletePromotion(@PathVariable(value = "promotionId") int id){
+        boolean check = this.promotionService.deletePromotion(id);
+        if(check){
+            return new ResponseEntity<>("Xóa thành công!", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Có lỗi xảy ra!", HttpStatus.BAD_REQUEST);
         }

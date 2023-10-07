@@ -17,4 +17,5 @@ public interface PromotionService {
     Promotion getPromotionById(int id);
     boolean addPromotionForFood(int idFood, int idPromotion);
     boolean addOrUpdatePromotion(Map<String, String> params);
+    boolean deletePromotion(int id);
 }

@@ -11,11 +11,13 @@ import com.nmhieu.pojo.PromotionFooditems;
 import com.nmhieu.repository.FoodItemsRepository;
 import com.nmhieu.service.CategoriesFoodService;
 import com.nmhieu.service.FoodItemsService;
+import com.nmhieu.service.PromotionFoodItemsService;
 import com.nmhieu.service.PromotionService;
 import com.nmhieu.service.RestaurantsService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -46,6 +48,9 @@ public class FoodItemsServiceImpl implements FoodItemsService {
 
     @Autowired
     private PromotionService promotionService;
+    
+    @Autowired
+    private PromotionFoodItemsService promotion_FoodService;
 
     @Override
     public List<Fooditems> getFoodItems(Map<String, String> params) {
@@ -122,13 +127,17 @@ public class FoodItemsServiceImpl implements FoodItemsService {
             }
         }
         String PromotionId = params.get("promotion");
-        if (PromotionId != null && PromotionId.isEmpty()) {
-            List<Integer> numbers = Arrays.stream(PromotionId.split(","))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            int idFood = Integer.parseInt(foodId);
-            for (int proId : numbers) {
-                this.promotionService.addPromotionForFood(idFood, proId);
+        String[] numbers1 = PromotionId.split(",");
+        int idFood = Integer.parseInt(foodId);
+        Map<String, String> params1 = new HashMap<>();
+        params1.put("foodId", String.format(foodId));
+        for (String proId : numbers1) {
+            System.out.println(proId);
+            params1.put("promotionId", String.format(proId));
+            System.out.println(this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1));
+            if(this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1).isEmpty()){
+                
+                this.promotionService.addPromotionForFood(idFood, Integer.parseInt(proId));
             }
         }
         if (foodId != null && !foodId.isEmpty()) {

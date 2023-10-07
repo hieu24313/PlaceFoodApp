@@ -65,6 +65,7 @@ public class CategoriesFoodServiceImpl implements CategoriesFoodService{
         if(cateId != null && !cateId.isEmpty()){
             cate.setCategoryfoodId(Integer.valueOf(cateId));
         }
+        cate.setActive(Boolean.TRUE);
         return this.categoryFoodRepo.addOrUpdateCate(cate);
     }
     

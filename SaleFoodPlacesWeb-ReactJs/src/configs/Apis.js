@@ -38,11 +38,10 @@ export const endpoints = {
     "check-otp-and-set-password": `${SERVER_CONTEXT}/api/checkOTPAndChangPassword/`,
     "check-restaurant-user": `${SERVER_CONTEXT}/api/restaurantManager/check-restaurant-user/`,
     "fooditems-promotion": `${SERVER_CONTEXT}/api/fooditems-promotion/`,
-    "add-or-update-food": `${SERVER_CONTEXT}/api/restaurantManager/add-or-update-fooditem/`
-
-
-
-
+    "add-or-update-food": `${SERVER_CONTEXT}/api/restaurantManager/add-or-update-fooditem/`,
+    "add-or-update-category": `${SERVER_CONTEXT}/api/restaurantManager/add-or-update-category/`,
+    "delete-cate": `${SERVER_CONTEXT}/api/restaurantManager/delete-categoriesFood/`,
+    "get-promotion": `${SERVER_CONTEXT}/api/restaurantManager/promotions/`
 }
 
 export const authApi = () => {

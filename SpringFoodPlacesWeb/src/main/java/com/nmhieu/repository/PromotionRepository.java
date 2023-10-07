@@ -17,4 +17,5 @@ public interface PromotionRepository {
     Promotion getPromotionById(int id);
     boolean addPromotionForFood(int idFood, int idPromotion);
     boolean addOrUpdatePromotion(Promotion promotion);
+    boolean deletePromotion(int id);
 }

@@ -45,11 +45,15 @@ const FoodItemManager = () => {
 
     useEffect(() => {
         const loadCategories = async () => {
-            let urlCate = `${endpoints["categories"]}?restaurantId=${restaurantId}`
-            // form.append("restaurantId", restaurantId);
-            let { data } = await Apis.get(urlCate);
-            console.log(data);
-            setCategories(data);
+            try {
+                let urlCate = `${endpoints["categories"]}?restaurantId=${restaurantId}`
+                // form.append("restaurantId", restaurantId);
+                let { data } = await authApi().get(urlCate);
+                console.log(data);
+                setCategories(data);
+            } catch (e) {
+                console.log(e);
+            }
         }
         loadCategories();
     }, [page])
@@ -95,14 +99,14 @@ const FoodItemManager = () => {
         evt.preventDefault();
         setLoadingAddUpdateFood(true);
         let form = new FormData();
-        if(page === 'update'){
+        if (page === 'update') {
             form.append("foodId", uniFood.foodId);
         }
         form.append("foodName", uniFood.foodName);
         form.append("price", uniFood.price);
         form.append("description", uniFood.description);
         form.append("restaurantId", restaurantId);
-        if(selectedValue !== null){
+        if (selectedValue !== null) {
             form.append("categoryfoodId", selectedValue);
         }
         if (avatarFood.current.files[0] !== undefined) {
@@ -227,8 +231,8 @@ const FoodItemManager = () => {
                                     </div>
                                     <label htmlFor="cate">Danh mục</label>
                                     <Form.Select aria-label="Danh mục"
-                                    id="cate"
-                                    name="cate"
+                                        id="cate"
+                                        name="cate"
                                         onChange={handleSelectChange} // Gắn sự kiện onChange để theo dõi sự thay đổi của select
                                         value={selectedValue}
                                     >
@@ -242,7 +246,7 @@ const FoodItemManager = () => {
                                         })}
 
                                     </Form.Select>
-                                        
+
                                     <div className='d-flex flex-row justify-content-center mb-4'>
                                         {/* <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' /> */}
                                     </div>

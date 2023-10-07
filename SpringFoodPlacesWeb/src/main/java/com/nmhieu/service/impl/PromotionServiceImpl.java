@@ -81,5 +81,10 @@ public class PromotionServiceImpl implements PromotionService{
         }
         return this.promotionRepo.addOrUpdatePromotion(promotion);
     }
+
+    @Override
+    public boolean deletePromotion(int id) {
+        return this.promotionRepo.deletePromotion(id);
+    }
     
 }

@@ -74,4 +74,17 @@ public class ApiCategoryController {
             return new ResponseEntity<>("Không thành công!", HttpStatus.BAD_REQUEST);
         }
     }
+    
+    @PostMapping("/restaurantManager/delete-categoriesFood/")
+    @CrossOrigin
+    public ResponseEntity<String> deleteByClient(@RequestBody Map<String, String> params) {
+        int id = Integer.parseInt(params.get("categoryfoodId"));
+        boolean check = this.categoryFoodSer.delCategory(id);
+        if(check){
+            return new ResponseEntity<>("Thành công!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Không thành công!", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
