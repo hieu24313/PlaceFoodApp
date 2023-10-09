@@ -14,6 +14,7 @@ import com.nmhieu.service.FoodItemsService;
 import com.nmhieu.service.PromotionFoodItemsService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,7 @@ public class PromotionRepositoryImpl implements PromotionRepository {
             String fromDate = params.get("fromDate");
             if (fromDate != null && !fromDate.isEmpty()) {
                 try {
-                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(RootPromotion.get("receiptDate"), MY_DATE_FORMAT.parse(fromDate)));
+                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(RootPromotion.get("fromDate"), MY_DATE_FORMAT.parse(fromDate)));
                 } catch (ParseException ex) {
                     Logger.getLogger(StatsRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -90,11 +91,24 @@ public class PromotionRepositoryImpl implements PromotionRepository {
                 try {
 //                String taoLao = "2023-08-11 00:00:00";
 //                Timestamp toDateStamp = new Timestamp(MY_DATE_FORMAT.parse(toDate).getTime());
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(RootPromotion.get("receiptDate"), MY_DATE_FORMAT.parse(toDate)));
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(RootPromotion.get("toDate"), MY_DATE_FORMAT.parse(toDate)));
                 } catch (ParseException ex) {
                     Logger.getLogger(StatsRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
+//            String checkNowDate = params.get("checkDate");
+//            
+//            if (checkNowDate != null && !checkNowDate.isEmpty()) {
+//                LocalDate ngayHienTai = LocalDate.now();
+//                try {
+////                String taoLao = "2023-08-11 00:00:00";
+////                Timestamp toDateStamp = new Timestamp(MY_DATE_FORMAT.parse(toDate).getTime());
+//                    predicates.add(criteriaBuilder.lessThanOrEqualTo(RootPromotion.get("receiptDate"), MY_DATE_FORMAT.parse(checkNowDate)));
+//                } catch (ParseException ex) {
+//                    Logger.getLogger(StatsRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
 //            query.where(predicates.toArray(Predicate[]::new));
         }
         

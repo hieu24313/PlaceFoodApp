@@ -33,7 +33,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.nmhieu.controllers",
     "com.nmhieu.repository",
     "com.nmhieu.service",
-    "com.nmhieu.twillio"
+    "com.nmhieu.twillio",
+    "com.nmhieu.mail"
 })
 @Order(2)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {

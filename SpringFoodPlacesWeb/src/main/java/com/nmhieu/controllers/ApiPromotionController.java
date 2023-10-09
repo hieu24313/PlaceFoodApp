@@ -36,6 +36,12 @@ public class ApiPromotionController {
         return new ResponseEntity<>(this.promotionService.getPromotion(params), HttpStatus.OK);
     }
     
+    @GetMapping("/restaurantManager/promotionsWithDate/")
+    @CrossOrigin
+    public ResponseEntity<List<Promotion>> getPromotionWithDate(@RequestParam Map<String, String> params){
+        return new ResponseEntity<>(this.promotionService.getPromotionWithDate(params), HttpStatus.OK);
+    }
+    
     @PostMapping("/restaurantManager/add-or-update-promotion/")
     @CrossOrigin
     public ResponseEntity<String> addOrUpdatePromotion(@RequestBody Map<String, String> params){
@@ -56,5 +62,12 @@ public class ApiPromotionController {
         }else{
             return new ResponseEntity<>("Có lỗi xảy ra!", HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @GetMapping("/restaurantManager/get-uni-promotion/")
+    @CrossOrigin
+    public ResponseEntity<Promotion> getUniPromotion(@RequestParam Map<String,String> params){
+        int id = Integer.parseInt(params.get("promotionId"));
+        return new ResponseEntity<>(this.promotionService.getPromotionById(id), HttpStatus.OK);
     }
 }

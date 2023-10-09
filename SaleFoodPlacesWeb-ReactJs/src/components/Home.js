@@ -49,22 +49,22 @@ const Home = () => {
 
 
     useEffect(() => {
-        const newPrice = (data) => {
-            
-        }
-        
+        // const newPrice = (data) => {
+
+        // }
+
         const loadFood_Promotion = async () => {
             try {
                 let res = await Apis.get(endpoints['fooditems-promotion']);
                 console.log(res.data[0][2]); //lấy được id của food khuyến mãi
                 setPromo_Food(res.data);
-                // console.log(promo_Food)
-                // console.log("ở đây ")
+                console.log(res.data)
+                console.log("ở đây ")
             } catch (e) {
                 console.error(e);
             }
         }
-    
+
         const loadFoodItems = async () => {
             try {
                 let e = `${endpoints['fooditems']}?`;
@@ -72,7 +72,7 @@ const Home = () => {
                 let fromPriceFood = q.get("formPrice")
                 let toPriceFood = q.get("toPrice")
                 // let page = q.get("page")
-    
+
                 if (nameFoodItem !== null) {
                     e += `kw=${nameFoodItem}&`;
                 }
@@ -85,7 +85,7 @@ const Home = () => {
                 // if (page !== null) {
                 //     e += `page=${page}`;
                 // }
-    
+
                 let res = await Apis.get(e);
                 setFoodItems(res.data);
                 let data = res.data;
@@ -94,52 +94,57 @@ const Home = () => {
                     item.oldPrice = 1;
                 });
                 console.log(data)
-                for (let pf of promo_Food) {
-                    console.log(1)
-                    let id = pf[1]['foodId']['foodId'];
-                    console.log(id)
-                    const foundFood = data.findIndex(item => item.foodId === id);
-                    if (foundFood !== -1) {
-                        console.log(2)
-                        let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
-                        let price = data[foundFood].price; // giá ban đầu
-                        // console.log(pf[2].pricePromotion);
-                        if (type === 1) { // giảm theo %
-                            console.log(21)
-                            if(price - (pf[2].pricePromotion * price / 100) >= 0){
-                                data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
-                            }else{
-                                data[foundFood].price = 0;
+                if (promo_Food.length > 0) {
+                    for (let pf of promo_Food) {
+                        // console.log(1)
+                        let id = pf[1]['foodId']['foodId'];
+                        // console.log(id)
+                        const foundFood = data.findIndex(item => item.foodId === id);
+                        if (foundFood !== -1) {
+                            // console.log(2)
+                            let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
+                            let price = data[foundFood].price; // giá ban đầu
+                            // console.log(pf[2].pricePromotion);
+                            if (type === 1) { // giảm theo %
+                                // console.log(21)
+                                if (price - (pf[2].pricePromotion * price / 100) >= 0) {
+                                    data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
+                                } else {
+                                    data[foundFood].price = 0;
+                                }
+
+                                data[foundFood].hasPromotion = true;
+                                if (data[foundFood].oldPrice === 1) {
+                                    data[foundFood].oldPrice = price;
+                                }
                             }
-                            
-                            data[foundFood].hasPromotion = true;
-                            if(data[foundFood].oldPrice === 1){
-                                data[foundFood].oldPrice = price;
-                            }
-                        }
-                        else if (type === 2) { //giảm theo giá tiền
-                            console.log(22)
-                            if (price - pf[2].pricePromotion >= 0){
-                                data[foundFood].price = price - pf[2].pricePromotion;
-                            }else{
-                                data[foundFood].price = 0;
-                            }
-                            
-                            data[foundFood].hasPromotion = true;
-                            if(data[foundFood].oldPrice === 1){
-                                data[foundFood].oldPrice = price;
+                            else if (type === 2) { //giảm theo giá tiền
+                                // console.log(22)
+                                if (price - pf[2].pricePromotion >= 0) {
+                                    data[foundFood].price = price - pf[2].pricePromotion;
+                                } else {
+                                    data[foundFood].price = 0;
+                                }
+
+                                data[foundFood].hasPromotion = true;
+                                if (data[foundFood].oldPrice === 1) {
+                                    data[foundFood].oldPrice = price;
+                                }
                             }
                         }
                     }
                 }
+
+                console.log("xong for?")
                 console.log(data)
+                setFoodItems([]);
                 setFoodItems(data);
                 console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }
         }
-    
+
         const loadRestaurant = async () => {
             try {
                 let e = `${endpoints['restaurant']}?`;
@@ -155,19 +160,19 @@ const Home = () => {
                 //     e += `location=${location}`;
                 // }
                 let res = await Apis.get(e);
-    
+
                 setRestaurant(res.data);
                 // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }
         }
-        
+
         loadFood_Promotion();
         loadFoodItems();
         loadRestaurant();
-        newPrice(foodItems);
-        console.log(1)
+        // setTimeout(() => newPrice(foodItems), 1500);
+        // console.log(1)
     }, [pageLoad])
 
     setTimeout(() => setPageLoad(true), 1500)
@@ -179,7 +184,7 @@ const Home = () => {
         return <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div>
 
     }
-    
+
 
     const order = (foodItem) => {
         cartDispatch({
@@ -228,38 +233,6 @@ const Home = () => {
                 </Form>
             </div>
             <div className="find_carousel">
-                {/* <Form onSubmit={search} className="mt-3 mb-2 form form_find_all" inline>
-                     <Row>
-                        <h5>Tìm Kiếm</h5>
-                        <Col xs="auto">
-                            <Form.Control
-                                type="text"
-                                value={kw}
-                                onChange={e => setKw(e.target.value)}
-                                placeholder="Tên món ăn, nhà hàng" name="kw"
-                                className="f mr-sm-2"
-                            />
-                            <Form.Control
-                                type="number"
-                                value={fromPrice}
-                                onChange={e => setFromPrice(e.target.value)}
-                                placeholder="Nhập giá từ..." name="fromPrice"
-                                className="f mr-sm-2"
-                            />
-                            <Form.Control
-                                type="number"
-                                value={toPrice}
-                                onChange={e => setToPrice(e.target.value)}
-                                placeholder="Nhập nhập giá tối đa..." name="toPrice"
-                                className="f mr-sm-2"
-                            />
-                        </Col>
-                        <Col xs="auto">
-                            <Button type="submit">Tìm</Button>
-                        </Col>
-                    </Row> *
-                </Form> */}
-                {/* <ToastContainer /> */}
                 <Carousel data-bs-theme="dark" className="carousel_edit">
                     {/* {restaurant === null ? <MySpinner /> : <> */}
                     {Object.values(restaurant).map(r => {
@@ -268,6 +241,7 @@ const Home = () => {
                             <h1 className="text-center text-danger">{r.restaurantName}</h1>
                             <Link to={url}>
                                 <img
+                                style={{borderRadius: '5px 5px 5px 5px'}}
                                     className="carol_img d-block w-100"
                                     src={r.avatar}
                                     alt={r.restaurantName}
@@ -336,13 +310,13 @@ const Home = () => {
                                                 {f.hasPromotion === true ? <>
                                                     <sub style={{ color: 'red', fontSize: 18 + 'px' }}><s>{f.oldPrice} VNĐ </s></sub>
                                                     <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
-                                                        
+
                                                         Giảm giá: {f.price} VNĐ
                                                     </Card.Text>
-                                                    
+
                                                 </> : <>
-                                                <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
-                                                    {f.price} VNĐ
+                                                    <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
+                                                        {f.price} VNĐ
                                                     </Card.Text>
                                                 </>}
 

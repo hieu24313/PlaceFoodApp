@@ -48,7 +48,7 @@ public class FoodItemsServiceImpl implements FoodItemsService {
 
     @Autowired
     private PromotionService promotionService;
-    
+
     @Autowired
     private PromotionFoodItemsService promotion_FoodService;
 
@@ -132,12 +132,14 @@ public class FoodItemsServiceImpl implements FoodItemsService {
         Map<String, String> params1 = new HashMap<>();
         params1.put("foodId", String.format(foodId));
         for (String proId : numbers1) {
-            System.out.println(proId);
-            params1.put("promotionId", String.format(proId));
-            System.out.println(this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1));
-            if(this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1).isEmpty()){
-                
-                this.promotionService.addPromotionForFood(idFood, Integer.parseInt(proId));
+            if (!proId.isEmpty() && !"".equals(proId) && proId != null) {
+                System.out.println(proId);
+                params1.put("promotionId", String.format(proId));
+                System.out.println(this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1));
+                if (this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params1).isEmpty()) {
+
+                    this.promotionService.addPromotionForFood(idFood, Integer.parseInt(proId));
+                }
             }
         }
         if (foodId != null && !foodId.isEmpty()) {

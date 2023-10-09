@@ -5,6 +5,7 @@
 package com.nmhieu.configs;
 
 //import com.nmhieu.twillio.TwilioConfig;
+import com.nmhieu.mail.EmailConfig;
 import com.nmhieu.twillio.TwilioConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -21,7 +22,8 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
             TilesConfigs.class,
             SpringSecurityConfig.class,
             JwtSecurityConfig.class,
-            TwilioConfig.class
+            TwilioConfig.class,
+            EmailConfig.class
         };
     }
 

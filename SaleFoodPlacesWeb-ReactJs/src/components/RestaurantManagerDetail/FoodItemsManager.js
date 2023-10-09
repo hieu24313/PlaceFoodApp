@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import Apis, { authApi, endpoints } from "../../configs/Apis";
 import cookie from "react-cookies";
 import { ToastContainer, toast } from "react-toastify";
+import ReactSelect from "react-select";
 
 const FoodItemManager = () => {
     const restaurantId = cookie.load("restaurant")
@@ -20,13 +21,53 @@ const FoodItemManager = () => {
     const avatarFood = useRef(null);
     const [selectedValue, setSelectedValue] = useState(null) // Khởi tạo giá trị state ban đầu là rỗng
     const nav = useNavigate();
+    const [promotion, setPromotion] = useState([]);
+    const [promotionsNewFood, setPromotionsNewFood] = useState("");
+    const [promotionsUpdateFood, setPromotionsUpdateFood] = useState("");
+    const [options, setOptions] = useState([
+        // { value: 'null', label: 'Chưa có' }
+    ]);
+    let listPromotion;
 
     const handleSelectChange = (event) => {
         const selectedOption = event.target.value; // Lấy giá trị đã chọn từ sự kiện onChange
         setSelectedValue(selectedOption); // Cập nhật giá trị đã chọn vào state
     };
 
+    const formatNumberWithCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     useEffect(() => {
+        const getPromotion = async () => {
+            try {
+                let { data } = await authApi().get(endpoints['get-promotion'], {
+                    "restaurantId": restaurantId
+                })
+                // for (let p of data){
+                //     let dv;
+                //     if (p.promotionTypeId.promotionTypeId === 1){
+                //         dv = '%';
+                //     }
+                //     else{
+                //         dv = 'VNĐ';
+                //     }
+                //     let item = { value: p.promotionId, label: p.promotionName + " " + p.pricePromotion + " " + dv }
+                //     options.push(item);
+                // }
+
+                let optionsPromotion = data.map(p => ({
+                    value: p.promotionId,
+                    label: `${p.promotionName} : ${formatNumberWithCommas(p.pricePromotion)} ${p.promotionTypeId.promotionTypeId === 1 ? '%' : 'VNĐ'}`
+                }));
+                setOptions(optionsPromotion); // Cập nhật state options
+                setPromotion(data);
+
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
         const loadFoodItems = async () => {
             try {
                 let e = `${endpoints['fooditems']}?restaurantId=${restaurantId}`;
@@ -40,6 +81,7 @@ const FoodItemManager = () => {
             }
         }
 
+        getPromotion();
         loadFoodItems();
     }, [page])
 
@@ -101,6 +143,9 @@ const FoodItemManager = () => {
         let form = new FormData();
         if (page === 'update') {
             form.append("foodId", uniFood.foodId);
+            form.append("promotion", listPromotion);
+            console.log(uniFood.foodId);
+            console.log(listPromotion)
         }
         form.append("foodName", uniFood.foodName);
         form.append("price", uniFood.price);
@@ -177,7 +222,7 @@ const FoodItemManager = () => {
                             {uniFood === null ? <MySpinner /> : <>
                                 {/* update food*/}
                                 <div style={{ marginBottom: '20px' }}>
-                                    <MDBCard className='m-5 register_form' style={{ maxWidth: '600px', marginBottom: '20px' }}>
+                                    <MDBCard className='m-5 register_form' style={{ overflow: 'auto', maxWidth: '600px', marginBottom: '20px' }}>
                                         <MDBCardBody className='px-5 register_form_child'>
                                             <div style={{ marginBottom: 22 + 'px' }}>
                                                 <Image src={uniFood.avatar} rounded style={{ maxWidth: '150px', marginLeft: 35 + '%' }} />
@@ -188,7 +233,9 @@ const FoodItemManager = () => {
                                             {/* <MDBInput wrapperClass='mb-4' label='Your Email' size='lg' id='form2' type='email' /> */}
                                             <MDBInput wrapperClass='mb-4' defaultValue={uniFood.price} required onChange={(e) => change(e, "price")} label='Giá(VNĐ)' size='lg' id='form3' type='text' />
                                             <MDBTextArea wrapperClass='mb-4' defaultValue={uniFood.description} required onChange={(e) => change(e, "description")} label='Mô tả' size='lg' id='form4' type='text' />
+                                            <label htmlFor="cate">Danh mục</label>
                                             <Form.Select aria-label="Default select example"
+                                                id="cate"
                                                 onChange={handleSelectChange} // Gắn sự kiện onChange để theo dõi sự thay đổi của select
                                                 value={selectedValue}
                                             >
@@ -202,10 +249,76 @@ const FoodItemManager = () => {
                                                 })}
 
                                             </Form.Select>
-                                            <div className='d-flex flex-row justify-content-center mb-4'>
-                                                {/* <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' /> */}
+                                            {/* <div style={{ marginTop: '10px' }}>
+                                                {promotion.length === 0 ? <></> :
+                                                    <>
+                                                        <label htmlFor="promotion">Khuyến Mãi</label>
+                                                        <ReactSelect
+
+                                                            id="promotion"
+                                                            onChange={(selectedOptions) => {
+                                                                // Lấy giá trị được chọn và cập nhật biến promotionsNewFood
+                                                                listPromotion = "";
+                                                                const selectedValues = selectedOptions.map(option => {
+                                                                    return listPromotion = option.value + ','
+                                                                });
+                                                                // console.log(listPromotion)
+                                                                setPromotionsNewFood(selectedValues);
+                                                            }}
+                                                            isMulti
+                                                            options={options} /> </>}
+                                            </div> */}
+
+                                            <div style={{ marginTop: '10px' }}>
+                                                {promotion.length === 0 ? <></> :
+                                                    <>
+                                                        <label htmlFor="promotion">Khuyến Mãi</label>
+                                                        <ReactSelect
+                                                            style={{}}
+                                                            id="promotion"
+                                                            onChange={(selectedOptions) => {
+                                                                // Lấy giá trị được chọn và cập nhật biến promotionsNewFood
+                                                                listPromotion = "";
+                                                                selectedOptions.map(option => {
+                                                                    return listPromotion += option.value + ','
+                                                                });
+                                                                console.log(listPromotion)
+                                                                // setPromotionsNewFood(selectedValues);
+                                                            }}
+                                                            isMulti
+                                                            options={options}
+                                                            styles={{
+                                                                control: (provided) => ({
+                                                                    ...provided,
+                                                                    maxWidth: '100%', // Thiết lập chiều rộng tối đa
+                                                                }),
+                                                                menu: (provided) => ({
+                                                                    ...provided,
+                                                                    maxHeight: '200px', // Thiết lập chiều cao tối đa
+                                                                    overflowY: 'auto', // Cho phép cuộn nếu nội dung vượt quá chiều cao tối đa
+                                                                }),
+                                                            }}
+                                                        />
+                                                        {/* <ReactSelect
+                                                // styles={{}}
+                                                    id="promotion"
+                                                    onChange={(selectedOptions) => {
+                                                        // Lấy giá trị được chọn và cập nhật biến promotionsNewFood
+                                                        listPromotion = "";
+                                                        const selectedValues = selectedOptions.map(option => {
+                                                            return listPromotion = option.value + ','
+                                                        });
+                                                        // console.log(listPromotion)
+                                                        setPromotionsNewFood(selectedValues);
+                                                    }}
+                                                    isMulti
+                                                    options={options} />  */}
+                                                    </>}
                                             </div>
-                                            {loadingAddUpdateFood === true ? <MySpinner /> : <MDBBtn onClick={addOrUpdateFoodItem} className='mb-4 w-100 gradient-custom-4' size='lg'>Cập nhật</MDBBtn>}
+                                            {/* <div className='d-flex flex-row justify-content-center mb-4'>
+                                                <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' />
+                                            </div> */}
+                                            {loadingAddUpdateFood === true ? <MySpinner /> : <MDBBtn style={{ marginTop: '10px' }} onClick={addOrUpdateFoodItem} className='mb-4 w-100 gradient-custom-4' size='lg'>Cập nhật</MDBBtn>}
                                         </MDBCardBody>
                                     </MDBCard>
                                 </div>
@@ -217,7 +330,7 @@ const FoodItemManager = () => {
                         <Button onClick={back}>Quay lại</Button>
                         {/* giao diện new mới */}
                         <div style={{ marginBottom: '20px' }}>
-                            <MDBCard className='m-5 register_form' style={{ maxWidth: '600px', marginBottom: '20px' }}>
+                            <MDBCard className='m-5 register_form formnewfood' style={{ zIndex: '10', maxWidth: '600px', marginBottom: '20px', overflow: 'auto', overflowY: 'auto' }}>
 
                                 <MDBCardBody className='px-5 register_form_child'>
                                     <h1 className="text-center">Thêm món</h1>
@@ -247,33 +360,17 @@ const FoodItemManager = () => {
 
                                     </Form.Select>
 
+
+
+
                                     <div className='d-flex flex-row justify-content-center mb-4'>
-                                        {/* <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' /> */}
                                     </div>
-                                    {loadingAddUpdateFood === true ? <MySpinner /> : <MDBBtn onClick={addOrUpdateFoodItem} className='mb-4 w-100 gradient-custom-4' size='lg'>Cập nhật</MDBBtn>}
+                                    {loadingAddUpdateFood === true ? <MySpinner /> : <MDBBtn onClick={addOrUpdateFoodItem} className='mb-4 w-100 gradient-custom-4' size='lg'>Thêm</MDBBtn>}
                                 </MDBCardBody>
                             </MDBCard>
                         </div>
                     </>}
                 </>}
-
-                {/* <Form>
-                    <div className='mask gradient-custom-3'></div>
-                    <div>
-                        <div className='m-5' style={{ maxWidth: '600px', margin: 'auto auto' }}>
-                            <MDBCardBody className='px-5'>
-                                <MDBInput wrapperClass='mb-4' required label='Tài Khoản' size='lg' id='form1' type='text' />
-                                <MDBInput wrapperClass='mb-4' required label='Mật Khẩu' size='lg' id='form3' type='password' />
-                                <MDBInput wrapperClass='mb-4' required label='Nhập Lại Mật Khẩu' size='lg' id='form4' type='password' />
-                                <MDBInput wrapperClass='mb-4' size='lg' id='form4' type='file' />
-                                <div className='d-flex flex-row justify-content-center mb-4'>
-                                    <span>Đã có tài khoản?<Link to="/login"> Đăng Nhập</Link></span>
-                                </div>
-                                <MDBBtn type="submit" className='mb-4 w-100 gradient-custom-4' size='lg'>Đăng Ký</MDBBtn>
-                            </MDBCardBody>
-                        </div>
-                    </div>
-                </Form> */}
             </div>
         </div>
     </>

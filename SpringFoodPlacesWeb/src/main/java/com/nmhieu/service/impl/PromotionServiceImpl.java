@@ -11,6 +11,8 @@ import com.nmhieu.service.PromotionTypeService;
 import com.nmhieu.service.RestaurantsService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,20 +26,20 @@ import org.springframework.stereotype.Service;
  * @author HP
  */
 @Service
-public class PromotionServiceImpl implements PromotionService{
+public class PromotionServiceImpl implements PromotionService {
 
     @Autowired
     private PromotionRepository promotionRepo;
-    
+
     @Autowired
     private SimpleDateFormat MY_DATE_FORMAT;
-    
+
     @Autowired
     private RestaurantsService restaurantService;
-    
+
     @Autowired
     private PromotionTypeService promotionTypeService;
-    
+
     @Override
     public List<Promotion> getPromotion(Map<String, String> params) {
         return this.promotionRepo.getPromotion(params);
@@ -76,7 +78,7 @@ public class PromotionServiceImpl implements PromotionService{
         promotion.setPromotionName(promotionName);
         promotion.setPricePromotion(price);
         promotion.setPromotionTypeId(this.promotionTypeService.getPromotionTypeById(typeId));
-        if(PromotionId != null && !PromotionId.isEmpty()){
+        if (PromotionId != null && !PromotionId.isEmpty()) {
             promotion.setPromotionId(Integer.valueOf(PromotionId));
         }
         return this.promotionRepo.addOrUpdatePromotion(promotion);
@@ -86,5 +88,27 @@ public class PromotionServiceImpl implements PromotionService{
     public boolean deletePromotion(int id) {
         return this.promotionRepo.deletePromotion(id);
     }
-    
+
+    @Override
+    public List<Promotion> getPromotionWithDate(Map<String, String> params) {
+        List<Promotion> list = this.promotionRepo.getPromotion(params);
+        Date ngayHienTai = new Date();
+        List<Promotion> listPromotion = list;
+        for (Promotion p : listPromotion) {
+            if (p.getFromDate() != null) {
+                if(ngayHienTai.before(p.getFromDate())){
+                    list.remove(p);
+                }
+            }
+            if (p.getToDate() != null) {
+                if(ngayHienTai.after(p.getToDate())){
+                    list.remove(p);
+                }
+            }
+
+//            LocalDate toDate = LocalDate.of(2023, 12, 31);  // Ví dụ: ngày kết thúc là 31/12/2023
+        }
+        return list;
+    }
+
 }

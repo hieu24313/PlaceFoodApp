@@ -4,6 +4,7 @@
  */
 package com.nmhieu.repository.impl;
 
+import com.nmhieu.mail.EmailService;
 import com.nmhieu.pojo.Cart;
 import com.nmhieu.pojo.ReceiptDetail;
 import com.nmhieu.pojo.ReceiptStatus;
@@ -12,6 +13,7 @@ import com.nmhieu.pojo.Users;
 import com.nmhieu.repository.FoodItemsRepository;
 import com.nmhieu.repository.ReceiptRepository;
 import com.nmhieu.repository.UsersRepository;
+import com.sun.mail.util.MailConnectException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,11 +56,15 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean addReceipt(Map<String, Cart> carts) {
         Session session = this.factory.getObject().getCurrentSession();
         Receipts receipt = new Receipts();
+        String list = "";
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Users user = this.userRepo.getUserByUsername_new(authentication.getName());
@@ -72,6 +78,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
             double totalAmount = 0;
 
             for (Cart cart : carts.values()) {
+                list += " Tên sản phẩm: " + cart.getFoodName() + " Giá: " + cart.getUnitPrice() + " Số lượng: " + cart.getQuantity() + "<br />";
                 ReceiptDetail receiptDetail = new ReceiptDetail();
                 receiptDetail.setFooditemId(this.foodItemsRepo.getFoodItemById(Integer.parseInt(cart.getFoodId().toString())));
                 receiptDetail.setReceiptId(receipt);
@@ -82,7 +89,13 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
                 totalAmount += amount;
                 session.save(receiptDetail);
             }
+            list += "Tổng: " + totalAmount;
             receipt.setTotalPayment(BigDecimal.valueOf(totalAmount));
+
+            String subjectEmail = "Xin chào " + user.getFirstname() + " " + user.getLastname();
+            String contentEmail = "Bạn vừa thanh toán hóa đơn: \n" + list;
+
+            this.emailService.send_Email(user.getEmail(), contentEmail, subjectEmail);
 
             return true;
         } catch (HibernateException ex) {
