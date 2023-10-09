@@ -10,7 +10,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useContext } from "react";
 import { MyUserContext } from "../App";
 import { ToastContainer, toast } from "react-toastify";
-import GoogleMapAPI from "./GoogleMapComponent/GoogleMapAPI";
+// import GoogleMapAPI from "./GoogleMapComponent/GoogleMapAPI";
 
 
 let checkRes = true;
@@ -61,7 +61,7 @@ const RestaurantManagerDetail = () => {
         // console.log(restaurant.avatar);
     }, [restaurantId])
 
-    
+
     return <>
         <div className="dasboard_big" >
             <ToastContainer />
@@ -69,26 +69,26 @@ const RestaurantManagerDetail = () => {
                 <RestaurantManagerConpoment />
             </div>
             <div className="dasboard_2" >
-                
+
                 {restaurant !== null ? <>
                     <h1 className="text-center text-primary">Nhà Hàng {restaurant.restaurantName}</h1>
-                    <div style={{ maxHeight:'350px', maxWidth: '350px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-                        <Image style={{width: '100%', margin: 'auto auto', borderRadius: '5px'}} src={restaurant.avatar} alt="avatar" />
+                    <div style={{ maxHeight: '350px', maxWidth: '350px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <Image style={{ width: '100%', margin: 'auto auto', borderRadius: '5px' }} src={restaurant.avatar} alt="avatar" />
                     </div>
-                    <div style={{display: 'flex', justifyContent: 'center', marginTop: '0px'}}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
                         <div style={{ width: '7%', display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
-                        <input type="file" />
-                    </div>
+                            <input type="file" />
+                        </div>
                     </div>
                     <div>
                         <h2>Địa Chỉ: {restaurant.location}</h2>
 
                     </div>
                     <div>
-
+                        {/* <GoogleMapAPI location={restaurant.location} /> */}
                     </div>
                 </> : <></>}
-                <GoogleMapAPI />
+
 
             </div>
         </div>

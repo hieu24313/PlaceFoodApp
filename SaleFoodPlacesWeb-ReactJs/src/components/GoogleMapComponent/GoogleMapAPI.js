@@ -1,84 +1,118 @@
-import React, { useEffect } from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+// import React, { useEffect, useState } from 'react'
+// import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
+// const containerStyle = {
+//   width: '400px',
+//   height: '400px'
+// };
+// // const center = {
+// //   lat: 10.8166161,
+// //   lng: 106.675992
+// // };
 
-const center = {
-  lat: 10.8166161,
-  lng: 106.675992
-};
+// function GoogleMapAPI(props) {
 
-function GoogleMapAPI() {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI"
-  })
+//   const [center, setCenter] = useState({
 
-  const [map, setMap] = React.useState(null)
+//   });
+//   const { location } = props;
 
-  const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+//   const { isLoaded } = useJsApiLoader({
+//     id: 'google-map-script',
+//     googleMapsApiKey: "AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI"
+//   })
+//   console.log(location)
 
-    setMap(map)
-  }, [])
+//   const [map, setMap] = React.useState(null)
 
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+//   const onLoad = React.useCallback(function callback(map) {
+//     // This is just an example of getting and using the map instance!!! don't just blindly copy!
+//     const bounds = new window.google.maps.LatLngBounds(center);
+//     map.fitBounds(bounds);
 
-  var geocoder;
-  var map1;
+//     setMap(map)
+//   }, [])
 
-  function initialize() {
-    geocoder = new window.google.maps.Geocoder();
-    var latlng = new window.google.maps.LatLng(-34.397, 150.644);
-    var mapOptions = {
-      zoom: 8,
-      center: latlng
-    }
-    // map1 = new window.google.maps.Map(document.getElementById('map'), mapOptions);
-    console.log( mapOptions)
-  }
+//   const onUnmount = React.useCallback(function callback(map) {
+//     setMap(null)
+//   }, [])
 
-  function codeAddress() {
-    // var address = document.getElementById('address').value;
-    geocoder.geocode( { 'address': "371 nguyễn kiệm"}, function(results, status) {
-      console.log("kết quả")
-      console.log(results);
-      if (status == 'OK') {
-        // map.setCenter(results[0].geometry.location);
-        var marker = new window.google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
+//   var geocoder;
+//   var map1;
 
-  useEffect(()=> {
-    initialize();
-    codeAddress()
-  })
+//   function initialize() {
+//     geocoder = new window.google.maps.Geocoder();
+//     var latlng = new window.google.maps.LatLng(10, 106);
+//     var mapOptions = {
+//       zoom: 8,
+//       center: latlng
+//     }
+//     // map1 = new window.google.maps.Map(document.getElementById('map'), mapOptions);
+//     console.log(mapOptions)
+//   }
 
-  return isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
-      </GoogleMap>
-  ) : <></>
-}
+//   function codeAddress() {
+//     // var address = document.getElementById('address').value;
+//     geocoder.geocode({ 'address': location }, function (results, status) {
 
-export default GoogleMapAPI;
+//       // console.log(results[0].geometry.location.lng);
+//       if (status == 'OK') {
+//         // console.log("kết quả")
+//         let m = results[0].geometry.viewport;
+//         // console.log(m)
+//         // console.log(m['Ta'].lo);
+//         let lat = (m['Ta'].lo + m['Ta'].hi) / 2
+//         let lng = (m['rb'].lo + m['rb'].hi) / 2
+//         setCenter({lat: 10.8166161,lng: 106.675992})
+
+//         var marker = new window.google.maps.Marker({
+//           map: map,
+//           position: results[0].geometry.location
+//         });
+//       } else {
+//         alert('Geocode was not successful for the following reason: ' + status);
+//       }
+//     });
+//   }
+
+//   function locate() { // lấy vị trí người dùng
+//     // const posStatus = document.querySelector('#posStatus');
+//     // const locInfo = document.querySelector('#locInfo');
+//     // posStatus.innerHTML = 'Đang lấy vị trí...'
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition((position) => {
+//         const lat = position.coords.latitude;
+//         const long = position.coords.longitude;
+//         // posStatus.innerHTML = 'Vị trí của bạn là: ';      // Display Latitude and Logitude
+//         let location = `Latitude: ${lat}, Longitude: ${long}`;      // Create the link. Use map=15-19 for zooming out and in
+//         // Pass lat and long to openstreetmap
+//         console.log(location)
+//           `https://www.openstreetmap.org/#map=19/${lat}/${long}`;
+//       });
+//     }
+//   }
+
+//   useEffect(() => {
+//     if (isLoaded) {
+//       initialize();
+//       codeAddress()
+//     }
+//     // locate();
+
+//   })
+
+//   return isLoaded ? (
+//     <GoogleMap
+//       mapContainerStyle={containerStyle}
+//       center={center}
+//       zoom={8}
+//       onLoad={onLoad}
+//       onUnmount={onUnmount}
+//     >
+//       { /* Child components, such as markers, info windows, etc. */}
+//       <></>
+//     </GoogleMap>
+//   ) : <></>
+// }
+
+// export default GoogleMapAPI;
