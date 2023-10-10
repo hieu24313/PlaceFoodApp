@@ -4,7 +4,7 @@ import Apis, { authApi, endpoints } from "../configs/Apis";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import MySpinner from "../layout/MySpinner";
 import '../resources/css/Home.css'
-import { MyCartContext } from "../App";
+import { MyCartContext, MyUserContext } from "../App";
 import cookie from "react-cookies";
 import { MDBInput } from "mdb-react-ui-kit";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,35 +15,154 @@ const Home = () => {
     const [, cartDispatch] = useContext(MyCartContext);
     const [q] = useSearchParams();
     const [restaurant, setRestaurant] = useState([]);
+    const [user,] = useContext(MyUserContext)
 
     // const currentPage = useLocation();
-    const [kw, setKw] = useState("");
-    const [fromPrice, setFromPrice] = useState("");
-    const [toPrice, setToPrice] = useState("");
-    const [page, setPage] = useState("");
+    const [kw, setKw] = useState(null);
+    const [fromPrice, setFromPrice] = useState(null);
+    const [toPrice, setToPrice] = useState(null);
+    const [page, setPage] = useState(null);
     const nav = useNavigate();
     const notify = (x) => toast(x);
     const [promo_Food, setPromo_Food] = useState([]);
     const [pageLoad, setPageLoad] = useState(false);
+    const [loadingFind, setLoadingFind] = useState(false);
     // const []
 
+    const loadFoodItems = async () => {
+        try {
+            let e = `${endpoints['fooditems']}?`;
+            let nameFoodItem = q.get("kw");
+            let fromPriceFood = q.get("formPrice")
+            let toPriceFood = q.get("toPrice")
+            // let page = q.get("page")
+
+            if (nameFoodItem !== null) {
+                e += `kw=${nameFoodItem}&`;
+            }
+            if (fromPriceFood !== null) {
+                e += `formPrice=${fromPriceFood}&`;
+            }
+            if (toPriceFood !== null) {
+                e += `toPrice=${toPriceFood}&`;
+            }
+            console.log(e)
+            // if (page !== null) {
+            //     e += `page=${page}`;
+            // }
+
+            let res = await Apis.get(e);
+            setFoodItems(res.data);
+            // let data = res.data;
+            // data.forEach(item => {
+            //     item.hasPromotion = false; // Thêm thuộc tính mới với giá trị mặc định
+            //     item.oldPrice = 1;
+            // });
+            // console.log(data)
+            // if (promo_Food.length > 0) {
+            //     for (let pf of promo_Food) {
+            //         // console.log(1)
+            //         let id = pf[1]['foodId']['foodId'];
+            //         // console.log(id)
+            //         const foundFood = data.findIndex(item => item.foodId === id);
+            //         if (foundFood !== -1) {
+            //             // console.log(2)
+            //             let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
+            //             let price = data[foundFood].price; // giá ban đầu
+            //             // console.log(pf[2].pricePromotion);
+            //             if (type === 1) { // giảm theo %
+            //                 // console.log(21)
+            //                 if (price - (pf[2].pricePromotion * price / 100) >= 0) {
+            //                     data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
+            //                 } else {
+            //                     data[foundFood].price = 0;
+            //                 }
+
+            //                 data[foundFood].hasPromotion = true;
+            //                 if (data[foundFood].oldPrice === 1) {
+            //                     data[foundFood].oldPrice = price;
+            //                 }
+            //             }
+            //             else if (type === 2) { //giảm theo giá tiền
+            //                 // console.log(22)
+            //                 if (price - pf[2].pricePromotion >= 0) {
+            //                     data[foundFood].price = price - pf[2].pricePromotion;
+            //                 } else {
+            //                     data[foundFood].price = 0;
+            //                 }
+
+            //                 data[foundFood].hasPromotion = true;
+            //                 if (data[foundFood].oldPrice === 1) {
+            //                     data[foundFood].oldPrice = price;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
+            // console.log("xong for?")
+            // console.log(data)
+            // setFoodItems([]);
+            // setFoodItems(data);
+            console.log(res.data)
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    const loadFoodItemsHasPromotion = async () => {
+        try {
+            let e = `${endpoints['get-food-item-has-promotion']}?`;
+            let nameFoodItem = kw;
+            let fromPriceFood = fromPrice;
+            let toPriceFood = toPrice;
+            // let page = q.get("page")
+
+            if (nameFoodItem !== null) {
+                e += `kw=${nameFoodItem}&`;
+            }
+            if (fromPriceFood !== null) {
+                e += `formPrice=${fromPriceFood}&`;
+            }
+            if (toPriceFood !== null) {
+                e += `toPrice=${toPriceFood}&`;
+            }
+
+            let res = await Apis.get(e);
+            setFoodItems(res.data);
+            console.log(res.data)
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
 
     const search = (evt) => {
         evt.preventDefault();
-        let find = "/?"
-        if (kw !== "") {
-            find += `kw=${kw}&`
-        }
-        if (fromPrice !== "") {
-            find += `formPrice=${fromPrice}&`
-        }
-        if (toPrice !== "") {
-            find += `toPrice=${toPrice}`
-        }
-        // if (page !== "") {
-        //     find += `page=${page}`
+        setLoadingFind(true);
+        // let find = "/?"
+        // if (kw !== "") {
+        //     find += `kw=${kw}&`
         // }
-        nav(find)
+        // if (fromPrice !== "") {
+        //     find += `formPrice=${fromPrice}&`
+        // }
+        // if (toPrice !== "") {
+        //     find += `toPrice=${toPrice}`
+        // }
+        // // if (page !== "") {
+        // //     find += `page=${page}`
+        // // }
+        // nav(find)
+        if (user !== null) {
+            loadFoodItemsHasPromotion();
+        }
+        else {
+            loadFoodItems();
+        }
+        setLoadingFind(false);
+        setKw(null);
+        setFromPrice(null);
+        setToPrice(null);
     }
 
 
@@ -62,86 +181,6 @@ const Home = () => {
                 console.log("ở đây ")
             } catch (e) {
                 console.error(e);
-            }
-        }
-
-        const loadFoodItems = async () => {
-            try {
-                let e = `${endpoints['fooditems']}?`;
-                let nameFoodItem = q.get("kw");
-                let fromPriceFood = q.get("formPrice")
-                let toPriceFood = q.get("toPrice")
-                // let page = q.get("page")
-
-                if (nameFoodItem !== null) {
-                    e += `kw=${nameFoodItem}&`;
-                }
-                if (fromPriceFood !== null) {
-                    e += `formPrice=${fromPriceFood}&`;
-                }
-                if (toPriceFood !== null) {
-                    e += `toPrice=${toPriceFood}&`;
-                }
-                // if (page !== null) {
-                //     e += `page=${page}`;
-                // }
-
-                let res = await Apis.get(e);
-                setFoodItems(res.data);
-                let data = res.data;
-                data.forEach(item => {
-                    item.hasPromotion = false; // Thêm thuộc tính mới với giá trị mặc định
-                    item.oldPrice = 1;
-                });
-                console.log(data)
-                if (promo_Food.length > 0) {
-                    for (let pf of promo_Food) {
-                        // console.log(1)
-                        let id = pf[1]['foodId']['foodId'];
-                        // console.log(id)
-                        const foundFood = data.findIndex(item => item.foodId === id);
-                        if (foundFood !== -1) {
-                            // console.log(2)
-                            let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
-                            let price = data[foundFood].price; // giá ban đầu
-                            // console.log(pf[2].pricePromotion);
-                            if (type === 1) { // giảm theo %
-                                // console.log(21)
-                                if (price - (pf[2].pricePromotion * price / 100) >= 0) {
-                                    data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
-                                } else {
-                                    data[foundFood].price = 0;
-                                }
-
-                                data[foundFood].hasPromotion = true;
-                                if (data[foundFood].oldPrice === 1) {
-                                    data[foundFood].oldPrice = price;
-                                }
-                            }
-                            else if (type === 2) { //giảm theo giá tiền
-                                // console.log(22)
-                                if (price - pf[2].pricePromotion >= 0) {
-                                    data[foundFood].price = price - pf[2].pricePromotion;
-                                } else {
-                                    data[foundFood].price = 0;
-                                }
-
-                                data[foundFood].hasPromotion = true;
-                                if (data[foundFood].oldPrice === 1) {
-                                    data[foundFood].oldPrice = price;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                console.log("xong for?")
-                console.log(data)
-                setFoodItems([]);
-                setFoodItems(data);
-                console.log(res.data)
-            } catch (ex) {
-                console.error(ex);
             }
         }
 
@@ -168,17 +207,17 @@ const Home = () => {
             }
         }
 
-        loadFood_Promotion();
-        loadFoodItems();
+        // loadFood_Promotion();
+        if (user !== null) {
+            loadFoodItemsHasPromotion();
+        }
+        else {
+            loadFoodItems();
+        }
         loadRestaurant();
         // setTimeout(() => newPrice(foodItems), 1500);
         // console.log(1)
-    }, [pageLoad])
-
-    setTimeout(() => setPageLoad(true), 1500)
-
-    // const hasAvatar = promo_Food[0][1].hasOwnProperty('foodId');
-    // console.log("kiểm tra " + hasAvatar); // true
+    }, [])
 
     if (foodItems === null) {
         return <div style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }}><MySpinner style={{ marginLeft: 50 + "%", marginTop: 20 + "%" }} /></div>
@@ -241,7 +280,7 @@ const Home = () => {
                             <h1 className="text-center text-danger">{r.restaurantName}</h1>
                             <Link to={url}>
                                 <img
-                                style={{borderRadius: '5px 5px 5px 5px'}}
+                                    style={{ borderRadius: '5px 5px 5px 5px' }}
                                     className="carol_img d-block w-100"
                                     src={r.avatar}
                                     alt={r.restaurantName}
@@ -272,7 +311,7 @@ const Home = () => {
                         <MDBInput className="f mr-sm-2 input_find" wrapperClass='mb-4' value={fromPrice} onChange={e => setFromPrice(e.target.value)} label='Nhập giá từ' name="fromPrice" size='lg' id='form3' type='number' />
                         {/* <Form.Control type="number" value={toPrice} onChange={e => setToPrice(e.target.value)} placeholder="Nhập nhập giá tối đa..." name="toPrice" className="f mr-sm-2" /> */}
                         <MDBInput className="f mr-sm-2 input_find" wrapperClass='mb-4' value={toPrice} onChange={e => setToPrice(e.target.value)} label='Nhập nhập giá tối đa' size='lg' name="toPrice" id='form3' type='number' />
-                        <Button className="btn-find raise" type="submit">Tìm</Button>
+                        {loadingFind === false ? <Button className="btn-find raise" type="submit">Tìm</Button> : <MySpinner />}
                     </div>
                 </div>
             </Form>
@@ -307,7 +346,7 @@ const Home = () => {
                                                 </div>
                                             </div>
                                             <div>
-                                                {f.hasPromotion === true ? <>
+                                                {f.oldPrice !== null ? <>
                                                     <sub style={{ color: 'red', fontSize: 18 + 'px' }}><s>{f.oldPrice} VNĐ </s></sub>
                                                     <Card.Text id={id} className="text-danger" style={{ fontSize: 25 + "px" }}>
 

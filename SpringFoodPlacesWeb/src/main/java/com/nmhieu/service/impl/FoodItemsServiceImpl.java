@@ -7,6 +7,7 @@ package com.nmhieu.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.Promotion;
 import com.nmhieu.pojo.PromotionFooditems;
 import com.nmhieu.repository.FoodItemsRepository;
 import com.nmhieu.service.CategoriesFoodService;
@@ -16,13 +17,16 @@ import com.nmhieu.service.PromotionService;
 import com.nmhieu.service.RestaurantsService;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.apache.velocity.exception.ParseErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -165,6 +169,79 @@ public class FoodItemsServiceImpl implements FoodItemsService {
     @Override
     public List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params) {
         return this.foodItemRepo.getFoodAndPromotion(params);
+    }
+
+    @Override
+    public List<Fooditems> getFoodAfterPromotion(Map<String, String> params) {
+        //restaurantId
+//        List<Promotion> listPromotions = this.promotionService.getPromotionWithDate(params);
+        List<Fooditems> listFoodItems = this.foodItemRepo.getFoodItems(params);
+        List<Fooditems> listFoodFinal = new ArrayList<>();
+
+        List<PromotionFooditems> listPromotionAndFoodItem = this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params);
+//        for(Promotion p: listPromotions){
+//            if()
+//        }
+//        List<Fooditems> listFoodFinal = listFoodItems.stream().filter(f -> {
+//            params.put("foodId", f.getFoodId());
+//            List<PromotionFooditems> listPromotionFood = this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params);
+//            for (PromotionFooditems pf : listPromotionFood) {
+//                if (Objects.equals(pf.getFoodId().getFoodId(), f.getFoodId())) {
+//                    Promotion p = this.promotionService.getPromotionByIdWithDate(pf.getPromotionId().getPromotionId());
+//                    if (p != null) {
+//                        if (f.getOldPrice() == null) {
+//                            f.setOldPrice(f.getPrice());
+//                        }
+////                    f.setPrice(f.getPrice());
+//                        if (p.getPromotionTypeId().getPromotionTypeId() == 1) {
+//                            BigDecimal percent = new BigDecimal(Long.parseLong(p.getPricePromotion()) / 100);
+//                            f.setPrice(f.getPrice().subtract(f.getPrice().multiply(percent)));
+//                        } else {
+//                            BigDecimal PromoPrice = new BigDecimal(p.getPricePromotion());
+//                            f.setPrice(f.getPrice().subtract(PromoPrice));
+//                        }
+//                    }
+//                }
+//            }
+//            return f;
+//        }).collect(Collectors.toList());
+
+        for (Fooditems f : listFoodItems) {
+            params.put("foodId", String.valueOf(f.getFoodId()));
+            List<PromotionFooditems> listPromotionFood = this.promotion_FoodService.getPromotion_FoodItemByIdpromotion(params);
+            for (PromotionFooditems pf : listPromotionFood) {
+                if (Objects.equals(pf.getFoodId().getFoodId(), f.getFoodId())) {
+                    Promotion p = this.promotionService.getPromotionByIdWithDate(pf.getPromotionId().getPromotionId());
+                    if (p != null) {
+                        if (f.getOldPrice() == null) {
+                            f.setOldPrice(f.getPrice());
+                        }
+//                    f.setPrice(f.getPrice());
+                        if (p.getPromotionTypeId().getPromotionTypeId() == 1) { //giảm theo %
+                            BigDecimal percent = new BigDecimal(Long.parseLong(p.getPricePromotion()) / 100);
+                            BigDecimal kq = f.getPrice().subtract(f.getPrice().multiply(percent));
+                            if (kq.compareTo(BigDecimal.ZERO) >= 0) {
+                                f.setPrice(kq);
+                            } else {
+                                f.setPrice(BigDecimal.ZERO);
+                            }
+                            
+                        } else { //giảm theo giá tiền
+                            BigDecimal PromoPrice = new BigDecimal(p.getPricePromotion());
+
+                            BigDecimal kq = f.getPrice().subtract(PromoPrice);
+                            if (kq.compareTo(BigDecimal.ZERO) >= 0) {
+                                f.setPrice(kq);
+                            } else {
+                                f.setPrice(BigDecimal.ZERO);
+                            }
+                        }
+                    }
+                }
+            }
+            listFoodFinal.add(f);
+        }
+        return listFoodFinal;
     }
 
 }

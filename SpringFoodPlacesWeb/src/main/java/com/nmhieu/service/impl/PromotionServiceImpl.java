@@ -111,4 +111,22 @@ public class PromotionServiceImpl implements PromotionService {
         return list;
     }
 
+    @Override
+    public Promotion getPromotionByIdWithDate(int id) {
+        Promotion p =  this.promotionRepo.getPromotionById(id);
+        Date ngayHienTai = new Date();
+        if (p.getFromDate() != null) {
+                if(ngayHienTai.before(p.getFromDate())){
+                    return null;
+                }
+            }
+            if (p.getToDate() != null) {
+                if(ngayHienTai.after(p.getToDate())){
+                    return null;
+                }
+            }
+            return p;
+        
+    }
+
 }

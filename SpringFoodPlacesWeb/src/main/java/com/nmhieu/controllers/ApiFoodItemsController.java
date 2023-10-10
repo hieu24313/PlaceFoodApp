@@ -90,4 +90,11 @@ public class ApiFoodItemsController {
 //    public ResponseEntity<Fooditems> foodItem(@PathVariable(value = "foodId") int foodid) {
 //        return new ResponseEntity<>(this.foodItemsSer.getFoodItemById(foodid), HttpStatus.OK);
 //    }
+    
+    @GetMapping("/foodItems-after-promotion/")
+    @CrossOrigin
+    public ResponseEntity<List<Fooditems>> listFoodAfterPromotion(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.foodItemsSer.getFoodAfterPromotion(params), HttpStatus.OK);
+    }
+    
 }

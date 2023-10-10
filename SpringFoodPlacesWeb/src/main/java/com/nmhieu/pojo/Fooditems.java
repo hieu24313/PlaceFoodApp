@@ -91,6 +91,9 @@ public class Fooditems implements Serializable {
 
     @Transient
     private MultipartFile file;
+    
+    @Transient
+    private BigDecimal oldPrice;
 
     /**
      * @return the file
@@ -252,6 +255,20 @@ public class Fooditems implements Serializable {
 
     public void setPromotionFooditemsSet(Set<PromotionFooditems> promotionFooditemsSet) {
         this.promotionFooditemsSet = promotionFooditemsSet;
+    }
+
+    /**
+     * @return the oldPrice
+     */
+    public BigDecimal getOldPrice() {
+        return oldPrice;
+    }
+
+    /**
+     * @param oldPrice the oldPrice to set
+     */
+    public void setOldPrice(BigDecimal oldPrice) {
+        this.oldPrice = oldPrice;
     }
 
 }

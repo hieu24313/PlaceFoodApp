@@ -37,4 +37,6 @@ public interface FoodItemsService {
     List<Object> getFoodItemsAndPromotion(Map<String, String> params);
     
     List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params);
+    
+    List<Fooditems> getFoodAfterPromotion(Map<String, String> params);
 }
