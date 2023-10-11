@@ -10,7 +10,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useContext } from "react";
 import { MyUserContext } from "../App";
 import { ToastContainer, toast } from "react-toastify";
-// import GoogleMapAPI from "./GoogleMapComponent/GoogleMapAPI";
+import GoogleMapAPI from "./GoogleMapComponent/GoogleMapAPI";
 
 
 let checkRes = true;
@@ -72,7 +72,7 @@ const RestaurantManagerDetail = () => {
 
                 {restaurant !== null ? <>
                     <h1 className="text-center text-primary">Nhà Hàng {restaurant.restaurantName}</h1>
-                    <div style={{ maxHeight: '350px', maxWidth: '350px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                    <div style={{ maxHeight: '350px', maxWidth: '500px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         <Image style={{ width: '100%', margin: 'auto auto', borderRadius: '5px' }} src={restaurant.avatar} alt="avatar" />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
@@ -85,7 +85,7 @@ const RestaurantManagerDetail = () => {
 
                     </div>
                     <div>
-                        {/* <GoogleMapAPI location={restaurant.location} /> */}
+                        <GoogleMapAPI location={restaurant.location} />
                     </div>
                 </> : <></>}
 

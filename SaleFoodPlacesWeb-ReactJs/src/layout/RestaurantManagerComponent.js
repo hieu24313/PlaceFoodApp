@@ -14,19 +14,19 @@ const RestaurantManagerConpoment = () => {
     return <>
         <ul className="dasboard_ul" >
             <h3 className="dasboard_title">Quản Lý</h3>
-            <li><Link to={urlIndex} className="btn">Trang Chủ</Link></li>
+            <li><Link to={urlIndex} className="btn"><i class="fa fa-home"></i> Trang Chủ</Link></li>
             <hr />
-            <li ><Link to={urlCategory} className="btn">Danh Mục</Link></li>
+            <li ><Link to={urlCategory} className="btn"><i class="fa-solid fa-bars"></i> Danh Mục</Link></li>
             <hr />
-            <li><Link to={urlFoodItems} className="btn">Món Ăn</Link></li>
+            <li><Link to={urlFoodItems} className="btn"><i class="fa-solid fa-utensils"></i>  Món Ăn</Link></li>
             <hr />
-            <li><Link to={urlPromotion} className="btn">Khuyễn Mãi</Link></li>
+            <li><Link to={urlPromotion} className="btn"><i class="fa-solid fa-tags fa-flip-vertical"></i> Khuyến Mãi</Link></li>
             <hr />
-            <li><Link to={urlRevenus} className="btn">Doanh Thu</Link></li>
+            <li><Link to={urlRevenus} className="btn"><i class="fa-solid fa-sack-dollar"></i> Doanh Thu</Link></li>
             <hr />
-            <li ><Link to="" className="btn">Combo</Link></li>
-            <hr />
-            <li className="dasboard_ul_lastchild"><Link to="/restaurantmanager" className="btn">Quay Lại</Link></li>
+            {/* <li ><Link to="" className="btn">Combo</Link></li>
+            <hr /> */}
+            <li className="dasboard_ul_lastchild"><Link to="/restaurantmanager" className="btn"> <i class="fa">&#xf190;</i> Quay Lại</Link></li>
 
         </ul>
     </>

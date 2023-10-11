@@ -187,11 +187,11 @@ const FoodItemManager = () => {
             <div className="dasboard_2">
                 <ToastContainer />
                 {page === 'index' ? <>
-                    <h1 className="text-center">Trang quản lý thức ăn {restaurantId}</h1>
+                    <h1 className="text-center">Món ăn của nhà hàng</h1>
                     <div>
-                        <Button onClick={newFood} className="btn-success">Thêm Món</Button>
+                        <Button onClick={newFood} style={{margin: '20px'}} className="btn-success">Thêm Món</Button>
                     </div>
-                    <Row>
+                    <Row style={{margin: '10px'}}>
                         {loading === true ? <MySpinner /> : <>
                             {Object.values(foodItems).map(f => {
                                 return <>
@@ -218,13 +218,13 @@ const FoodItemManager = () => {
                     {page === 'update' ? <>
                         <div>
                             <h1 className="text-center">Cặp nhật món ăn</h1>
-                            <Button onClick={back}>Quay lại</Button>
+                            <Button onClick={back} style={{margin: '20px'}}>Quay lại</Button>
                             {uniFood === null ? <MySpinner /> : <>
                                 {/* update food*/}
                                 <div style={{ marginBottom: '20px' }}>
-                                    <MDBCard className='m-5 register_form' style={{ overflow: 'auto', maxWidth: '600px', marginBottom: '20px' }}>
+                                    <MDBCard className='m-5 register_form' style={{ overflow: 'auto', maxWidth: '800px', marginBottom: '20px' }}>
                                         <MDBCardBody className='px-5 register_form_child'>
-                                            <div style={{ marginBottom: 22 + 'px' }}>
+                                            <div style={{ marginBottom: 22 + 'px', marginTop: '20px'}}>
                                                 <Image src={uniFood.avatar} rounded style={{ maxWidth: '150px', marginLeft: 35 + '%' }} />
                                                 <Form.Control className="avatar_input" style={{ marginLeft: 'auto', marginRight: 'auto' }} accept=".jpg, .jpeg, .png, .gif, .bmp" type="file" ref={avatarFood} />
                                             </div>
@@ -274,7 +274,7 @@ const FoodItemManager = () => {
                                                     <>
                                                         <label htmlFor="promotion">Khuyến Mãi</label>
                                                         <ReactSelect
-                                                            style={{}}
+                                                            // style={{}}
                                                             id="promotion"
                                                             onChange={(selectedOptions) => {
                                                                 // Lấy giá trị được chọn và cập nhật biến promotionsNewFood
@@ -292,11 +292,11 @@ const FoodItemManager = () => {
                                                                     ...provided,
                                                                     maxWidth: '100%', // Thiết lập chiều rộng tối đa
                                                                 }),
-                                                                menu: (provided) => ({
-                                                                    ...provided,
-                                                                    maxHeight: '200px', // Thiết lập chiều cao tối đa
-                                                                    overflowY: 'auto', // Cho phép cuộn nếu nội dung vượt quá chiều cao tối đa
-                                                                }),
+                                                                // menu: (provided) => ({
+                                                                //     ...provided,
+                                                                //     maxHeight: '200px', // Thiết lập chiều cao tối đa
+                                                                //     overflowY: 'auto', // Cho phép cuộn nếu nội dung vượt quá chiều cao tối đa
+                                                                // }),
                                                             }}
                                                         />
                                                         {/* <ReactSelect
@@ -327,7 +327,7 @@ const FoodItemManager = () => {
                         </div>
                     </> : <>
                         {/* <h1 className="text-center">Thêm món</h1> */}
-                        <Button onClick={back}>Quay lại</Button>
+                        <Button style={{margin: '20px', marginTop: '70px'}} onClick={back}>Quay lại</Button>
                         {/* giao diện new mới */}
                         <div style={{ marginBottom: '20px' }}>
                             <MDBCard className='m-5 register_form formnewfood' style={{ zIndex: '10', maxWidth: '600px', marginBottom: '20px', overflow: 'auto', overflowY: 'auto' }}>

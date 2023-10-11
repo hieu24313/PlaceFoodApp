@@ -126,41 +126,57 @@
 <section>
     <div class="row mx-auto">
         <c:forEach items="${users_list}" var = "user">
-            <div class="col-lg-3 col-md-6 col-sm-12">
+            <c:choose>
+                <c:when test="${user.roleId.roleId ne 4}">
+                    <div class="col-lg-3 col-md-6 col-sm-12">
 
-                <div class="course_card">
-                    <a class ="detail-restaurant" href="<c:url value="/admin/users/${user.userId}" />">
-                        <div class="course_card_img">
-                            <img ,="" alt="avatar của ${user.firstname} ${user.lastname}" src="${user.avatar}" />
+                        <div class="course_card">
+                            <a class ="detail-restaurant" href="<c:url value="/admin/users/${user.userId}" />">
+                                <div class="course_card_img">
+                                    <img ,="" alt="avatar của ${user.firstname} ${user.lastname}" src="${user.avatar}" />
+                                </div>
+                                <div class="course_card_content">
+                                    <h3 class="title">
+                                        <strong>${user.firstname} ${user.lastname} (${user.userId})</strong>
+                                    </h3>
+
+                                    <h5 class="title">
+                                        Số điện thoại: ${user.phonenumber}
+                                    </h5>
+
+                                    <h5 class="title">
+                                        Địa chỉ: ${user.location}
+                                    </h5>
+
+                                    <p class="description">
+
+                                    </p>
+
+                                </div>
+                            </a>
+                            <div class="course_card_footer">
+                                <!--<a class="nav-item" href="<c:url value="/admin/restaurants/${restaurant.restaurantId}" />">Xem chi tiết</a>-->
+                                <c:url value="/api/server/admin/users/${user.userId}" var="userPathAPI"/>
+                                <a class="nav-item delete-button" onclick="deleteUser('${userPathAPI}', ${user.userId})" href="javascript:;">Xóa người dùng</a>
+
+                                <!--                        <div>
+                                <c:choose>
+                                    <c:when test="${user.roleId.roleId ne 4}">
+                                        <a class="nav-item delete-button" onclick="deleteUser('${userPathAPI}', ${user.userId})" href="javascript:;">Xóa người dùng</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="nav-item delete-button" onclick="noti()" href="javascript:;">Xóa người dùng</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>-->
+
+                            </div>
                         </div>
-                        <div class="course_card_content">
-                            <h3 class="title">
-                                <strong>${user.firstname} ${user.lastname} (${user.userId})</strong>
-                            </h3>
 
-                            <h5 class="title">
-                                Số điện thoại: ${user.phonenumber}
-                            </h5>
-
-                            <h5 class="title">
-                                Địa chỉ: ${user.location}
-                            </h5>
-
-                            <p class="description">
-
-                            </p>
-
-                        </div>
-                    </a>
-                    <div class="course_card_footer">
-                        <!--<a class="nav-item" href="<c:url value="/admin/restaurants/${restaurant.restaurantId}" />">Xem chi tiết</a>-->
-                        <c:url value="/api/server/admin/users/${user.userId}" var="userPathAPI"/>
-
-                        <a class="nav-item delete-button" onclick="deleteUser('${userPathAPI}', ${user.userId})" href="javascript:;">Xóa người dùng</a>
                     </div>
-                </div>
+                </c:when>
+            </c:choose>
 
-            </div>
         </c:forEach>
     </div>
 
@@ -179,28 +195,34 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach items="${users_list}" var = "user">
-            <tr>
-                <td>
-                    <img style="width: 120px" src="${user.avatar}" alt="Avatar của ${user.firstname} ${user.lastname}"/>
-                </td>
-                <td>${user.userId}</td>
-                <td>${user.roleId.roleId}</td>
-                <td>${user.firstname} ${user.lastname}</td>
-                <td>${user.phonenumber}</td>
-                <td>${user.location}</td>
+<c:forEach items="${users_list}" var = "user">
+    <tr>
+        <td>
+            <img style="width: 120px" src="${user.avatar}" alt="Avatar của ${user.firstname} ${user.lastname}"/>
+        </td>
+        <td>${user.userId}</td>
+        <td>${user.roleId.roleId}</td>
+        <td>${user.firstname} ${user.lastname}</td>
+        <td>${user.phonenumber}</td>
+        <td>${user.location}</td>
 
-                                    <td>
-                                        <a href="<c:url value="/admin/users/${user.userId}" />" class = "btn btn-success">Cập nhật</a>
-                                        <button class = "btn btn-danger">Xóa nà</button>
-                                    </td>
+                            <td>
+                                <a href="<c:url value="/admin/users/${user.userId}" />" class = "btn btn-success">Cập nhật</a>
+                                <button class = "btn btn-danger">Xóa nà</button>
+                            </td>
 
-                <td>
-                    <c:url value="/api/server/admin/users/${user.userId}" var="userPathAPI"/>
-                    <a href="<c:url value="/admin/users/${user.userId}" />" class = "btn btn-success">Cập nhật</a>
-                    <button class = "btn btn-danger" onclick="deleteUser('${userPathAPI}', ${user.userId})">Xóa nà</button>
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
+        <td>
+    <c:url value="/api/server/admin/users/${user.userId}" var="userPathAPI"/>
+    <a href="<c:url value="/admin/users/${user.userId}" />" class = "btn btn-success">Cập nhật</a>
+    <button class = "btn btn-danger" onclick="deleteUser('${userPathAPI}', ${user.userId})">Xóa nà</button>
+</td>
+</tr>
+</c:forEach>
+</tbody>
 </table>-->
+
+<script>
+    const noti = () => {
+        alert("không được xóa");
+    }
+</script>

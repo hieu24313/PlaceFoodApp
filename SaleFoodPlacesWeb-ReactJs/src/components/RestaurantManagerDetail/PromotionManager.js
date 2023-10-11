@@ -250,6 +250,7 @@ const PromotionManager = () => {
                 })
                 if (res.status === 200) {
                     toast.success(res.data);
+                    setPage('new')
                     reload();
                 }
             } catch (e) {
@@ -258,6 +259,17 @@ const PromotionManager = () => {
             setErr(null)
         }
         setLoadingFormNew(false)
+    }
+
+    const back = () => {
+        setUniPromotion(null);
+        setPage('new');
+        
+        
+    }
+
+    const click = (f) => {
+        // <Link to={<Map f={f} />} />
     }
 
 
@@ -270,7 +282,7 @@ const PromotionManager = () => {
             </div>
             <div className="dasboard_2">
                 <ToastContainer />
-                <h1 className="text-center">Trang quản lý khuyến mãi {restaurantId}</h1>
+                <h1 className="text-center" style={{marginTop: '15px', marginBottom: '15px'}}>Trang quản lý khuyến mãi</h1>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -309,7 +321,7 @@ const PromotionManager = () => {
                     {page === "new" ? <>
                         {/* thêm mới */}
                         {loadingFormNew === false ? <>
-                            <Form onSubmit={addNewPromotion}>
+                            <Form onSubmit={addNewPromotion} style={{ maxWidth: '600px', margin: 'auto'}} >
                                 <h1 className="text-center text-primary">Thêm Khuyến Mãi</h1>
                                 <Form.Group className="mb-3" controlId="formBasicNamePromotion">
                                     <Form.Label>Tên khuyến mãi</Form.Label>
@@ -358,7 +370,7 @@ const PromotionManager = () => {
                             <Form.Label>Giá Tiền</Form.Label>
                             <Form.Control type="text" onChange={e => setD(e.target.value)} />
                         </Form.Group> */}
-                                <Button variant="primary" id="btn-New-Promotion" type="submit">
+                                <Button variant="primary" style={{margin: 'auto auto'}} id="btn-New-Promotion" type="submit">
                                     Thêm
                                 </Button>
                             </Form>
@@ -366,7 +378,7 @@ const PromotionManager = () => {
                     </> : <>
                         {/* update */}
                         {loadingFormNew === false ? <>
-                            <Form onSubmit={update}>
+                            <Form onSubmit={update} style={{ maxWidth: '600px', margin: 'auto', border: ''}}>
                                 <h1 className="text-center text-primary">Cập Nhật Khuyến Mãi</h1>
                                 <Form.Group className="mb-3" controlId="formBasicNamePromotion">
                                     <Form.Label>Tên khuyến mãi</Form.Label>
@@ -433,13 +445,13 @@ const PromotionManager = () => {
 
 
 
-                                        <Form.Check name="typePromotion" value="2"
+                                        {/* <Form.Check name="typePromotion" value="2"
                                             onChange={(e) => {
                                                 checkUpdate(e, "typePromotion", true)
                                             }}
-                                            type="radio" label="Giảm Theo Giá" />
+                                            type="radio" label="Giảm Theo Giá" /> */}
                                     </> : <>
-                                        <Form.Check name="typePromotion" value="1"
+                                        {/* <Form.Check name="typePromotion" value="1"
 
                                             // {...uniPromotion.promotionTypeId.promotionTypeId === 1 ? checked : <></>}
                                             onChange={(e) => {
@@ -447,7 +459,7 @@ const PromotionManager = () => {
                                                 checkUpdate(e, "typePromotion")
                                                 setCheckType2(false);
                                             }}
-                                            type="radio" label="Giảm theo %" />
+                                            type="radio" label="Giảm theo %" /> */}
 
 
 
@@ -483,6 +495,9 @@ const PromotionManager = () => {
                                 <Button variant="primary" id="btn-New-Promotion" type="submit">
                                     Sửa
                                 </Button>
+                                {/* <Button variant="primary" id="btn-New-Promotion" onClick={back} type="submit">
+                                    Hủy
+                                </Button> */}
                             </Form>
                         </> : <MySpinner />}
                     </>}

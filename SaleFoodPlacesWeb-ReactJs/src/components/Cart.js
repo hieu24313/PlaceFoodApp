@@ -63,7 +63,10 @@ const Cart = () => {
     
                         setCarts([]);
                         setLoading(false);
-                        nav("/")
+                        toast.success('Thanh toán thành công!')
+                        setTimeout(() => {
+                            nav("/") 
+                        }, 1000);
                     }
                     else {
                         toast.error("thanh toán thất bại!!!");
@@ -162,10 +165,7 @@ const Cart = () => {
              {user !== null ? <>
                 {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>}
             </> : <>
-
-            
-                    
-                {loading === true ? <MySpinner /> : <Button disabled variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button> }
+                {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button> }
                 
             </>}
             

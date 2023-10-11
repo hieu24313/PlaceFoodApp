@@ -8,6 +8,7 @@ import { MyCartContext, MyUserContext } from "../App";
 import cookie from "react-cookies";
 import { MDBInput } from "mdb-react-ui-kit";
 import { ToastContainer, toast } from "react-toastify";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 const Home = () => {
 
@@ -27,21 +28,121 @@ const Home = () => {
     const [promo_Food, setPromo_Food] = useState([]);
     const [pageLoad, setPageLoad] = useState(false);
     const [loadingFind, setLoadingFind] = useState(false);
+    const [lngUser, setLngUser] = useState(null);
+    const [latUser, setLatUser] = useState(null);
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: "AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI"
+      })
     // const []
+
+    function haversine(lat1, lon1, lat2, lon2) {
+        const rad = Math.PI / 180; // Đổi độ sang radian
+        const dLat = lat2 - lat1;
+        const dLon = lon2 - lon1;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = 6371 * c; // Bán kính Trái Đất là 6371 km
+        return distance;
+    }
+
+    const getLocationNoLogin = () => {
+        if ("geolocation" in navigator) {
+            // Trình duyệt hỗ trợ Geolocation API
+            navigator.geolocation.getCurrentPosition(function (position) {
+                // Lấy thông tin vị trí người dùng
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                setLatUser(latitude);
+                setLngUser(longitude);
+
+                console.log("Vĩ độ (Latitude): " + latitude);
+                console.log("Kinh độ (Longitude): " + longitude);
+            }, function (error) {
+                // Xử lý lỗi nếu không thể lấy vị trí
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        console.log("Người dùng đã từ chối cung cấp vị trí.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        console.log("Không thể xác định vị trí.");
+                        break;
+                    case error.TIMEOUT:
+                        console.log("Hết thời gian để xác định vị trí.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        console.log("Lỗi không xác định.");
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } else {
+            console.log("Trình duyệt không hỗ trợ Geolocation API.");
+        }
+    }
+
+    // var geocoder;
+    // function initialize() {
+    //     var geocoder = new window.google.maps.Geocoder();
+    //     // var latlng = new window.google.maps.LatLng(10, 106);
+    //     // var mapOptions = {
+    //     //   // zoom: 16,
+    //     //   center: latlng
+    //     // }
+    //     // map1 = new window.google.maps.Map(document.getElementById('map'), mapOptions);
+    //     // console.log(mapOptions)
+    //   }
+    // var googleMapsLoaded = false;
+    // function loadGoogleMaps() {
+    //     if (!googleMapsLoaded) {
+    //       const script = document.createElement("script");
+    //       script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI&libraries=places&callback=initMap";
+    //       script.async = true;
+    //       document.head.appendChild(script);
+    //     }
+    //   }
+    //   loadGoogleMaps()
+
+    function codeAddress(location) {
+        // var address = document.getElementById('address').value;
+        try{
+            let geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ 'address': location }, function (results, status) {
+            // console.log(results[0].geometry.location.lng);
+            if (status == 'OK') {
+                var locationData = results[0].geometry.location;
+                var lat = locationData.lat();
+                var lng = locationData.lng();
+                setLatUser(lat);
+                setLngUser(lng);
+            } else {
+                getLocationNoLogin();
+                // alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+        }catch(e){
+            console.log(e)
+        }
+    }
+
 
     const loadFoodItems = async () => {
         try {
             let e = `${endpoints['fooditems']}?`;
-            let nameFoodItem = q.get("kw");
-            let fromPriceFood = q.get("formPrice")
-            let toPriceFood = q.get("toPrice")
+            let nameFoodItem = kw;
+            let fromPriceFood = fromPrice;
+            let toPriceFood = toPrice;
             // let page = q.get("page")
 
             if (nameFoodItem !== null) {
                 e += `kw=${nameFoodItem}&`;
             }
             if (fromPriceFood !== null) {
-                e += `formPrice=${fromPriceFood}&`;
+                e += `fromPrice=${fromPriceFood}&`;
             }
             if (toPriceFood !== null) {
                 e += `toPrice=${toPriceFood}&`;
@@ -50,61 +151,30 @@ const Home = () => {
             // if (page !== null) {
             //     e += `page=${page}`;
             // }
-
+            // if
             let res = await Apis.get(e);
             setFoodItems(res.data);
-            // let data = res.data;
-            // data.forEach(item => {
-            //     item.hasPromotion = false; // Thêm thuộc tính mới với giá trị mặc định
-            //     item.oldPrice = 1;
-            // });
-            // console.log(data)
-            // if (promo_Food.length > 0) {
-            //     for (let pf of promo_Food) {
-            //         // console.log(1)
-            //         let id = pf[1]['foodId']['foodId'];
-            //         // console.log(id)
-            //         const foundFood = data.findIndex(item => item.foodId === id);
-            //         if (foundFood !== -1) {
-            //             // console.log(2)
-            //             let type = pf[2].promotionTypeId.promotionTypeId; //loại khuyến mãi
-            //             let price = data[foundFood].price; // giá ban đầu
-            //             // console.log(pf[2].pricePromotion);
-            //             if (type === 1) { // giảm theo %
-            //                 // console.log(21)
-            //                 if (price - (pf[2].pricePromotion * price / 100) >= 0) {
-            //                     data[foundFood].price = price - (pf[2].pricePromotion * price / 100);
-            //                 } else {
-            //                     data[foundFood].price = 0;
-            //                 }
+            let data = res.data;
+            console.log(data)
+            if (latUser !== null && lngUser !== null) {
+                let geocoder = new window.google.maps.Geocoder();
 
-            //                 data[foundFood].hasPromotion = true;
-            //                 if (data[foundFood].oldPrice === 1) {
-            //                     data[foundFood].oldPrice = price;
-            //                 }
-            //             }
-            //             else if (type === 2) { //giảm theo giá tiền
-            //                 // console.log(22)
-            //                 if (price - pf[2].pricePromotion >= 0) {
-            //                     data[foundFood].price = price - pf[2].pricePromotion;
-            //                 } else {
-            //                     data[foundFood].price = 0;
-            //                 }
-
-            //                 data[foundFood].hasPromotion = true;
-            //                 if (data[foundFood].oldPrice === 1) {
-            //                     data[foundFood].oldPrice = price;
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
-            // console.log("xong for?")
-            // console.log(data)
-            // setFoodItems([]);
-            // setFoodItems(data);
-            console.log(res.data)
+                // for(let f of )
+                // geocoder.geocode({ 'address': location }, function (results, status) {
+                //     // console.log(results[0].geometry.location.lng);
+                //     if (status == 'OK') {
+                //         var locationData = results[0].geometry.location;
+                //         var lat = locationData.lat();
+                //         var lng = locationData.lng();
+                //         setLatUser(lat);
+                //         setLngUser(lng)
+                //     } else {
+                //         getLocationNoLogin();
+                //         // alert('Geocode was not successful for the following reason: ' + status);
+                //     }
+                // });
+            }
+            // console.log(res.data)
         } catch (ex) {
             console.error(ex);
         }
@@ -122,12 +192,12 @@ const Home = () => {
                 e += `kw=${nameFoodItem}&`;
             }
             if (fromPriceFood !== null) {
-                e += `formPrice=${fromPriceFood}&`;
+                e += `fromPrice=${fromPriceFood}&`;
             }
             if (toPriceFood !== null) {
                 e += `toPrice=${toPriceFood}&`;
             }
-
+            console.log(e)
             let res = await Apis.get(e);
             setFoodItems(res.data);
             console.log(res.data)
@@ -160,9 +230,9 @@ const Home = () => {
             loadFoodItems();
         }
         setLoadingFind(false);
-        setKw(null);
-        setFromPrice(null);
-        setToPrice(null);
+        // setKw(null);
+        // setFromPrice(null);
+        // setToPrice(null);
     }
 
 
@@ -172,17 +242,17 @@ const Home = () => {
 
         // }
 
-        const loadFood_Promotion = async () => {
-            try {
-                let res = await Apis.get(endpoints['fooditems-promotion']);
-                console.log(res.data[0][2]); //lấy được id của food khuyến mãi
-                setPromo_Food(res.data);
-                console.log(res.data)
-                console.log("ở đây ")
-            } catch (e) {
-                console.error(e);
-            }
-        }
+        // const loadFood_Promotion = async () => {
+        //     try {
+        //         let res = await Apis.get(endpoints['fooditems-promotion']);
+        //         console.log(res.data[0][2]); //lấy được id của food khuyến mãi
+        //         setPromo_Food(res.data);
+        //         console.log(res.data)
+        //         console.log("ở đây ")
+        //     } catch (e) {
+        //         console.error(e);
+        //     }
+        // }
 
         const loadRestaurant = async () => {
             try {
@@ -210,9 +280,14 @@ const Home = () => {
         // loadFood_Promotion();
         if (user !== null) {
             loadFoodItemsHasPromotion();
+            if(isLoaded){
+                codeAddress(user.location);
+            }
+            
         }
         else {
             loadFoodItems();
+            getLocationNoLogin();
         }
         loadRestaurant();
         // setTimeout(() => newPrice(foodItems), 1500);
@@ -255,6 +330,9 @@ const Home = () => {
 
     return <>
         <div>
+        {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI&libraries=places"></script> */}
+
+
             <div>
                 <ToastContainer />
                 <Form onSubmit={search} className="mt-3 mb-2 form_find_name" inline>

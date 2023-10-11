@@ -5,5 +5,7 @@ footer {
 
 
 .div_footer {
-    margin-top: 0 !important;
+    margin-top: 10px !important;
+    background-color: #5a2c1e;
+    color: #fee1d4 !important;
 }

@@ -122,7 +122,7 @@ const RestaurantDetail = () => {
         }
 
         cookie.save("cart", cart);
-        notify("Thêm vào giỏ hàng thành công!!!");
+        toast.success("Thêm vào giỏ hàng thành công!!!");
     }
 
     const follow = async () => {
@@ -329,7 +329,7 @@ const RestaurantDetail = () => {
 
                         <div className="map">
                             <GoogleMapReact
-                                bootstrapURLKeys={{ key: "AIzaSyDWTx7bREpM5B6JKdbzOvMW-RRlhkukmVE" }}
+                                bootstrapURLKeys={{ key: "AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI" }}
                                 defaultCenter={defaultProps.center}
                                 defaultZoom={defaultProps.zoom}
                             >

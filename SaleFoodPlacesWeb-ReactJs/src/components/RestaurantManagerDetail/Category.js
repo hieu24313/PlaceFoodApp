@@ -189,18 +189,18 @@ const Category = () => {
 
                     </tbody>
                 </Table>
-                {addCate === false ? <Button onClick={pageAddCate}>Thêm</Button> : <>
+                {addCate === false ? <Button style={{marginLeft: '10px'}} onClick={pageAddCate}>Thêm</Button> : <>
                     <div style={{ alignItems: 'center' }}>
-                        <Form onSubmit={addNewCate} style={{ width: '40%' }} >
-                            <h1>Thêm Danh Mục</h1>
+                        <Form onSubmit={addNewCate} style={{ width: '40%', margin: 'auto' }} >
+                            <h1 className="text-center">Thêm Danh Mục</h1>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Tên Danh Mục</Form.Label>
+                                {/* <Form.Label>Tên Danh Mục</Form.Label> */}
                                 <Form.Control onChange={(e) => setNewCate(e.target.value)} type="text" placeholder="Nhập tên danh mục" />
                                 {/* <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
                             </Form.Text> */}
                             </Form.Group>
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                 {loadingAdd === true ? <></> : <Button variant="primary" type="submit">Thêm</Button>}
                                 <Button className="btn-danger" style={{marginLeft: '5px'}} onClick={setPageAdd}>Hủy</Button>
                             </div>
