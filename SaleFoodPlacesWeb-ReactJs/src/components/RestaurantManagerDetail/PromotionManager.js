@@ -30,9 +30,8 @@ const PromotionManager = () => {
 
     const getPromotion = async () => {
         try {
-            let { data } = await authApi().get(endpoints['get-promotion'], {
-                "restaurantId": restaurantId
-            })
+            let e = `${endpoints['get-promotion']}?restaurantId=${restaurantId}`
+            let { data } = await authApi().get(e)
 
             setPromotion(data);
         } catch (e) {

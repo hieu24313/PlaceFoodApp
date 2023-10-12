@@ -285,7 +285,7 @@ public class UsersServiceImpl implements UsersService {
         String phonenumber = params.get("phonenumber");
         boolean isUsernameExists = this.usersRepo.isUsernameExists(username);
         Users oldUser = this.getUserByUsername_new(username);
-        if (oldUser.getPhonenumber().equals(phonenumber)) { // nếu không thay đổi số điện thoại thì k cần xác thực lại otp
+        if (oldUser.getPhonenumber()!= null && oldUser.getPhonenumber().equals(phonenumber)) { // nếu không thay đổi số điện thoại thì k cần xác thực lại otp
             if (isUsernameExists != true) {
                 return 2; // Không tìm thấy username để update
             } else {

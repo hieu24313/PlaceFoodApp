@@ -4,9 +4,12 @@
  */
 package com.nmhieu.repository.impl;
 
+import com.nmhieu.mail.EmailService;
+import com.nmhieu.pojo.Follow;
 import com.nmhieu.pojo.Fooditems;
 import com.nmhieu.pojo.Promotion;
 import com.nmhieu.pojo.PromotionFooditems;
+import com.nmhieu.repository.FollowRepository;
 import com.nmhieu.repository.FoodItemsRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,12 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
     private LocalSessionFactoryBean factory;
     @Autowired
     private Environment env;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private FollowRepository followRepo;
 
     @Override
     public List<Fooditems> getFoodItems(Map<String, String> params) {
@@ -256,6 +265,14 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
         try {
             foodItem.setActive(Boolean.TRUE);
             session.save(foodItem);
+            List<Follow> follows = this.followRepo.getFollowByRestaurantId(foodItem.getRestaurantId().getRestaurantId());
+            for (Follow f : follows) {
+                String toEmail = f.getUserIdIndex().getEmail();
+                String contentEmail = "Nhà hàng bạn đang theo dõi " + f.getRestaurantIdIndex().getRestaurantName() + " vừa thêm món mới " + foodItem.getFoodName();
+                String subjectEmail = "Món mới từ nhà hàng bạn đăng theo dõi! Vào xem ngay!!!";
+                this.emailService.send_Email(toEmail, contentEmail, subjectEmail);
+            }
+
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();
@@ -294,7 +311,7 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
                 rootFood_Promotion,
                 rootPromotion
         );
-        
+
 //        try {
 //            CriteriaBuilder builder = session.getCriteriaBuilder();
 //            CriteriaQuery<Fooditems> criteriaQuery = builder.createQuery(Fooditems.class);
@@ -313,7 +330,6 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
 //            e.printStackTrace();
 //            return null;
 //        }
-
         // WHERE JOIN BẢNG
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.equal(
@@ -368,7 +384,6 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
 //
 //        return query.getResultList();
 //    }
-
     @Override
     public List<PromotionFooditems> getFoodAndPromotion(Map<String, String> params) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

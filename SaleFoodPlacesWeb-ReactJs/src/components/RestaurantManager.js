@@ -39,21 +39,24 @@ const RestaurantManager = () => {
 
     useEffect(() => {
         const loadCountRestaurant = async () => {
-            let form = new FormData();
-            form.append("current_user_UserId", user.userId);
-            let res = await Apis.get(endpoints['count-restaurant'], form);
+            // let form = new FormData();
+            // form.append("current_user_UserId", user.userId);
+            let e = `${endpoints['count-restaurant']}?current_user_UserId=${user.userId}`
+            let res = await Apis.get(e);
             // console.log(res.data)
             setPageNumber(res.data)
         }
        
 
         const loadRestaurant = async () => {
-            let form = new FormData();
-            form.append("current_user_UserId", user.userId);
-            let res = await Apis.get(endpoints['restaurant-manager'], form);
+            // let form = new FormData();
+            // form.append("current_user_UserId", user.userId);
+            let e = `${endpoints['restaurant-manager']}?current_user_UserId=${user.userId}`
+            let res = await Apis.get(e);
             // console.log(res.data)
             // setPageNumber(res.data)
             setRestaurant(res.data)
+            console.log(res.data)
         }
         loadCountRestaurant();
         loadRestaurant();

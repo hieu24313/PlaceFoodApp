@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import '../resources/css/RestaurantManagerComponent.css';
 
+
 const RestaurantManagerConpoment = () => {
 
     const receivedValue = cookie.load("restaurant"); //restaurantId

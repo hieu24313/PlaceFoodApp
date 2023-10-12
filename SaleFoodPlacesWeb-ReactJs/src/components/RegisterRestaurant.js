@@ -132,7 +132,7 @@ const RegisterRestaurant = () => {
                                     <td>{r.restaurantName}</td>
                                     <td>{r.location}</td>
                                     <td>{r.confirmationStatus === true ? "Đã Xác Thực" : "Chưa được Xác Thực"}</td>
-                                    <td>{r.userId.userId}</td>
+                                    <td>{r.userId.firstname} {r.userId.lastname} </td>
                                 </tr>
                             })}
                             {restaurant.length === 0 ? <tr><Alert>Bạn chưa đăng ký nhà hàng nào!</Alert></tr> : null}

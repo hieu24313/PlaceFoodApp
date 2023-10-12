@@ -286,6 +286,17 @@ public class RestaurantsRepositoryImpl implements RestaurantsRepository {
             Predicate otherCondition = builder.equal(root.get("active"), Boolean.TRUE);
 
             Predicate finalPredicate = builder.and(idPredicate, otherCondition);
+            
+//            if (params != null) {
+//            String pageStr = params.get("page");
+//            if (pageStr != null && !pageStr.isEmpty()) {
+//                int pageInt = Integer.parseInt(pageStr);
+//                int pageSize = Integer.parseInt(this.environment.getProperty("PAGE_SIZE"));
+//
+//                final_query.setMaxResults(pageSize);
+//                final_query.setFirstResult((pageInt - 1) * pageSize);
+//            }
+//        }
 
             criteriaQuery.where(finalPredicate);
             return session.createQuery(criteriaQuery).getResultList();

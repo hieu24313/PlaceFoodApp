@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { MyUserContext } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import GoogleMapAPI from "./GoogleMapComponent/GoogleMapAPI";
+import backgroundResmanager from '../resources/img/vegetables-set-left-black-slate.jpg'
 
 
 let checkRes = true;
@@ -23,11 +24,44 @@ const RestaurantManagerDetail = () => {
     const [user,] = useContext(MyUserContext);
     const [check, setCheck] = useState(false);
     const nav = useNavigate();
+    const [statsRevenue, setStatsRevenue] = useState({ labels: [], data: [] });
     if (restaurantId !== null) {
         cookie.save("restaurant", restaurantId);
     }
 
     useEffect(() => {
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+        const currentDate = new Date();
+
+        // Lấy năm hiện tại
+        const currentYear = currentDate.getFullYear();
+
+        // Lấy tháng hiện tại (từ 0 đến 11, nên bạn có thể cộng thêm 1 để có giá trị tháng từ 1 đến 12)
+        const currentMonth = currentDate.getMonth() + 1;
+        const countDateInMonth = daysInMonth(currentMonth, currentYear);
+        let fromDate = `${currentYear}-${currentMonth}-1`
+        let toDate = `${currentYear}-${currentMonth}-${countDateInMonth}`
+        // console.log(fromDate, toDate);
+        const loadStatsRevenue = async () => {
+            try {
+                console.log(restaurantId);
+                let e = `${endpoints['get-stats-revenue']}?restaurantId=${restaurantId}&fromDate=${fromDate}&toDate=${toDate}`;
+                let res = await authApi().get(e);
+                console.log(e)
+
+                const statsData = res.data;
+                const labels = statsData.map((stat) => stat[1]);
+                const data = statsData.map((stat) => stat[2]);
+
+                setStatsRevenue({ labels, data });
+                console.log(statsData);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        loadStatsRevenue();
         const checkrestaurantAndUser = async () => {
             try {
                 let url = `${endpoints['check-restaurant-user']}?userId=${user.userId}&restaurantId=${restaurantId}`;
@@ -61,6 +95,23 @@ const RestaurantManagerDetail = () => {
         // console.log(restaurant.avatar);
     }, [restaurantId])
 
+    const data1 = {
+        labels: statsRevenue.labels,
+        datasets: [
+            {
+                label: "Doanh thu (VND)",
+                data: statsRevenue.data,
+                backgroundColor: [
+                    "red",
+                    "blue",
+                    "yellow",
+                    "green",
+                    "purple",
+                    "orange",
+                ],
+            },
+        ],
+    };
 
     return <>
         <div className="dasboard_big" >
@@ -68,24 +119,28 @@ const RestaurantManagerDetail = () => {
             <div className="dasboard_1">
                 <RestaurantManagerConpoment />
             </div>
-            <div className="dasboard_2" >
+            <div className="dasboard_2"  >
 
                 {restaurant !== null ? <>
-                    <h1 className="text-center text-primary">Nhà Hàng {restaurant.restaurantName}</h1>
-                    <div style={{ maxHeight: '350px', maxWidth: '500px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                    <h1 className="text-center text-primary mt-2">Nhà Hàng {restaurant.restaurantName}</h1>
+                    {/* <div className="mt-5" style={{ maxHeight: '350px', maxWidth: '500px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         <Image style={{ width: '100%', margin: 'auto auto', borderRadius: '5px' }} src={restaurant.avatar} alt="avatar" />
+                    </div> */}
+                    <div className="mt-4" style={{ width: '50%', margin: 'auto' }}>
+                        
+                        <Bar data={data1} />
+                        <h5 className="text-center">Doanh Thu Trong Tháng Này</h5>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
                         <div style={{ width: '7%', display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
-                            <input type="file" />
+                            {/* <input type="file" /> */}
                         </div>
                     </div>
+                    {/* <div style={{ marginTop: '15px' }}>
+                        <h5 className="text-center"><i className="fa-solid fa-location-dot"></i> Địa Chỉ: {restaurant.location}</h5>
+                    </div> */}
                     <div>
-                        <h2>Địa Chỉ: {restaurant.location}</h2>
-
-                    </div>
-                    <div>
-                        <GoogleMapAPI location={restaurant.location} />
+                        {/* <GoogleMapAPI location={restaurant.location} /> */}
                     </div>
                 </> : <></>}
 
