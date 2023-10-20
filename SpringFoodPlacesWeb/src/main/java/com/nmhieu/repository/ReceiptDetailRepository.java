@@ -23,4 +23,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ReceiptDetailRepository {
     List<ReceiptDetail> getReceiptDetails(int receiptId);
     List<ReceiptDetail> getReceiptDetailsByFoodId(int foodId);
+    List<Object> getNowReceiptByJoinFoodAndReceiptAndReceiptDetail(Map< String, String> params);
 }

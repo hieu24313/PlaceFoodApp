@@ -28,6 +28,7 @@ import Revenus from './components/RestaurantManagerDetail/Revenus';
 import FoodItemManager from './components/RestaurantManagerDetail/FoodItemsManager';
 import PromotionManager from './components/RestaurantManagerDetail/PromotionManager';
 import Category from './components/RestaurantManagerDetail/Category';
+import NowReceipt from './components/RestaurantManagerDetail/NowReceipt';
 
 
 export const MyUserContext = createContext();
@@ -71,6 +72,7 @@ function App() {
               <Route path="/food_manager/:restaurantId" element={<FoodItemManager />} />
               <Route path="/promotion/:restaurantId" element= {<PromotionManager />} />
               <Route path="/category/:restaurantId" element={<Category />} />
+              <Route path="/nowReceipt/:restaurantId" element={<NowReceipt />} />
               </Routes>
           </Container>
           <Footer />

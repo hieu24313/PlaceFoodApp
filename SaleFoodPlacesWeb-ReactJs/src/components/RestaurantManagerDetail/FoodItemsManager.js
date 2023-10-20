@@ -170,7 +170,9 @@ const FoodItemManager = () => {
                 // let url = `/food_manager/${restaurantId}`
                 // nav(url)
                 // back();
-                setPage("index")
+                toast.success(res.data)
+                setTimeout(() => setPage("index"), 1500);
+                
             }
         } catch (e) {
             console.log(e);

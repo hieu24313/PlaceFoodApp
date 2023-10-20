@@ -28,14 +28,15 @@ const Receipt = () => {
             let e = `${endpoints["receipt"]}?userId=${user.userId}`
             let res = await authApi().get(e);
             setReceipt(res.data);
+            console.log(res.data);
         } catch (err) {
             console.log(err);
         }
     }
 
     useEffect(() => {
-            
         loadReceipt();
+
     }, [user])
 
     const loadReceiptDetail = async (receiptId) => {
@@ -45,6 +46,7 @@ const Receipt = () => {
             let { data } = await authApi().get(endpoints['receiptDetail'](receiptId));
             setReceiptDetail(data);
             setloading(false);
+            console.log(data);
         } catch (er) {
             console.log(er);
             setloading(false);
@@ -124,7 +126,7 @@ const Receipt = () => {
                             return <Accordion className="mt-2" activeKey={activeKey}>
                                 {/* <Accordion.Item eventKey={r.receiptId} onClick={() => handleAccordionClick(r.receiptId)}> */}
                                 <Accordion.Item eventKey={r.receiptId} >
-                            {console.log(r)}
+                            {/* {console.log(r)} */}
                                     <Accordion.Header onClick={() =>{loadReceiptDetail(r.receiptId); handleAccordionClick(r.receiptId)}} >Hóa Đơn {r.receiptId} - {r.statusReceiptId.statusReceipt} <Moment style={{ marginLeft: 'auto' }} format="DD-MM-YYYY HH:mm">{r.receiptDate}</Moment> </Accordion.Header>
                                     {/* <Accordion.Body id="body_detail" onLoad={setTimeout(()=>{let c =document.getElementById('body_detail'); c.onclick = null} ,300)} > */}
                                     <Accordion.Body id="body_detail"  >
@@ -253,7 +255,7 @@ const Receipt = () => {
                                                                 <MDBCol xl="3">
                                                                     <MDBTypography listUnStyled>
                                                                         <li className="text-muted ms-3">
-                                                                            <span class="text-black me-4">Thuế: </span>(15%)
+                                                                            <span className="text-black me-4">Thuế: </span>(15%)
                                                                         </li>
                                                                         {/* <li className="text-muted ms-3 mt-2">
                                                                             <span class="text-black me-4">Tax(15%)</span>$111
@@ -280,7 +282,7 @@ const Receipt = () => {
                                                                         {r.statusReceiptId.statusReceiptId == 1 ? "Xác Nhận Đơn" :
                                                                             <>
                                                                                  Đã Xác Nhận
-                                                                                 {console.log(r.statusReceiptId)}
+                                                                                 {/* {console.log(r.statusReceiptId)} */}
                                                                                  {disableAcceptbtn(r.receiptId)}
                                                                             </>
                                                                         }

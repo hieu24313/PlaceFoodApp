@@ -8,6 +8,7 @@ import com.nmhieu.pojo.ReceiptDetail;
 import com.nmhieu.repository.ReceiptDetailRepository;
 import com.nmhieu.service.ReceiptDetailService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,11 @@ public class ReceiptDetailServiceImpl implements ReceiptDetailService{
     @Override
     public List<ReceiptDetail> getReceiptDetailsByFoodId(int foodId) {
         return this.receiptDetailRepo.getReceiptDetailsByFoodId(foodId);
+    }
+
+    @Override
+    public List<Object> getNowReceiptByJoinFoodAndReceiptAndReceiptDetail(Map<String, String> params) {
+        return this.receiptDetailRepo.getNowReceiptByJoinFoodAndReceiptAndReceiptDetail(params);
     }
     
 }

@@ -35,4 +35,10 @@ public class ApiReceiptDetailController {
     public ResponseEntity<List<ReceiptDetail>> listReceiptDetail(@PathVariable(value = "receiptId") int receiptId) {
         return new ResponseEntity<>(this.receiptDetailService.getReceiptDetails(receiptId), HttpStatus.OK);
     }
+    
+    @GetMapping(path = "/restaurantManager/nowReceipt/")
+    @CrossOrigin
+    public ResponseEntity<Object> nowReceipt(@RequestParam Map<String, String> params){
+        return new ResponseEntity(this.receiptDetailService.getNowReceiptByJoinFoodAndReceiptAndReceiptDetail(params),HttpStatus.OK);
+    }
 }

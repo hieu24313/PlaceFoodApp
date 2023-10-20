@@ -49,7 +49,8 @@ export const endpoints = {
     "get-stats-revenue": `${SERVER_CONTEXT}/api/restaurantManager/statsRevenue/`,
     "get-stats-restaurant": `${SERVER_CONTEXT}/api/restaurantManager/getStatsRestaurant/`,
     "get-stats-by-category": `${SERVER_CONTEXT}/api/restaurantManager/getStatsRevenueByCate/`,
-    "get-food-item-has-promotion": `${SERVER_CONTEXT}/api/foodItems-after-promotion/`
+    "get-food-item-has-promotion": `${SERVER_CONTEXT}/api/foodItems-after-promotion/`,
+    "get-Now-Receipt":  `${SERVER_CONTEXT}/api/restaurantManager/nowReceipt/`
 
 }
 

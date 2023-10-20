@@ -122,14 +122,16 @@ const RestaurantManagerDetail = () => {
             <div className="dasboard_2"  >
 
                 {restaurant !== null ? <>
-                    <h1 className="text-center text-primary mt-2">Nhà Hàng {restaurant.restaurantName}</h1>
+                    <h1 style={{marginTop: '50px'}} className="text-center text-info mt-4">Nhà Hàng {restaurant.restaurantName}</h1>
                     {/* <div className="mt-5" style={{ maxHeight: '350px', maxWidth: '500px', margin: 'auto auto', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         <Image style={{ width: '100%', margin: 'auto auto', borderRadius: '5px' }} src={restaurant.avatar} alt="avatar" />
                     </div> */}
-                    <div className="mt-4" style={{ width: '50%', margin: 'auto' }}>
+                    <div style={{ marginTop: '100px'}}>
+                    <div className="mt-5" style={{ width: '55%', margin: 'auto' }}>
                         
                         <Bar data={data1} />
                         <h5 className="text-center">Doanh Thu Trong Tháng Này</h5>
+                    </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
                         <div style={{ width: '7%', display: 'flex', justifyContent: 'center', marginTop: '0px' }}>

@@ -11,6 +11,7 @@ const RestaurantManagerConpoment = () => {
     let urlPromotion = `/promotion/${receivedValue}`
     let urlRevenus = `/revenus/${receivedValue}`
     let urlCategory = `/category/${receivedValue}`
+    let urlNowReceipt = `/nowReceipt/${receivedValue}`
 
     return <>
         <ul className="dasboard_ul" >
@@ -25,8 +26,8 @@ const RestaurantManagerConpoment = () => {
             <hr />
             <li><Link to={urlRevenus} className="btn"><i class="fa-solid fa-sack-dollar"></i> Doanh Thu</Link></li>
             <hr />
-            {/* <li ><Link to="" className="btn">Combo</Link></li>
-            <hr /> */}
+            <li ><Link to={urlNowReceipt} className="btn">Đơn Hàng Hiện Tại</Link></li>
+            <hr />
             <li className="dasboard_ul_lastchild"><Link to="/restaurantmanager" className="btn"> <i class="fa">&#xf190;</i> Quay Lại</Link></li>
 
         </ul>

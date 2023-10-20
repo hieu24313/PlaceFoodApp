@@ -297,20 +297,21 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
 
     @Override
     public List<Object> getFoodItemsAndPromotion(Map<String, String> params) {
-        Session session = this.factory.getObject().getCurrentSession();
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
 //        Query query = session.createQuery("From Fooditems");
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Object> q = criteriaBuilder.createQuery(Object.class);
-        Root rootFood = q.from(Fooditems.class);
-        Root rootFood_Promotion = q.from(PromotionFooditems.class);
-        Root rootPromotion = q.from(Promotion.class);
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Object> q = criteriaBuilder.createQuery(Object.class);
+            Root rootFood = q.from(Fooditems.class);
+            Root rootFood_Promotion = q.from(PromotionFooditems.class);
+            Root rootPromotion = q.from(Promotion.class);
 //        q.select(rootFood);
-        // SELECT MULTIPLE COLUMNS
-        q.multiselect(
-                rootFood,
-                rootFood_Promotion,
-                rootPromotion
-        );
+            // SELECT MULTIPLE COLUMNS
+            q.multiselect(
+                    rootFood,
+                    rootFood_Promotion,
+                    rootPromotion
+            );
 
 //        try {
 //            CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -330,27 +331,31 @@ public class FoodItemsRepositoryImpl implements FoodItemsRepository {
 //            e.printStackTrace();
 //            return null;
 //        }
-        // WHERE JOIN BẢNG
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.equal(
-                rootFood.get("foodId"),
-                rootFood_Promotion.get("foodId"))
-        );
+            // WHERE JOIN BẢNG
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.equal(
+                    rootFood.get("foodId"),
+                    rootFood_Promotion.get("foodId"))
+            );
 
-        predicates.add(criteriaBuilder.equal(
-                rootPromotion.get("promotionId"),
-                rootFood_Promotion.get("promotionId"))
-        );
+            predicates.add(criteriaBuilder.equal(
+                    rootPromotion.get("promotionId"),
+                    rootFood_Promotion.get("promotionId"))
+            );
 
-        String restaurantId = params.get("restaurantId");
+            String restaurantId = params.get("restaurantId");
 
-        if (restaurantId != null && !restaurantId.isEmpty()) {
-            predicates.add(criteriaBuilder.equal(rootFood.get("restaurantId"), Integer.parseInt(restaurantId)));
+            if (restaurantId != null && !restaurantId.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(rootFood.get("restaurantId"), Integer.parseInt(restaurantId)));
+            }
+            q.where(predicates.toArray(Predicate[]::new));
+
+            Query final_query = session.createQuery(q);
+            return final_query.getResultList();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return null;
         }
-        q.where(predicates.toArray(Predicate[]::new));
-
-        Query final_query = session.createQuery(q);
-        return final_query.getResultList();
     }
 
 //    @Override

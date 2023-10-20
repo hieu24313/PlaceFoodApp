@@ -27,7 +27,7 @@ public class RolesRepositoryImpl implements RolesRepository {
     @Override
     public List<Object[]> getRoles() {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM Roles");
+        Query query = session.createQuery("FROM Roles where active=1");
         return query.getResultList();
     }
 

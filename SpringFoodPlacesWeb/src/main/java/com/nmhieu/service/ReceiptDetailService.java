@@ -6,6 +6,7 @@ package com.nmhieu.service;
 
 import com.nmhieu.pojo.ReceiptDetail;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -16,4 +17,6 @@ public interface ReceiptDetailService {
     List<ReceiptDetail> getReceiptDetails(int receiptId);
 
     List<ReceiptDetail> getReceiptDetailsByFoodId(int foodId);
+    
+    List<Object> getNowReceiptByJoinFoodAndReceiptAndReceiptDetail(Map< String, String> params);
 }

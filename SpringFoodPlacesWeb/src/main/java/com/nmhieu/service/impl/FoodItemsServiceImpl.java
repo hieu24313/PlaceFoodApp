@@ -131,7 +131,8 @@ public class FoodItemsServiceImpl implements FoodItemsService {
             }
         }
         String PromotionId = params.get("promotion");
-        String[] numbers1 = PromotionId.split(",");
+        if(PromotionId != null && !PromotionId.isEmpty()){
+            String[] numbers1 = PromotionId.split(",");
         int idFood = Integer.parseInt(foodId);
         Map<String, String> params1 = new HashMap<>();
         params1.put("foodId", String.format(foodId));
@@ -145,6 +146,7 @@ public class FoodItemsServiceImpl implements FoodItemsService {
                     this.promotionService.addPromotionForFood(idFood, Integer.parseInt(proId));
                 }
             }
+        }
         }
         if (foodId != null && !foodId.isEmpty()) {
             Fooditems f = this.getFoodItemById(Integer.parseInt(foodId));

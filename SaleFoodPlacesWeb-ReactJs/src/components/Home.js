@@ -11,197 +11,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 
-// const getLatFromUser = (location) => {
-//     const locationFromUserLocation = (address, callback) => {
-//         const geocoder = new window.google.maps.Geocoder();
-
-//         geocoder.geocode({ address: address }, function (results, status) {
-//             if (status === window.google.maps.GeocoderStatus.OK) {
-//                 const location = results[0].geometry.location;
-//                 const latitude = location.lat();
-//                 const longitude = location.lng();
-//                 // setLatUser(latitude);
-//                 // setLngUser(longitude);
-//                 // callback({ latitude, longitude });
-//                 return latitude;
-//             } else {
-//                 console.error("Không thể tìm thấy tọa độ cho địa chỉ này.");
-//                 return null;
-//                 // callback(null);
-//             }
-//         });
-//     }
-//     locationFromUserLocation(location, function (coordinates) {
-//         if (coordinates) {
-//             console.log("Latitude:", coordinates.latitude);
-//             console.log("Longitude:", coordinates.longitude);
-//         }
-//     });
-
-// }
-
-// const getLngFromUser = (location) => {
-//     const locationFromUserLocation = (address, callback) => {
-//         const geocoder = new window.google.maps.Geocoder();
-
-//         geocoder.geocode({ address: address }, function (results, status) {
-//             if (status === window.google.maps.GeocoderStatus.OK) {
-//                 const location = results[0].geometry.location;
-//                 const latitude = location.lat();
-//                 const longitude = location.lng();
-//                 // setLatUser(latitude);
-//                 // setLngUser(longitude);
-//                 // callback({ latitude, longitude });
-//                 return longitude;
-//             } else {
-//                 console.error("Không thể tìm thấy tọa độ cho địa chỉ này.");
-//                 return null;
-//                 // callback(null);
-//             }
-//         });
-//     }
-//     locationFromUserLocation(location, function (coordinates) {
-//         if (coordinates) {
-//             console.log("Latitude:", coordinates.latitude);
-//             console.log("Longitude:", coordinates.longitude);
-//         }
-//     });
-// }
-
-// const getLatNoUser = () => {
-//     console.log('get long no user')
-//     if ("geolocation" in navigator) {
-//         // Trình duyệt hỗ trợ Geolocation API
-//         navigator.geolocation.getCurrentPosition(function (position) {
-//             console.log("Vĩ độ (Latitude): " + position.coords.latitude);
-//             return position.coords.latitude;
-
-//             // console.log("Vĩ độ (Latitude): " + latitude);
-//             // console.log("Kinh độ (Longitude): " + longitude);
-//         }, function (error) {
-//             // Xử lý lỗi nếu không thể lấy vị trí
-//             switch (error.code) {
-//                 case error.PERMISSION_DENIED:
-//                     console.log("Người dùng đã từ chối cung cấp vị trí.");
-//                     break;
-//                 case error.POSITION_UNAVAILABLE:
-//                     console.log("Không thể xác định vị trí.");
-//                     break;
-//                 case error.TIMEOUT:
-//                     console.log("Hết thời gian để xác định vị trí.");
-//                     break;
-//                 case error.UNKNOWN_ERROR:
-//                     console.log("Lỗi không xác định.");
-//                     break;
-//                 default:
-//                     return null;
-//             }
-//         });
-//     } else {
-//         console.log("Trình duyệt không hỗ trợ Geolocation API.");
-//     }
-// }
-
-// const getLngNoUser = () => {
-//     console.log('get lat no user')
-//     if ("geolocation" in navigator) {
-//         // Trình duyệt hỗ trợ Geolocation API
-//         navigator.geolocation.getCurrentPosition(function (position) {
-//             // Lấy thông tin vị trí người dùng
-//             // var latitude = position.coords.latitude;
-//             console.log("Kinh độ (Longitude): " + position.coords.longitude);
-//             return position.coords.longitude;
-
-//             // console.log("Vĩ độ (Latitude): " + latitude);
-//             // console.log("Kinh độ (Longitude): " + longitude);
-//         }, function (error) {
-//             // Xử lý lỗi nếu không thể lấy vị trí
-//             switch (error.code) {
-//                 case error.PERMISSION_DENIED:
-//                     console.log("Người dùng đã từ chối cung cấp vị trí.");
-//                     break;
-//                 case error.POSITION_UNAVAILABLE:
-//                     console.log("Không thể xác định vị trí.");
-//                     break;
-//                 case error.TIMEOUT:
-//                     console.log("Hết thời gian để xác định vị trí.");
-//                     break;
-//                 case error.UNKNOWN_ERROR:
-//                     console.log("Lỗi không xác định.");
-//                     break;
-//                 default:
-//                     return null;
-//             }
-//         });
-//     } else {
-//         console.log("Trình duyệt không hỗ trợ Geolocation API.");
-//     }
-// }
-
-// const getLatFromUser = (location, callback) => {
-//     const geocoder = new window.google.maps.Geocoder();
-
-//     geocoder.geocode({ address: location }, function (results, status) {
-//         if (status === window.google.maps.GeocoderStatus.OK) {
-//             const location = results[0].geometry.location;
-//             const latitude = location.lat();
-//             callback(latitude);
-//         } else {
-//             console.error("Không thể tìm thấy tọa độ cho địa chỉ này.");
-//             callback(null);
-//         }
-//     });
-// }
-
-// const getLngFromUser = (location, callback) => {
-//     const geocoder = new window.google.maps.Geocoder();
-
-//     geocoder.geocode({ address: location }, function (results, status) {
-//         if (status === window.google.maps.GeocoderStatus.OK) {
-//             const location = results[0].geometry.location;
-//             const longitude = location.lng();
-//             callback(longitude);
-//         } else {
-//             console.error("Không thể tìm thấy tọa độ cho địa chỉ này.");
-//             callback(null);
-//         }
-//     });
-// }
-
-
-// const getLatNoUser = (callback) => {
-//     if ("geolocation" in navigator) {
-//         // Trình duyệt hỗ trợ Geolocation API
-//         navigator.geolocation.getCurrentPosition(function (position) {
-//             const latitude = position.coords.latitude;
-//             callback(latitude);
-//         }, function (error) {
-//             console.error("Lỗi khi lấy vị trí:", error);
-//             callback(null);
-//         });
-//     } else {
-//         console.log("Trình duyệt không hỗ trợ Geolocation API.");
-//         callback(null);
-//     }
-// }
-
-// const getLngNoUser = (callback) => {
-//     if ("geolocation" in navigator) {
-//         // Trình duyệt hỗ trợ Geolocation API
-//         navigator.geolocation.getCurrentPosition(function (position) {
-//             const longitude = position.coords.longitude;
-//             callback(longitude);
-//         }, function (error) {
-//             console.error("Lỗi khi lấy vị trí:", error);
-//             callback(null);
-//         });
-//     } else {
-//         console.log("Trình duyệt không hỗ trợ Geolocation API.");
-//         callback(null);
-//     }
-// }
-
-
 
 
 const Home = () => {
@@ -227,89 +36,7 @@ const Home = () => {
     const [latUser, setLatUser] = useState(null);
 
 
-    // let lngUser = user !== null ? getLngFromUser(user.location) : getLngNoUser();
-    // let latUser= user !== null ? getLatFromUser(user.location) : getLatNoUser();
 
-    // console.log('tessssssssssssssssst', getLngNoUser())
-    // const 
-    // const { isLoaded } = useJsApiLoader({
-    //     id: 'google-map-script',
-    //     googleMapsApiKey: "AIzaSyB-M500zF9hEI3OoOPyK_dVHfWDyZcx5fI"
-    //   })
-    // const []
-
-    // function haversine(lat1, lon1, lat2, lon2) {
-    //     const rad = Math.PI / 180; // Đổi độ sang radian
-    //     const dLat = lat2 - lat1;
-    //     const dLon = lon2 - lon1;
-    //     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    //         Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
-    //         Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    //     const distance = 6371 * c; // Bán kính Trái Đất là 6371 km
-    //     return distance;
-    // }
-
-    // const getLocationNoLogin = () => {
-    //     if ("geolocation" in navigator) {
-    //         // Trình duyệt hỗ trợ Geolocation API
-    //         navigator.geolocation.getCurrentPosition(function (position) {
-    //             // Lấy thông tin vị trí người dùng
-    //             var latitude = position.coords.latitude;
-    //             var longitude = position.coords.longitude;
-
-    //             setLatUser(latitude);
-    //             setLngUser(longitude);
-
-    //             console.log("Vĩ độ (Latitude): " + latitude);
-    //             console.log("Kinh độ (Longitude): " + longitude);
-    //         }, function (error) {
-    //             // Xử lý lỗi nếu không thể lấy vị trí
-    //             switch (error.code) {
-    //                 case error.PERMISSION_DENIED:
-    //                     console.log("Người dùng đã từ chối cung cấp vị trí.");
-    //                     break;
-    //                 case error.POSITION_UNAVAILABLE:
-    //                     console.log("Không thể xác định vị trí.");
-    //                     break;
-    //                 case error.TIMEOUT:
-    //                     console.log("Hết thời gian để xác định vị trí.");
-    //                     break;
-    //                 case error.UNKNOWN_ERROR:
-    //                     console.log("Lỗi không xác định.");
-    //                     break;
-    //                 default:
-    //                     break;
-    //             }
-    //         });
-    //     } else {
-    //         console.log("Trình duyệt không hỗ trợ Geolocation API.");
-    //     }
-    // }
-
-    // const locationFromUserLocation = (address, callback) => {
-    //     const geocoder = new window.google.maps.Geocoder();
-
-    //     geocoder.geocode({ address: address }, function (results, status) {
-    //         if (status === window.google.maps.GeocoderStatus.OK) {
-    //             const location = results[0].geometry.location;
-    //             const latitude = location.lat();
-    //             const longitude = location.lng();
-    //             setLatUser(latitude);
-    //             setLngUser(longitude);
-    //             callback({ latitude, longitude });
-    //         } else {
-    //             console.error("Không thể tìm thấy tọa độ cho địa chỉ này.");
-    //             callback(null);
-    //         }
-    //     });
-    // }
-    // if(user !== null){
-    //     locationFromUserLocation();
-    // }
-    // else{
-    //     getLocationNoLogin();
-    // }
 
     const testLong = () => { // tính khoảng cách giauwx 2 điểm
         const point1 = new window.google.maps.LatLng(41.8781, -87.6298); // Tọa độ điểm 1
@@ -426,6 +153,28 @@ const Home = () => {
             console.error(ex);
         }
     }
+    const loadRestaurant = async () => {
+        try {
+            let e = `${endpoints['restaurant']}?`;
+            let restaurantName = kw;
+            // let location = q.get("location");
+            if (page !== null) {
+                e += `page=${page}&`;
+            }
+            if (restaurantName !== null) {
+                e += `restaurantName=${restaurantName}&`;
+            }
+            // if (location !== null) {
+            //     e += `location=${location}`;
+            // }
+            let res = await Apis.get(e);
+
+            setRestaurant(res.data);
+            // console.log(res.data)
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
 
     const search = (evt) => {
         evt.preventDefault();
@@ -451,6 +200,7 @@ const Home = () => {
             loadFoodItems();
         }
         setLoadingFind(false);
+        loadRestaurant();
         // setKw(null);
         // setFromPrice(null);
         // setToPrice(null);
@@ -520,28 +270,7 @@ const Home = () => {
         //     }
         // }
 
-        const loadRestaurant = async () => {
-            try {
-                let e = `${endpoints['restaurant']}?`;
-                let restaurantName = q.get("kw");
-                // let location = q.get("location");
-                if (page !== null) {
-                    e += `page=${page}&`;
-                }
-                if (restaurantName !== null) {
-                    e += `restaurantName=${restaurantName}&`;
-                }
-                // if (location !== null) {
-                //     e += `location=${location}`;
-                // }
-                let res = await Apis.get(e);
 
-                setRestaurant(res.data);
-                // console.log(res.data)
-            } catch (ex) {
-                console.error(ex);
-            }
-        }
 
         // loadFood_Promotion();
         if (user !== null) {
