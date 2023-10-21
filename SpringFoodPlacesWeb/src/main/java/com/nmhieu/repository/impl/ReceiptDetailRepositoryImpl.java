@@ -132,6 +132,8 @@ public class ReceiptDetailRepositoryImpl implements ReceiptDetailRepository {
                     criteriaBuilder.equal(rootReceipt.get("receiptId"), rootReceiptDetail.get("receiptId")),
                     criteriaBuilder.equal(rootLocationShip.get("receiptId"), rootReceipt.get("receiptId"))
             );
+            
+            q.orderBy(criteriaBuilder.desc(rootReceipt.get("receiptDate")));
 
             Query final_query = session.createQuery(q);
             return final_query.getResultList();

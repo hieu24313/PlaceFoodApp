@@ -18,4 +18,6 @@ public class Cart {
     private int quantity;
     private Double unitPrice;
     private Double amount;
+    private String locationuser;
+    private String phonenumberuser;
 }

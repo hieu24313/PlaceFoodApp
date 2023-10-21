@@ -34,6 +34,7 @@ const Home = () => {
     const [lngUser, setLngUser] = useState(null);
 
     const [latUser, setLatUser] = useState(null);
+    const [locationEnd, setLocationEnd] = useState();
 
 
 
@@ -219,6 +220,9 @@ const Home = () => {
                         const location = results[0].geometry.location;
                         const latitude = location.lat();
                         const longitude = location.lng();
+                        setLocationEnd(address);
+                        console.log(address);
+                        cookie.save("location", address);
                         latCallback(latitude);
                         lngCallback(longitude);
                     } else {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Button, Form, Table } from "react-bootstrap";
 import cookie from "react-cookies";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import Apis, { authApi, endpoints } from "../configs/Apis";
 import MySpinner from "../layout/MySpinner";
 import '../resources/css/Cart.css'
 import { toast } from "react-toastify";
+import { MDBInput } from "mdb-react-ui-kit";
 
 const Cart = () => {
 
@@ -16,6 +17,9 @@ const Cart = () => {
     const [, cartDispatch] = useContext(MyCartContext);
     const nav = useNavigate();
     const [checkUser, setCheckUser] = useState();
+    const [location, setLocation] = useState(cookie.load("location") || "");
+    const [phonenumber, setPhonenumber] = useState(user.phonenumber || "");
+    const [checkLocationAndPhone, setCheckLocationAndPhone] = useState(false);
     // const [empty, setEmpty] = useState();
 
     let tong = 0;
@@ -47,25 +51,45 @@ const Cart = () => {
 
     const pay = () => {
         const process = async () => {
+            console.log(carts)
             setLoading(true);
-            try{
+            // carts.forEach((c) => {
+            //     c.newField = {
+            //         foodId: c.foodId,
+            //         foodName: c.foodName,
+            //         quantity: c.quantity,
+            //         unitPrice: c.price,
+            //         locationuser : location,
+            //         phonenumberuser: phonenumber
+            //     };
+
+            // })
+            for (const foodItemId in carts) {
+                if (carts.hasOwnProperty(foodItemId)) {
+                  const foodItem = carts[foodItemId];
+                  foodItem.locationuser = location;
+                  foodItem.phonenumberuser = phonenumber;
+                }
+              }
+              console.log(carts)
+            try {
                 if (user == null) {
 
                     let res = await Apis.post(endpoints['payNoUser'], carts);
                     if (res.status === 200) {
                         console.log(carts);
                         cookie.remove("cart");
-    
+
                         cartDispatch({
                             "type": "update",
                             "payload": 0
                         });
-    
+
                         setCarts([]);
                         setLoading(false);
                         toast.success('Thanh toán thành công!')
                         setTimeout(() => {
-                            nav("/") 
+                            nav("/")
                         }, 1000);
                     }
                     else {
@@ -76,19 +100,19 @@ const Cart = () => {
                     if (res.status === 200) {
                         console.log(carts);
                         cookie.remove("cart");
-    
+
                         cartDispatch({
                             "type": "update",
                             "payload": 0
                         });
-    
+
                         setCarts([]);
                         nav("/receipt");
-                    }else {
+                    } else {
                         toast.error("thanh toán thất bại!!!");
                     }
                 }
-            }catch(e){
+            } catch (e) {
                 setLoading(false);
                 console.log(e);
             }
@@ -98,6 +122,19 @@ const Cart = () => {
 
         process();
     }
+
+    const checkPay = () => {
+        if (location !== null && location !== "" && phonenumber !== null && location !== "") {
+            setCheckLocationAndPhone(true);
+        }
+        else {
+            setCheckLocationAndPhone(true);
+        }
+    }
+    useEffect(() => {
+        checkPay();
+    }, [])
+
 
     // const updateQuantity = (e, id) => {
     //     if (e.target.value == null) {
@@ -119,6 +156,8 @@ const Cart = () => {
 
     // if (carts.length === 0)
     //     nav("/receipt");
+
+
 
     return <>
         <h1 className="text-center text-success">Giỏ Hàng</h1>
@@ -158,17 +197,41 @@ const Cart = () => {
                 </tbody>
             </Table>
         </div>
-        <div className="div_btn_pay">
-            <h3>Tổng Tiền: {tong}</h3>
+        <div className="div_input_phone_location">
+            <div className="" >
+                <h3>Tổng Tiền: {tong}</h3>
+                <div>
+                    <MDBInput label='Nhập địa chỉ' className="mt-2" defaultValue={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                            checkPay();
+                        }}>
+
+                    </MDBInput>
+                    <MDBInput label='Nhập số điện thoại' className="mt-2" defaultValue={phonenumber}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                            checkPay();
+                        }}
+                    >
+
+                    </MDBInput>
+                </div>
+            </div>
         </div>
+
         <div className="div_btn_pay">
-             {user !== null ? <>
+
+            {checkLocationAndPhone === false ? <Button variant="success" disabled className="mt-2 mb-2 btn_pay">Thanh toán</Button> : <>
                 {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>}
-            </> : <>
-                {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button> }
-                
             </>}
-            
+            {/* {user !== null ? <> */}
+            {/* {loading === true ? <MySpinner /> : <Button variant="success" onClick={pay} className="mt-2 mb-2 btn_pay">Thanh toán</Button>} */}
+            {/* </> : <> */}
+
+
+            {/* </>} */}
+
         </div>
     </>
 }

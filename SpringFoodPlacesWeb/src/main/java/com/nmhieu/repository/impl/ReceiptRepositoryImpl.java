@@ -6,6 +6,7 @@ package com.nmhieu.repository.impl;
 
 import com.nmhieu.mail.EmailService;
 import com.nmhieu.pojo.Cart;
+import com.nmhieu.pojo.Locationship;
 import com.nmhieu.pojo.ReceiptDetail;
 import com.nmhieu.pojo.ReceiptStatus;
 import com.nmhieu.pojo.Receipts;
@@ -65,6 +66,8 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         Session session = this.factory.getObject().getCurrentSession();
         Receipts receipt = new Receipts();
         String list = "";
+        String location = "";
+        String phonenumber = "";
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Users user = this.userRepo.getUserByUsername_new(authentication.getName());
@@ -85,10 +88,22 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
                 receiptDetail.setQuantity(cart.getQuantity());
                 receiptDetail.setUnitPrice(BigDecimal.valueOf(cart.getUnitPrice()));
                 double amount = cart.getQuantity() * cart.getUnitPrice();
+                location = cart.getLocationuser();
+                phonenumber = cart.getPhonenumberuser();
+                System.out.println("a" + cart.getLocationuser());
+                System.out.println("b" + cart.getPhonenumberuser());
                 receiptDetail.setAmount(BigDecimal.valueOf(amount));
                 totalAmount += amount;
                 session.save(receiptDetail);
             }
+            
+            //luu dia chi giao hang
+            Locationship ship = new Locationship();
+            ship.setLocation(location);
+            ship.setPhonenumber(phonenumber);
+            ship.setReceiptId(receipt);
+            session.save(ship);
+            
             list += "Tổng: " + totalAmount;
             receipt.setTotalPayment(BigDecimal.valueOf(totalAmount));
 
@@ -200,7 +215,8 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         Session session = this.factory.getObject().getCurrentSession();
         Receipts receipt = new Receipts();
         try {
-
+            String location = "";
+            String phonenumber = "";
             receipt.setUserId(null);
             receipt.setReceiptDate(new Date());
             receipt.setActive(Boolean.TRUE);
@@ -217,11 +233,18 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
                 receiptDetail.setUnitPrice(BigDecimal.valueOf(cart.getUnitPrice()));
                 double amount = cart.getQuantity() * cart.getUnitPrice();
                 receiptDetail.setAmount(BigDecimal.valueOf(amount));
+                location = cart.getLocationuser();
+                phonenumber = cart.getPhonenumberuser();
                 totalAmount += amount;
                 session.save(receiptDetail);
             }
             receipt.setTotalPayment(BigDecimal.valueOf(totalAmount));
-
+            //luu dia chi giao hang
+            Locationship ship = new Locationship();
+            ship.setLocation(location);
+            ship.setPhonenumber(phonenumber);
+            ship.setReceiptId(receipt);
+            session.save(ship);
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();

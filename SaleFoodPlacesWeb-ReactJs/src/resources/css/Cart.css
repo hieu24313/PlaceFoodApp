@@ -27,6 +27,17 @@
     /* text-align: center; */
 }
 
+.div_input_phone_location {
+    margin: auto;
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.div_input_phone_location input {
+    width: 320px;
+}
+
 
 
 

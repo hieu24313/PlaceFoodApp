@@ -53,11 +53,12 @@ const NowReceipt = () => {
                                 <th>Tên Món</th>
                                 <th>Giá 1 món</th>
                                 <th>Số Lượng</th>
-                                <th>Tổng</th>
+                                {/* <th>Tổng</th> */}
                                 <th>Tên Người Nhận</th>
                                 <th>Địa Chỉ Nhận</th>
                                 <th>Số Điện Thoại</th>
                                 <th>Ngày Tạo</th>
+                                <th>Trạng Thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,11 +68,14 @@ const NowReceipt = () => {
                                     <td>{n[0].foodName}</td>
                                     <td>{n[2].unitPrice}</td>
                                     <td>{n[2].quantity}</td>
-                                    <td>{formatNumberWithCommas(n[2].quantity * n[2].unitPrice)}</td>
+                                    {/* <td>{formatNumberWithCommas(n[2].quantity * n[2].unitPrice)}</td> */}
                                     <td>{n[1].userId.firstname} {n[1].userId.lastname}</td>
-                                    <td>{n[1].userId.location}</td>
-                                    <td>{n[1].userId.phonenumber}</td>
+                                    <td>{n[3].location}</td>
+                                    <td>{n[3].phonenumber}</td>
                                     <td><Moment format="DD/MM/YYYY hh:mm:ss" locale="vi">{n[1].receiptDate}</Moment>s</td>
+                                    <td>{n[1].statusReceiptId.statusReceiptId === 1 ? "Chưa nhận hàng" : <>
+                                    <i class="fa-solid fa-check" style={{color: '#2fe817'}}></i>
+                                    </>}</td>
                                 </tr>
                             })}
 
