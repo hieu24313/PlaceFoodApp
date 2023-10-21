@@ -5,6 +5,7 @@
 package com.nmhieu.repository.impl;
 
 import com.nmhieu.pojo.Fooditems;
+import com.nmhieu.pojo.Locationship;
 import com.nmhieu.pojo.ReceiptDetail;
 import com.nmhieu.pojo.Receipts;
 import com.nmhieu.repository.ReceiptDetailRepository;
@@ -96,12 +97,14 @@ public class ReceiptDetailRepositoryImpl implements ReceiptDetailRepository {
             Root rootFoodItem = q.from(Fooditems.class);
             Root rootReceipt = q.from(Receipts.class);
             Root rootReceiptDetail = q.from(ReceiptDetail.class);
+            Root rootLocationShip = q.from(Locationship.class);
 
             // SELECT MULTIPLE COLUMNS
             q.multiselect(
                     rootFoodItem,
                     rootReceipt,
-                    rootReceiptDetail
+                    rootReceiptDetail,
+                    rootLocationShip
             );
 
             // WHERE JOIN BẢNG
@@ -122,10 +125,12 @@ public class ReceiptDetailRepositoryImpl implements ReceiptDetailRepository {
 //                    rootReceiptDetail.get("receiptId"))
 //            );
 //            q.where(predicates.toArray(Predicate[]::new));
+            String restaurantId = params.get("restaurantId");
             q.where(
                     criteriaBuilder.equal(rootFoodItem.get("foodId"), rootReceiptDetail.get("fooditemId")),
-                    criteriaBuilder.equal(rootFoodItem.get("restaurantId"), 20),
-                    criteriaBuilder.equal(rootReceipt.get("receiptId"), rootReceiptDetail.get("receiptId"))
+                    criteriaBuilder.equal(rootFoodItem.get("restaurantId"), Integer.valueOf(restaurantId)),
+                    criteriaBuilder.equal(rootReceipt.get("receiptId"), rootReceiptDetail.get("receiptId")),
+                    criteriaBuilder.equal(rootLocationShip.get("receiptId"), rootReceipt.get("receiptId"))
             );
 
             Query final_query = session.createQuery(q);

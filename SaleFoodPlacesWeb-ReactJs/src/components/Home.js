@@ -63,10 +63,10 @@ const Home = () => {
                     console.log('user', lngUser, latUser)
                     let pointUser = new window.google.maps.LatLng(latUser, lngUser); // Tọa độ điểm user
                     let pointRestaurant = new window.google.maps.LatLng(lat, lng); // Tọa độ điểm quán ăn
-                    console.log('user', lngUser, latUser)
+                    // console.log('user', lngUser, latUser)
                     // console.log('point', pointUser, pointRestaurant)
                     d.distance = window.google.maps.geometry.spherical.computeDistanceBetween(pointUser, pointRestaurant); // tạo trường lưu khoảng cách
-                    console.log('distance', d.distance)
+                    // console.log('distance', d.distance)
                 } else {
                     console.error("Không thể tìm thấy tọa độ của nhà hàng!");
                 }

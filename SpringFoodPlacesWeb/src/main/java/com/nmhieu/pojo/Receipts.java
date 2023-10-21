@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Receipts.findByActive", query = "SELECT r FROM Receipts r WHERE r.active = :active")})
 public class Receipts implements Serializable {
 
+    @OneToMany(mappedBy = "receiptId")
+    @JsonIgnore
+    private Set<Locationship> locationshipSet;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,6 +156,15 @@ public class Receipts implements Serializable {
     @Override
     public String toString() {
         return "com.tuantran.pojo.Receipts[ receiptId=" + receiptId + " ]";
+    }
+
+    @XmlTransient
+    public Set<Locationship> getLocationshipSet() {
+        return locationshipSet;
+    }
+
+    public void setLocationshipSet(Set<Locationship> locationshipSet) {
+        this.locationshipSet = locationshipSet;
     }
 
 }
