@@ -18,7 +18,7 @@ const Cart = () => {
     const nav = useNavigate();
     const [checkUser, setCheckUser] = useState();
     const [location, setLocation] = useState(cookie.load("location") || "");
-    const [phonenumber, setPhonenumber] = useState(user.phonenumber || "");
+    const [phonenumber, setPhonenumber] = useState(null);
     const [checkLocationAndPhone, setCheckLocationAndPhone] = useState(false);
     // const [empty, setEmpty] = useState();
 
@@ -210,7 +210,7 @@ const Cart = () => {
                     </MDBInput>
                     <MDBInput label='Nhập số điện thoại' className="mt-2" defaultValue={phonenumber}
                         onChange={(e) => {
-                            setLocation(e.target.value);
+                            setPhonenumber(e.target.value);
                             checkPay();
                         }}
                     >
